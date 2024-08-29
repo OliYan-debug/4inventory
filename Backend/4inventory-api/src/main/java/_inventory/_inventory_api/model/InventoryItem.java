@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -14,12 +15,14 @@ public class InventoryItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @Column(nullable = false)
     private String item;
     private String description;
     private Integer quantity;
     private LocalDate created_at;
     private LocalDateTime last_update;
-
+    @OneToMany()
+    private Set<Category> category;
     @PrePersist
     public void prePersist(){
         this.created_at = LocalDate.now();

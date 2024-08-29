@@ -1,0 +1,17 @@
+package _inventory._inventory_api.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Entity
+@Data
+@Table(name="tb_category")
+public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
+    private String color;
+}
