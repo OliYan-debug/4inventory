@@ -64,4 +64,11 @@ To get started with this API, you need to have Docker installed. Docker is the o
    http://localhost:5000
    ```
 
+4. **API documentation**
+
+   The API documentation is available on:
+   ```
+   http://localhost:5000/swagger-ui.html
+   ```
+
 
