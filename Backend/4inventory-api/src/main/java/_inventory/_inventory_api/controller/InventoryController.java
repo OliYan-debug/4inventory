@@ -4,6 +4,7 @@ import _inventory._inventory_api.model.Category;
 import _inventory._inventory_api.model.InventoryItem;
 import _inventory._inventory_api.repository.CategoryRepository;
 import _inventory._inventory_api.repository.InventoryRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +22,18 @@ public class InventoryController {
 
     @Autowired
     CategoryRepository categoryRepo;
-
+    @Operation(summary = "List all items in the inventory")
     @GetMapping("/")
     public ResponseEntity<List<InventoryItem>> listInventory(){
         return ResponseEntity.ok(inventoryRepo.findAll());
     }
 
+    @Operation(summary = "Add a item in the inventory")
     @PostMapping("/add")
     public ResponseEntity<InventoryItem> addItem(@RequestBody InventoryItem inventoryItem){
         return ResponseEntity.ok(inventoryRepo.save(inventoryItem));
     }
-
+    @Operation(summary = "Remove a item from the inventory")
     @DeleteMapping("/remove")
     public ResponseEntity<String> removeItem(UUID itemId){
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemId);
@@ -43,6 +45,7 @@ public class InventoryController {
     }
     public record itemAndCategory(UUID itemId, Long categoryId) { }
 
+    @Operation(summary = "Add a category to a item")
     @PostMapping("/add/category")
     public ResponseEntity<InventoryItem> addCategory(@RequestBody itemAndCategory categoryRequest){
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(categoryRequest.itemId());
@@ -56,6 +59,7 @@ public class InventoryController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @Operation(summary = "Remove a category from a item")
     @DeleteMapping("/remove/category")
     public ResponseEntity<InventoryItem> removeCategory(@RequestBody itemAndCategory categoryRequest){
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(categoryRequest.itemId());
