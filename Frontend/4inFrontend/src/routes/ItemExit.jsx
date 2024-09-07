@@ -1,15 +1,9 @@
 import { Link } from "react-router-dom"
 import Header from "../components/Header"
-import {
-  ChevronDown,
-  ChevronRight,
-  CirclePlus,
-  ListRestart,
-  PlusIcon,
-} from "lucide-react"
+import { ChevronRight, CircleMinus, ListRestart } from "lucide-react"
 import { useForm } from "react-hook-form"
 
-export default function NewItem() {
+export default function ItemExit() {
   const {
     register,
     handleSubmit,
@@ -27,14 +21,14 @@ export default function NewItem() {
           Producs
         </Link>
         <ChevronRight size={16} color="#737373" />
-        <span className="font-semibold">New Item</span>
+        <span className="font-semibold">Item Exit</span>
       </p>
     )
   }
 
   return (
     <div className="flex flex-col gap-4">
-      <Header title={"New Product"} subtitle={subtitle()} />
+      <Header title={"Item Exit"} subtitle={subtitle()} />
 
       <div className="max-w-full min-h-screen p-4 bg-neutral-50 rounded-2xl">
         <form
@@ -42,100 +36,70 @@ export default function NewItem() {
           className="flex flex-col pt-8 px-32 items-center gap-2"
         >
           <div className="w-full">
-            <label htmlFor="itemName" className="text-sm text-neutral-500">
-              Item Name*
+            <label htmlFor="item" className="text-sm text-neutral-500">
+              Item Name or ID*
             </label>
             <input
               defaultValue=""
-              {...register("itemName", {
+              {...register("item", {
                 required: "Item name is required",
                 maxLength: {
                   value: 20,
                   message: "Maximum character value exceeded",
                 },
               })}
-              aria-invalid={errors.itemName ? "true" : "false"}
+              aria-invalid={errors.item ? "true" : "false"}
               type="text"
-              id="itemName"
+              id="item"
               className={`w-full rounded-lg border border-neutral-400 px-4 py-2
             text-neutral-500 outline-none hover:border-neutral-500 focus-visible::border-neutral-500
               disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400
               ${
-                errors.itemName &&
+                errors.item &&
                 "border-red-600 bg-red-100 text-red-600 hover:border-red-600 focus-visible::border-red-600"
               }`}
             />
-            {errors.itemName && (
+            {errors.item && (
               <p role="alert" className="mt-1 text-center text-xs text-red-600">
-                {errors.itemName?.message}
+                {errors.item?.message}
               </p>
             )}
           </div>
 
           <div className="w-full">
-            <label htmlFor="category" className="text-sm text-neutral-500">
-              Category
-            </label>
-            <div className="relative mt-1 flex items-center">
-              <ChevronDown
-                color="#a3a3a3"
-                size={22}
-                className="absolute right-14"
-              />
-              <select
-                {...register("category")}
-                name="category"
-                id="category"
-                className="z-10 w-full appearance-none rounded-l-lg border border-neutral-400 
-                bg-transparent py-2 px-4 text-neutral-500 outline-none
-                hover:border-neutral-500 focus:border-neutral-500"
-              >
-                <option value="">Select</option>
-                <option value=""></option>
-                <option value=""></option>
-              </select>
-              <Link
-                to="/categories/new"
-                className="w-12 h-[42px] bg-neutral-400 rounded-r-lg flex items-center justify-center hover:bg-neutral-500 transition"
-              >
-                <PlusIcon size={18} color="#fafafa" />
-              </Link>
-            </div>
-          </div>
-
-          <div className="w-full">
-            <label htmlFor="description" className="text-sm text-neutral-500">
-              Description
+            <label htmlFor="justification" className="text-sm text-neutral-500">
+              Justification*
             </label>
             <textarea
               defaultValue=""
-              {...register("description", {
+              {...register("justification", {
+                required: "Justification is required",
                 maxLength: {
                   value: 255,
                   message: "Maximum character value exceeded",
                 },
               })}
-              aria-invalid={errors.description ? "true" : "false"}
+              aria-invalid={errors.justification ? "true" : "false"}
               type="text"
-              id="description"
+              id="justification"
               className={`w-full h-26 resize-none rounded-lg border border-neutral-400 px-4 py-2
             text-neutral-500 outline-none hover:border-neutral-500 focus-visible::border-neutral-500
               disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400
               ${
-                errors.description &&
+                errors.justification &&
                 "border-red-600 bg-red-100 text-red-600 hover:border-red-600 focus-visible::border-red-600"
               }`}
             ></textarea>
-            {errors.description && (
+            {errors.justification && (
               <p role="alert" className="mt-1 text-center text-xs text-red-600">
-                {errors.description?.message}
+                {errors.justification?.message}
               </p>
             )}
           </div>
 
           <div className="w-full">
             <label htmlFor="quantity" className="text-sm text-neutral-500">
-              Quantity
+              Quantity*
             </label>
             <input
               defaultValue="0"
@@ -165,16 +129,16 @@ export default function NewItem() {
 
           <button
             type="submit"
-            className="w-2/5 mt-10 py-2 rounded-lg bg-emerald-400 text-neutral-50 font-semibold flex items-center justify-center px-4 hover:bg-emerald-500 transition"
+            className="w-2/5 mt-10 py-2 rounded-lg bg-red-400 text-neutral-50 font-semibold flex items-center justify-center px-4 hover:bg-red-500 transition"
           >
-            <CirclePlus size={20} color="#fafafa" className="me-2" />
-            Add new item
+            <CircleMinus size={20} color="#fafafa" className="me-2" />
+            Item exit
           </button>
           <button
             type="reset"
             className="font-semibold text-neutral-400 hover:underline hover:opacity-80 flex items-center"
           >
-            Cancel item
+            Cancel
             <ListRestart size={20} color="#a3a3a3" className="ms-1" />
           </button>
         </form>
