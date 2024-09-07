@@ -6,6 +6,10 @@ import Root from "./routes/Root"
 import ErrorPage from "./routes/ErrorPage"
 import Products from "./routes/Products"
 import NewItem from "./routes/NewItem"
+import DeleteItem from "./routes/DeleteItem"
+import SearchItem from "./routes/SearchItem"
+import ItemEntry from "./routes/ItemEntry"
+import ItemExit from "./routes/ItemExit"
 
 const router = createBrowserRouter([
   {
@@ -24,6 +28,22 @@ const router = createBrowserRouter([
       {
         path: "products/new",
         element: <NewItem />,
+      },
+      {
+        path: "products/delete",
+        element: <DeleteItem />,
+      },
+      {
+        path: "products/search",
+        element: <SearchItem />,
+      },
+      {
+        path: "products/entry",
+        element: <ItemEntry />,
+      },
+      {
+        path: "products/exit",
+        element: <ItemExit />,
       },
     ],
   },
