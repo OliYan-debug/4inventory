@@ -8,8 +8,8 @@ export default function Item({
 }) {
   return (
     <div
-      className={`grid grid-cols-6 justify-items-center bg-neutral-${
-        id % 2 ? "100" : "200"
+      className={`grid grid-cols-6 justify-items-center ${
+        id % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >
       <div className="col-auto flex items-center py-2">
