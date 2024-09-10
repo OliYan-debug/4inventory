@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController()
 @RequestMapping("/inventory")
@@ -35,7 +34,7 @@ public class InventoryController {
     }
     @Operation(summary = "Remove a item from the inventory")
     @DeleteMapping("/remove")
-    public ResponseEntity<String> removeItem(UUID itemId){
+    public ResponseEntity<String> removeItem(Long itemId){
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemId);
         if(optionalItem.isPresent()){
             inventoryRepo.deleteById(itemId);
@@ -43,8 +42,21 @@ public class InventoryController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    public record itemAndCategory(UUID itemId, Long categoryId) { }
-
+    public record itemAndNewQuantity(Long id, Integer quantity) { }
+    @Operation(summary = "Update the quantity of a item")
+    @PutMapping("/update/quantity")
+    public ResponseEntity<String> updateItemQuantity(@RequestBody itemAndNewQuantity itemAndNewQuantity){
+        Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemAndNewQuantity.id());
+        if(optionalItem.isPresent()){
+            if(itemAndNewQuantity.quantity < 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Quantity must be greater than 0");
+            InventoryItem inventoryItem = optionalItem.get();
+            inventoryItem.setQuantity(itemAndNewQuantity.quantity());
+            inventoryRepo.save(inventoryItem);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Item with ID "+itemAndNewQuantity.id()+" not found");
+    }
+    public record itemAndCategory(Long itemId, Long categoryId) { }
     @Operation(summary = "Add a category to a item")
     @PostMapping("/add/category")
     public ResponseEntity<InventoryItem> addCategory(@RequestBody itemAndCategory categoryRequest){
