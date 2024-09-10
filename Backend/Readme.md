@@ -19,21 +19,32 @@ To get started with this API, you need to have Docker installed. Docker is the o
 2. **Set Environment Variables**
 
    Add the following variables to your `.env` file:
-
    ```env
-   POSTGRES_PASSWORD=SUPERSECRET
-   POSTGRES_USERNAME=SUPERADMIN
+   # Your database credentials you can change it
+
+   DATABASE=4inventory
+   USERNAME=4inventory
+   PASSWORD=4inventory
    ```
-   Replace `SUPERSECRET` and `SUPERADMIN` with your desired PostgreSQL credentials.
+   Replace `4inventory` with your desired Database credentials.
 
    Next, add the following configuration to the `.env` file:
+   
+   `Note: Only CHANGE THIS if you know exactly what you are doing. otherwise you can break the whole setup`
 
    ```env
-   SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB}
-   SPRING_DATASOURCE_USERNAME=${POSTGRES_USERNAME}
-   SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
-   ```
+   # Postgres Settings just change if you know what you are doing
 
+   POSTGRES_DB=${DATABASE}
+   POSTGRES_USER=${USERNAME}
+   POSTGRES_PASSWORD=${PASSWORD}
+
+   # Spring POM.xml settings just change if you know what you are doing
+
+   SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${DATABASE}
+   SPRING_DATASOURCE_USERNAME=${USERNAME}
+   SPRING_DATASOURCE_PASSWORD=${PASSWORD}
+   ```
 
 
 ### Running the API
