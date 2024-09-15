@@ -1,73 +1,85 @@
-import { Link } from "react-router-dom"
-import Header from "../components/Header"
+import { Link } from "react-router-dom";
+import Header from "../components/Header";
 import {
   ChevronDown,
   ChevronRight,
   CirclePlus,
   ListRestart,
   PlusIcon,
-} from "lucide-react"
-import { useForm } from "react-hook-form"
+} from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { api } from "../services/api";
 
 export default function NewItem() {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    api
+      .get("/category/")
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar dados:", error);
+      });
+  }, []);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     mode: "onChange",
-  })
+  });
 
-  const onSubmit = (data) => console.log(data)
+  const onSubmit = (data) => console.log(data);
 
   const subtitle = () => {
     return (
-      <p className="flex items-center text-sm text-neutral-500 mt-1">
+      <p className="mt-1 flex items-center text-sm text-neutral-500">
         <Link to={`/products`} className="hover:font-semibold">
           Producs
         </Link>
         <ChevronRight size={16} color="#737373" />
         <span className="font-semibold">New Item</span>
       </p>
-    )
-  }
+    );
+  };
 
   return (
     <div className="flex flex-col gap-4">
       <Header title={"New Product"} subtitle={subtitle()} />
 
-      <div className="max-w-full min-h-screen p-4 bg-neutral-50 rounded-2xl">
+      <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 p-4">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col pt-8 px-32 items-center gap-2"
+          className="flex flex-col items-center gap-2 px-32 pt-8"
         >
           <div className="w-full">
-            <label htmlFor="itemName" className="text-sm text-neutral-500">
+            <label htmlFor="item" className="text-sm text-neutral-500">
               Item Name*
             </label>
             <input
               defaultValue=""
-              {...register("itemName", {
+              {...register("item", {
                 required: "Item name is required",
                 maxLength: {
                   value: 20,
                   message: "Maximum character value exceeded",
                 },
               })}
-              aria-invalid={errors.itemName ? "true" : "false"}
+              aria-invalid={errors.item ? "true" : "false"}
               type="text"
-              id="itemName"
-              className={`w-full rounded-lg border border-neutral-400 px-4 py-2
-            text-neutral-500 outline-none hover:border-neutral-500 focus-visible::border-neutral-500
-              disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400
-              ${
-                errors.itemName &&
-                "border-red-600 bg-red-100 text-red-600 hover:border-red-600 focus-visible::border-red-600"
+              id="item"
+              className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+                errors.item &&
+                "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
               }`}
             />
-            {errors.itemName && (
+            {errors.item && (
               <p role="alert" className="mt-1 text-center text-xs text-red-600">
-                {errors.itemName?.message}
+                {errors.item?.message}
               </p>
             )}
           </div>
@@ -86,17 +98,24 @@ export default function NewItem() {
                 {...register("category")}
                 name="category"
                 id="category"
-                className="z-10 w-full appearance-none rounded-l-lg border border-neutral-400 
-                bg-transparent py-2 px-4 text-neutral-500 outline-none
-                hover:border-neutral-500 focus:border-neutral-500"
+                className="z-10 w-full appearance-none rounded-l-lg border border-neutral-400 bg-transparent px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 focus:border-neutral-500"
               >
                 <option value="">Select</option>
-                <option value=""></option>
-                <option value=""></option>
+                {categories.length <= 0 ? (
+                  <>
+                    <p className="text-center">No categories found</p>
+                  </>
+                ) : (
+                  categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))
+                )}
               </select>
               <Link
                 to="/categories/new"
-                className="w-12 h-[42px] bg-neutral-400 rounded-r-lg flex items-center justify-center hover:bg-neutral-500 transition"
+                className="flex h-[42px] w-12 items-center justify-center rounded-r-lg bg-neutral-400 transition hover:bg-neutral-500"
               >
                 <PlusIcon size={18} color="#fafafa" />
               </Link>
@@ -118,12 +137,9 @@ export default function NewItem() {
               aria-invalid={errors.description ? "true" : "false"}
               type="text"
               id="description"
-              className={`w-full h-26 resize-none rounded-lg border border-neutral-400 px-4 py-2
-            text-neutral-500 outline-none hover:border-neutral-500 focus-visible::border-neutral-500
-              disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400
-              ${
+              className={`h-26 focus-visible::border-neutral-500 w-full resize-none rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
                 errors.description &&
-                "border-red-600 bg-red-100 text-red-600 hover:border-red-600 focus-visible::border-red-600"
+                "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
               }`}
             ></textarea>
             {errors.description && (
@@ -148,12 +164,9 @@ export default function NewItem() {
               aria-invalid={errors.quantity ? "true" : "false"}
               type="number"
               id="quantity"
-              className={`w-full rounded-lg border border-neutral-400 px-4 py-2
-            text-neutral-500 outline-none hover:border-neutral-500 focus-visible::border-neutral-500
-              disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400
-              ${
+              className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
                 errors.quantity &&
-                "border-red-600 bg-red-100 text-red-600 hover:border-red-600 focus-visible::border-red-600"
+                "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
               }`}
             />
             {errors.quantity && (
@@ -165,14 +178,14 @@ export default function NewItem() {
 
           <button
             type="submit"
-            className="w-2/5 mt-10 py-2 rounded-lg bg-emerald-400 text-neutral-50 font-semibold flex items-center justify-center px-4 hover:bg-emerald-500 transition"
+            className="mt-10 flex w-2/5 items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500"
           >
             <CirclePlus size={20} color="#fafafa" className="me-2" />
             Add new item
           </button>
           <button
             type="reset"
-            className="font-semibold text-neutral-400 hover:underline hover:opacity-80 flex items-center"
+            className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80"
           >
             Cancel item
             <ListRestart size={20} color="#a3a3a3" className="ms-1" />
@@ -180,5 +193,5 @@ export default function NewItem() {
         </form>
       </div>
     </div>
-  )
+  );
 }
