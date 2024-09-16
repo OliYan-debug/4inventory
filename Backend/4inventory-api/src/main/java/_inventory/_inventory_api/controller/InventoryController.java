@@ -42,6 +42,25 @@ public class InventoryController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    @Operation(summary = "Update a item from the inventory")
+    @PutMapping("/update")
+    public ResponseEntity<?> updateItem(@RequestBody InventoryItem itemUpdate){
+        Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemUpdate.getId());
+        if(optionalItem.isPresent()){
+            var itemDB = optionalItem.get();
+            var item = itemUpdate.getItem() == null ? itemDB.getItem() : itemUpdate.getItem();
+            var description = itemUpdate.getDescription() == null ? itemDB.getDescription() : itemUpdate.getDescription();
+            var quantity = itemUpdate.getQuantity() == null ? itemDB.getQuantity() : itemUpdate.getQuantity();
+            itemDB.setItem(item);
+            itemDB.setDescription(description);
+            itemDB.setQuantity(quantity);
+            return ResponseEntity.accepted().body(inventoryRepo.save(itemDB));
+        }
+        return ResponseEntity.badRequest().body("The item with id "+itemUpdate.getId()+" not found");
+    }
+
+
+
     public record itemAndNewQuantity(Long id, Integer quantity) { }
     @Operation(summary = "Update the quantity of a item")
     @PutMapping("/update/quantity")
@@ -56,6 +75,9 @@ public class InventoryController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Item with ID "+itemAndNewQuantity.id()+" not found");
     }
+
+
+
     public record itemAndCategory(Long itemId, Long categoryId) { }
     @Operation(summary = "Add a category to a item")
     @PostMapping("/add/category")
