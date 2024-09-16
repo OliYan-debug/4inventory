@@ -18,13 +18,16 @@ public class CategoryController {
     private CategoryRepository categoryRepository;
     @Operation(summary = "List all categories")
     @GetMapping("/")
-    public List<Category> listAll(){
-        return categoryRepository.findAll();
+    public ResponseEntity<List<Category>> listAll(){
+        return ResponseEntity.status(200).body(categoryRepository.findAll());
     }
     @Operation(summary = "Add a category")
     @PostMapping("/add")
-    public Category add(@RequestBody Category category){
-        return categoryRepository.save(category);
+    public ResponseEntity<?> add(@RequestBody Category category){
+        if(category.getName() == null || category.getColor() == null){
+            return ResponseEntity.badRequest().body("Category must have a name and a color");
+        }
+        return ResponseEntity.status(200).body(categoryRepository.save(category));
     }
 
     @Operation(summary = "Update a category")
@@ -32,9 +35,24 @@ public class CategoryController {
     public ResponseEntity<?> update(@RequestBody Category categoryUpdate){
         Optional<Category> optionalItem = categoryRepository.findById(categoryUpdate.getId());
         if(optionalItem.isPresent()){
-            return ResponseEntity.ok(categoryRepository.save(categoryUpdate));
+            var categoryDB = optionalItem.get();
+            var name = categoryUpdate.getName() == null ? categoryDB.getName() : categoryUpdate.getName();
+            var color = categoryUpdate.getColor() == null ? categoryDB.getColor() : categoryUpdate.getColor();
+            categoryDB.setName(name);
+            categoryDB.setColor(color);
+            return ResponseEntity.ok(categoryRepository.save(categoryDB));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The category id "+categoryUpdate.getId()+" not found");
+    }
+    @Operation(summary = "Delete a category")
+    @DeleteMapping("/remove")
+    public ResponseEntity<String> remove(@RequestBody Category categoryDelete){
+        Optional<Category> optionalItem = categoryRepository.findById(categoryDelete.getId());
+        if(optionalItem.isPresent()){
+            categoryRepository.deleteById(categoryDelete.getId());
+            return ResponseEntity.accepted().body("Deleted item with id "+ categoryDelete.getId() +" successfully");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The category id "+categoryDelete.getId()+" not found");
     }
 }
 
