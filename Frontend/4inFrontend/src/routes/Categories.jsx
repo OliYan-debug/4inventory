@@ -6,6 +6,7 @@ import Category from "../components/Category";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
+  const [update, setUpdate] = useState();
 
   useEffect(() => {
     api
@@ -16,7 +17,11 @@ export default function Categories() {
       .catch((error) => {
         console.error("Erro ao buscar dados:", error);
       });
-  }, []);
+  }, [update]);
+
+  const updateCategories = () => {
+    setUpdate("Update");
+  };
 
   const subtitle = () => {
     return (
@@ -62,6 +67,7 @@ export default function Categories() {
               id={category.id}
               name={category.name}
               color={category.color}
+              updateCategories={updateCategories}
             />
           ))
         )}
