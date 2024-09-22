@@ -1,9 +1,9 @@
-import { Check, Pencil, Trash } from "lucide-react";
+import { Check, Pencil, PencilOff, Trash } from "lucide-react";
 import { api } from "../services/api";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-export default function Category({ id, name, color, updateCategories }) {
+export default function Category({ id, name, color, updateCategories, count }) {
   const [editable, setEditable] = useState(false);
 
   function handleUpdate() {
@@ -31,19 +31,24 @@ export default function Category({ id, name, color, updateCategories }) {
   });
 
   const onSubmit = (data) => {
+    data.id = id;
     api
       .put("/category/update", data)
       .then((response) => {
         console.log(response);
+        updateCategories();
+        handleUpdate();
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   return (
     <form
+      onSubmit={handleSubmit(onSubmit)}
       className={`grid grid-cols-4 justify-items-center ${
-        id % 2 ? "bg-neutral-100" : "bg-neutral-200"
+        count % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >
       <div className="col-auto flex items-center py-2">
@@ -64,65 +69,58 @@ export default function Category({ id, name, color, updateCategories }) {
             aria-invalid={errors.name ? "true" : "false"}
             type="text"
             id="name"
-            className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+            className={`w-full rounded-lg border border-neutral-400 bg-transparent px-2 text-neutral-600 outline-none hover:border-neutral-500 focus-visible:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
               errors.name &&
-              "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
+              "border-red-600 bg-red-100 text-red-600 hover:border-red-600 focus-visible:border-red-600"
             }`}
           />
         ) : (
-          <p className="text-neutral-500">{id}</p>
+          <p className="text-neutral-500">{name}</p>
         )}
       </div>
 
       <div className="col-auto flex items-center py-2">
-        <div
-          style={{ backgroundColor: color }}
-          className="rounded-md px-1 py-px"
-        >
-          {editable ? (
+        {editable ? (
+          <div className="rounded-md px-1 py-px">
             <input
               defaultValue={color}
-              {...register("color", {
-                required: "Category color is required",
-                maxLength: {
-                  value: 20,
-                  message: "Maximum character value exceeded",
-                },
-              })}
+              {...register("color")}
               aria-invalid={errors.color ? "true" : "false"}
-              type="text"
+              type="color"
               id="color"
-              className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
-                errors.color &&
-                "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
-              }`}
             />
-          ) : (
+          </div>
+        ) : (
+          <div
+            style={{ backgroundColor: color }}
+            className="rounded-md px-1 py-px"
+          >
             <p className="text-neutral-300 drop-shadow-sm">
               {color.toUpperCase()}
             </p>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       <div className="col-auto flex items-center gap-2 py-2">
-        {editable ? (
-          <button
-            type="button"
-            onClick={handleSubmit(onSubmit())}
-            className="transition hover:opacity-80 disabled:cursor-no-drop disabled:opacity-60"
-          >
-            <Check size={18} color="#262626" />
-          </button>
-        ) : (
-          <button
-            onClick={() => handleUpdate()}
-            type="button"
-            className="transition hover:opacity-80 disabled:cursor-no-drop disabled:opacity-60"
-          >
+        <button
+          type="submit"
+          className={`animate-fadeIn transition hover:opacity-80 disabled:cursor-no-drop disabled:opacity-60 ${editable ? "block" : "hidden"}`}
+        >
+          <Check size={18} color="#262626" />
+        </button>
+
+        <button
+          onClick={() => handleUpdate()}
+          type="button"
+          className="transition hover:opacity-80 disabled:cursor-no-drop disabled:opacity-60"
+        >
+          {editable ? (
+            <PencilOff size={18} color="#262626" />
+          ) : (
             <Pencil size={18} color="#262626" />
-          </button>
-        )}
+          )}
+        </button>
 
         <button
           onClick={() => handleDelete()}
