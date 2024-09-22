@@ -1,15 +1,16 @@
 export default function Item({
   id,
-  name,
+  item,
   description,
   category,
   quantity,
-  dateEntry,
+  created,
+  count,
 }) {
   return (
     <div
       className={`grid grid-cols-6 justify-items-center ${
-        id % 2 ? "bg-neutral-100" : "bg-neutral-200"
+        count % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >
       <div className="col-auto flex items-center py-2">
@@ -17,7 +18,7 @@ export default function Item({
       </div>
 
       <div className="col-auto flex items-center py-2">
-        <p className="text-neutral-500">{name}</p>
+        <p className="text-neutral-500">{item}</p>
       </div>
 
       <div className="col-auto flex items-center py-2">
@@ -25,9 +26,12 @@ export default function Item({
       </div>
 
       <div className="col-auto flex items-center py-2">
-        <p className="text-yellow-200 bg-yellow-500 py-px px-1 rounded-md">
-          {category}
-        </p>
+        <div
+          style={{ backgroundColor: category[0].color }}
+          className="rounded-md px-1 py-px"
+        >
+          <p className="text-neutral-300 drop-shadow-sm">{category[0].name}</p>
+        </div>
       </div>
 
       <div className="col-auto flex items-center py-2">
@@ -35,8 +39,10 @@ export default function Item({
       </div>
 
       <div className="col-auto flex items-center py-2">
-        <p className="text-neutral-500">{dateEntry}</p>
+        <p className="text-neutral-500">
+          {created[0]}-{created[1]}-{created[2]}
+        </p>
       </div>
     </div>
-  )
+  );
 }
