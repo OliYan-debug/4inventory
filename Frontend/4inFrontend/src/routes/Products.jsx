@@ -6,44 +6,18 @@ import { api } from "../services/api";
 
 export default function Products() {
   const [items, setItems] = useState([]);
+  let count = 0;
 
   useEffect(() => {
     api
-      .get("/inventory")
+      .get("/inventory/")
       .then((response) => {
-        setItems(response.items);
+        setItems(response.data);
       })
       .catch((error) => {
         console.error("Erro ao buscar dados:", error);
       });
   }, []);
-
-  // const items = [
-  //   {
-  //     id: 1,
-  //     name: "Iphone",
-  //     description: "asishisissasasasasasss",
-  //     category: "Teste",
-  //     quantity: 102,
-  //     dateEntry: "15-08-2024",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Iphone",
-  //     description: "asishisissasasasasasss",
-  //     category: "Teste",
-  //     quantity: 102,
-  //     dateEntry: "15-08-2024",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Iphone",
-  //     description: "asishisissasasasasasss",
-  //     category: "Teste",
-  //     quantity: 102,
-  //     dateEntry: "15-08-2024",
-  //   },
-  // ]
 
   const subtitle = () => {
     return (
@@ -56,7 +30,7 @@ export default function Products() {
     <div className="flex flex-col gap-4">
       <Header title={"Products"} subtitle={subtitle()} />
 
-      <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 p-4">
+      <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 py-4">
         <div className="mb-2 grid grid-cols-6 grid-rows-1 justify-items-center">
           <div className="col-auto flex items-center">
             <p className="font-bold text-neutral-600">ID</p>
@@ -94,17 +68,22 @@ export default function Products() {
             <p className="text-center">No items found</p>
           </>
         ) : (
-          items.map((item) => (
-            <Item
-              key={item.id}
-              id={item.id}
-              name={item.name}
-              description={item.description}
-              category={item.category}
-              quantity={item.quantity}
-              dateEntry={item.dateEntry}
-            />
-          ))
+          items.map((item) => {
+            count++;
+            console.log(item);
+            return (
+              <Item
+                key={item.id}
+                id={item.id}
+                item={item.item}
+                description={item.description}
+                category={item.category}
+                quantity={item.quantity}
+                created={item.created_at}
+                count={count}
+              />
+            );
+          })
         )}
       </div>
     </div>
