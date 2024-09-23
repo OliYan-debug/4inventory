@@ -83,7 +83,8 @@ public class InventoryController {
     @PostMapping("/add/category")
     public ResponseEntity<InventoryItem> addCategory(@RequestBody itemAndCategory categoryRequest){
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(categoryRequest.itemId());
-        if(optionalItem.isPresent()){
+        Optional<Category> optionalCategory = categoryRepo.findById(categoryRequest.categoryId());
+        if(optionalItem.isPresent() && optionalCategory.isPresent()){
             InventoryItem item = optionalItem.get();
             Optional<Category> category = categoryRepo.findById(categoryRequest.categoryId());
             category.ifPresent(value -> item.getCategory().add(value));

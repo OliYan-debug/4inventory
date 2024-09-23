@@ -12,7 +12,7 @@ import java.util.Set;
 @Table(name = "tb_inventory")
 public class InventoryItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String item;
@@ -20,7 +20,7 @@ public class InventoryItem {
     private Integer quantity;
     private LocalDate created_at;
     private LocalDateTime last_update;
-    @OneToMany()
+    @ManyToMany()
     private Set<Category> category;
     @PrePersist
     public void prePersist(){
