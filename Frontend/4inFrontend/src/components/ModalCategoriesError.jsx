@@ -1,0 +1,25 @@
+import { Plus, TextSearch } from "lucide-react";
+import { Link } from "react-router-dom";
+
+export default function ModalCategoriesError() {
+  return (
+    <div className="fixed inset-0 z-50 flex h-screen w-screen animate-fadeIn items-center justify-center bg-black/50">
+      <div className="flex w-[30vw] flex-col items-center rounded-2xl bg-neutral-50 px-8 py-6 text-center">
+        <span className="flex size-10 items-center justify-center rounded-full bg-red-600/60">
+          <TextSearch size={22} color="#dc2626" />
+        </span>
+        <h1 className="my-2 text-3xl font-bold text-neutral-800">Oops!</h1>
+        <p className="text-sm text-neutral-500">
+          No category found, try to register one:
+        </p>
+        <Link
+          to={"/categories/new"}
+          className="mt-6 flex items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500 disabled:cursor-no-drop disabled:opacity-70"
+        >
+          Add category
+          <Plus size={20} color="#fafafa" className="ms-2" />
+        </Link>
+      </div>
+    </div>
+  );
+}

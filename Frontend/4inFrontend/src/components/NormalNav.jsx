@@ -15,25 +15,29 @@ import { Link } from "react-router-dom";
 export default function NormalNav() {
   return (
     <>
-      <ul className="mt-2 flex w-full flex-col gap-3 py-4">
-        <li className="group/item flex cursor-pointer rounded-lg py-1 font-medium transition hover:bg-neutral-500 hover:font-bold">
-          <span className="me-6 h-6 w-2 rounded-md bg-neutral-50 opacity-0 group-hover/item:opacity-100"></span>
-          <Link to={`products`} className="flex items-center">
-            <ChartColumnBig size={20} color="#fafafa" className="me-2" />
-            Dashboard
+      <ul className="mt-4 flex w-full flex-col py-4 md:mt-2 md:flex-col md:gap-3">
+        <li className="group/item flex cursor-pointer rounded-lg py-4 font-medium transition hover:bg-neutral-500 hover:font-bold md:py-1">
+          <span className="me-4 h-6 w-1 rounded-md bg-neutral-50 opacity-0 group-hover/item:opacity-100 md:me-6 md:w-2"></span>
+          <Link to={`products`} className="block md:flex md:items-center">
+            <ChartColumnBig
+              size={20}
+              color="#fafafa"
+              className="me-0 md:me-2"
+            />
+            <span className="hidden md:block">Dashboard</span>
           </Link>
         </li>
 
         {/* Products group */}
-        <li className="group/item relative flex cursor-pointer rounded-s-lg py-1 font-medium transition hover:bg-neutral-500 hover:font-bold">
-          <span className="me-6 h-6 w-2 rounded-md bg-neutral-50 opacity-0 group-hover/item:opacity-100"></span>
+        <li className="group/item relative flex cursor-pointer rounded-s-lg py-4 font-medium transition hover:bg-neutral-500 hover:font-bold md:py-1">
+          <span className="me-4 h-6 w-1 rounded-md bg-neutral-50 opacity-0 group-hover/item:opacity-100 md:me-6 md:w-2"></span>
           <Link to={`products`} className="flex w-full items-center">
-            <PackageOpen size={20} color="#fafafa" className="me-2" />
-            Products
+            <PackageOpen size={20} color="#fafafa" className="me-0 md:me-2" />
+            <span className="hidden md:block">Products</span>
             <ChevronRight
               size={20}
               color="#fafafa"
-              className="me-2 ms-auto transition-all group-hover/item:translate-x-2"
+              className="me-0 ms-auto transition-all group-hover/item:translate-x-1 md:me-2 md:group-hover/item:translate-x-2"
             />
           </Link>
           <div className="invisible absolute -right-48 top-0 z-20 w-48 -translate-x-2 rounded-bl-lg rounded-br-lg rounded-tr-lg bg-neutral-500 opacity-0 shadow-lg transition-all duration-150 ease-in group-hover/item:visible group-hover/item:translate-x-0 group-hover/item:opacity-100">
@@ -83,15 +87,15 @@ export default function NormalNav() {
         {/* Products group */}
 
         {/* Categories group */}
-        <li className="group/item relative flex cursor-pointer rounded-s-lg py-1 font-medium transition hover:bg-neutral-500 hover:font-bold">
-          <span className="me-6 h-6 w-2 rounded-md bg-neutral-50 opacity-0 group-hover/item:opacity-100"></span>
+        <li className="group/item relative flex cursor-pointer rounded-s-lg py-4 font-medium transition hover:bg-neutral-500 hover:font-bold md:py-1">
+          <span className="me-4 h-6 w-1 rounded-md bg-neutral-50 opacity-0 group-hover/item:opacity-100 md:me-6 md:w-2"></span>
           <Link to={`categories`} className="flex w-full items-center">
-            <Layers size={20} color="#fafafa" className="me-2" />
-            Categories
+            <Layers size={20} color="#fafafa" className="me-0 md:me-2" />
+            <span className="hidden md:block">Categories</span>
             <ChevronRight
               size={20}
               color="#fafafa"
-              className="me-2 ms-auto transition-all group-hover/item:translate-x-2"
+              className="me-0 ms-auto transition-all group-hover/item:translate-x-1 md:me-2 md:group-hover/item:translate-x-2"
             />
           </Link>
 
@@ -117,11 +121,11 @@ export default function NormalNav() {
         </li>
         {/* Categories group */}
 
-        <li className="group/item flex cursor-pointer rounded-lg py-1 font-medium transition hover:bg-neutral-500 hover:font-bold">
-          <span className="me-6 h-6 w-2 rounded-md bg-neutral-50 opacity-0 group-hover/item:opacity-100"></span>
-          <Link to={`products`} className="flex items-center">
-            <Settings size={20} color="#fafafa" className="me-2" />
-            Configurations
+        <li className="group/item flex cursor-pointer rounded-lg py-4 font-medium transition hover:bg-neutral-500 hover:font-bold md:py-1">
+          <span className="me-4 h-6 w-1 rounded-md bg-neutral-50 opacity-0 group-hover/item:opacity-100 md:me-6 md:w-2"></span>
+          <Link to={`products`} className="block md:flex md:items-center">
+            <Settings size={20} color="#fafafa" className="me-0 md:me-2" />
+            <span className="hidden md:block">Configurations</span>
           </Link>
         </li>
       </ul>

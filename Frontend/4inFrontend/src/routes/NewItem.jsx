@@ -6,13 +6,17 @@ import {
   CirclePlus,
   ListRestart,
   PlusIcon,
+  ServerOff,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
+import { toast } from "react-toastify";
+import ModalCategoriesError from "../components/ModalCategoriesError";
 
 export default function NewItem() {
   const [categories, setCategories] = useState([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     api
@@ -21,19 +25,49 @@ export default function NewItem() {
         setCategories(response.data);
       })
       .catch((error) => {
-        console.error("Erro ao buscar dados:", error);
+        toast.error("Error getting categories, try again");
+        setError(error);
+        console.error(error);
       });
   }, []);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const categoryFind = categories.find(
+      (category) => category.id === Number(data.category),
+    );
+
+    data = {
+      ...data,
+      category: [
+        {
+          id: data.category,
+          name: categoryFind.name,
+          color: categoryFind.color,
+        },
+      ],
+    };
+    console.log(data);
+    try {
+      const response = await toast.promise(api.post("/inventory/add", data), {
+        pending: "Adding item",
+        success: "Item added",
+        error: "Error when adding, try again",
+      });
+      console.log(response.data);
+      reset();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const subtitle = () => {
     return (
@@ -51,147 +85,171 @@ export default function NewItem() {
     <div className="flex flex-col gap-4">
       <Header title={"New Product"} subtitle={subtitle()} />
 
-      <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 p-4">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center gap-2 px-32 pt-8"
-        >
-          <div className="w-full">
-            <label htmlFor="item" className="text-sm text-neutral-500">
-              Item Name*
-            </label>
-            <input
-              defaultValue=""
-              {...register("item", {
-                required: "Item name is required",
-                maxLength: {
-                  value: 20,
-                  message: "Maximum character value exceeded",
-                },
-              })}
-              aria-invalid={errors.item ? "true" : "false"}
-              type="text"
-              id="item"
-              className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
-                errors.item &&
-                "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
-              }`}
-            />
-            {errors.item && (
-              <p role="alert" className="mt-1 text-center text-xs text-red-600">
-                {errors.item?.message}
-              </p>
-            )}
-          </div>
+      {error !== false ? (
+        <div className="flex min-h-screen max-w-full flex-col items-center rounded-2xl bg-neutral-50 px-8 py-4 text-center">
+          <h1 className="text-3xl font-bold text-neutral-800">Oops!</h1>
+          <p className="mb-4 mt-2 text-sm text-neutral-500">
+            Sorry, an unexpected error has occurred:
+          </p>
+          <span className="mb-6 font-medium text-neutral-600">
+            {error.statusText || error.message}
+          </span>
+          <ServerOff size={84} color="#262626" />
+        </div>
+      ) : (
+        <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 p-4">
+          {categories.length === 0 ? <ModalCategoriesError /> : ""}
 
-          <div className="w-full">
-            <label htmlFor="category" className="text-sm text-neutral-500">
-              Category
-            </label>
-            <div className="relative mt-1 flex items-center">
-              <ChevronDown
-                color="#a3a3a3"
-                size={22}
-                className="absolute right-14"
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col items-center gap-2 px-32 pt-8"
+          >
+            <div className="w-full">
+              <label htmlFor="item" className="text-sm text-neutral-500">
+                Item Name*
+              </label>
+              <input
+                defaultValue=""
+                {...register("item", {
+                  required: "Item name is required",
+                  maxLength: {
+                    value: 20,
+                    message: "Maximum character value exceeded",
+                  },
+                })}
+                aria-invalid={errors.item ? "true" : "false"}
+                type="text"
+                id="item"
+                disabled={isSubmitting}
+                className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+                  errors.item &&
+                  "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
+                }`}
               />
-              <select
-                {...register("category")}
-                name="category"
-                id="category"
-                className="z-10 w-full appearance-none rounded-l-lg border border-neutral-400 bg-transparent px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 focus:border-neutral-500"
-              >
-                <option value="">Select</option>
-                {categories.length <= 0 ? (
-                  <>
-                    <p className="text-center">No categories found</p>
-                  </>
-                ) : (
-                  categories.map((category) => (
+              {errors.item && (
+                <p
+                  role="alert"
+                  className="mt-1 text-center text-xs text-red-600"
+                >
+                  {errors.item?.message}
+                </p>
+              )}
+            </div>
+
+            <div className="w-full">
+              <label htmlFor="category" className="text-sm text-neutral-500">
+                Category
+              </label>
+              <div className="relative mt-1 flex items-center">
+                <ChevronDown
+                  color="#a3a3a3"
+                  size={22}
+                  className="absolute right-14"
+                />
+                <select
+                  {...register("category")}
+                  name="category"
+                  id="category"
+                  disabled={isSubmitting}
+                  className="z-10 w-full appearance-none rounded-l-lg border border-neutral-400 bg-transparent px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 focus:border-neutral-500"
+                >
+                  <option value="">Select</option>
+                  {categories.map((category) => (
                     <option key={category.id} value={category.id}>
                       {category.name}
                     </option>
-                  ))
-                )}
-              </select>
-              <Link
-                to="/categories/new"
-                className="flex h-[42px] w-12 items-center justify-center rounded-r-lg bg-neutral-400 transition hover:bg-neutral-500"
-              >
-                <PlusIcon size={18} color="#fafafa" />
-              </Link>
+                  ))}
+                </select>
+                <Link
+                  to="/categories/new"
+                  className="flex h-[42px] w-12 items-center justify-center rounded-r-lg bg-sky-400 transition hover:bg-sky-500"
+                >
+                  <PlusIcon size={18} color="#fafafa" />
+                </Link>
+              </div>
             </div>
-          </div>
 
-          <div className="w-full">
-            <label htmlFor="description" className="text-sm text-neutral-500">
-              Description
-            </label>
-            <textarea
-              defaultValue=""
-              {...register("description", {
-                maxLength: {
-                  value: 255,
-                  message: "Maximum character value exceeded",
-                },
-              })}
-              aria-invalid={errors.description ? "true" : "false"}
-              type="text"
-              id="description"
-              className={`h-26 focus-visible::border-neutral-500 w-full resize-none rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
-                errors.description &&
-                "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
-              }`}
-            ></textarea>
-            {errors.description && (
-              <p role="alert" className="mt-1 text-center text-xs text-red-600">
-                {errors.description?.message}
-              </p>
-            )}
-          </div>
+            <div className="w-full">
+              <label htmlFor="description" className="text-sm text-neutral-500">
+                Description
+              </label>
+              <textarea
+                defaultValue=""
+                {...register("description", {
+                  maxLength: {
+                    value: 255,
+                    message: "Maximum character value exceeded",
+                  },
+                })}
+                aria-invalid={errors.description ? "true" : "false"}
+                type="text"
+                id="description"
+                disabled={isSubmitting}
+                className={`h-26 focus-visible::border-neutral-500 w-full resize-none rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+                  errors.description &&
+                  "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
+                }`}
+              ></textarea>
+              {errors.description && (
+                <p
+                  role="alert"
+                  className="mt-1 text-center text-xs text-red-600"
+                >
+                  {errors.description?.message}
+                </p>
+              )}
+            </div>
 
-          <div className="w-full">
-            <label htmlFor="quantity" className="text-sm text-neutral-500">
-              Quantity
-            </label>
-            <input
-              defaultValue="0"
-              {...register("quantity", {
-                maxLength: {
-                  value: 20,
-                  message: "Maximum character value exceeded",
-                },
-              })}
-              aria-invalid={errors.quantity ? "true" : "false"}
-              type="number"
-              id="quantity"
-              className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
-                errors.quantity &&
-                "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
-              }`}
-            />
-            {errors.quantity && (
-              <p role="alert" className="mt-1 text-center text-xs text-red-600">
-                {errors.quantity?.message}
-              </p>
-            )}
-          </div>
+            <div className="w-full">
+              <label htmlFor="quantity" className="text-sm text-neutral-500">
+                Quantity
+              </label>
+              <input
+                defaultValue="0"
+                {...register("quantity", {
+                  maxLength: {
+                    value: 20,
+                    message: "Maximum character value exceeded",
+                  },
+                })}
+                aria-invalid={errors.quantity ? "true" : "false"}
+                type="number"
+                id="quantity"
+                disabled={isSubmitting}
+                className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+                  errors.quantity &&
+                  "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
+                }`}
+              />
+              {errors.quantity && (
+                <p
+                  role="alert"
+                  className="mt-1 text-center text-xs text-red-600"
+                >
+                  {errors.quantity?.message}
+                </p>
+              )}
+            </div>
 
-          <button
-            type="submit"
-            className="mt-10 flex w-2/5 items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500"
-          >
-            <CirclePlus size={20} color="#fafafa" className="me-2" />
-            Add new item
-          </button>
-          <button
-            type="reset"
-            className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80"
-          >
-            Cancel item
-            <ListRestart size={20} color="#a3a3a3" className="ms-1" />
-          </button>
-        </form>
-      </div>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="mt-10 flex w-2/5 items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500 disabled:cursor-no-drop disabled:opacity-70"
+            >
+              <CirclePlus size={20} color="#fafafa" className="me-2" />
+              Add new item
+            </button>
+
+            <button
+              type="reset"
+              className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80"
+            >
+              Cancel item
+              <ListRestart size={20} color="#a3a3a3" className="ms-1" />
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

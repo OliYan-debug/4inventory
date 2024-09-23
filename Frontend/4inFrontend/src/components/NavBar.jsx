@@ -16,7 +16,7 @@ export default function NavBar() {
   return (
     <nav
       className={`relative bg-neutral-800 ${
-        hiddenNav ? "w-16" : "w-[24vw]"
+        hiddenNav ? "w-16" : "w-[12vw] md:w-[36vw] lg:w-[24vw] 2xl:w-[14vw]"
       } h-auto rounded-2xl text-neutral-50 transition-all duration-500`}
     >
       <div className="absolute flex w-full justify-end p-2">
@@ -42,7 +42,12 @@ export default function NavBar() {
           <img
             src={hiddenNav ? logoMin : logo}
             alt="4inventory"
-            className="pt-10"
+            className="hidden pt-10 md:block"
+          />
+          <img
+            src={logoMin}
+            alt="4inventory"
+            className="block pt-10 md:hidden"
           />
         </Link>
         {hiddenNav ? <HiddenNav /> : <NormalNav />}
