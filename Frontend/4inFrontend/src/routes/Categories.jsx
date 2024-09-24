@@ -3,13 +3,16 @@ import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import Category from "../components/Category";
+import LoadingSkeleton from "../components/LoadingSkeleton";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
-  const [update, setUpdate] = useState();
+  const [update, setUpdate] = useState(false);
+  const [loading, setLoading] = useState(false);
   let count = 0;
 
   useEffect(() => {
+    setLoading(true);
     api
       .get("/category/")
       .then((response) => {
@@ -18,10 +21,12 @@ export default function Categories() {
       .catch((error) => {
         console.error("Erro ao buscar dados:", error);
       });
+    setUpdate(false);
+    setLoading(false);
   }, [update]);
 
   const updateCategories = () => {
-    setUpdate("Update");
+    setUpdate(true);
   };
 
   const subtitle = () => {
@@ -57,24 +62,30 @@ export default function Categories() {
           </div>
         </div>
 
-        {categories.length <= 0 ? (
-          <>
-            <p className="text-center">No categories found</p>
-          </>
+        {loading ? (
+          <LoadingSkeleton />
         ) : (
-          categories.map((category) => {
-            count++;
-            return (
-              <Category
-                key={category.id}
-                id={category.id}
-                name={category.name}
-                color={category.color}
-                updateCategories={updateCategories}
-                count={count}
-              />
-            );
-          })
+          <>
+            {categories.length <= 0 ? (
+              <>
+                <p className="text-center">No categories found</p>
+              </>
+            ) : (
+              categories.map((category) => {
+                count++;
+                return (
+                  <Category
+                    key={category.id}
+                    id={category.id}
+                    name={category.name}
+                    color={category.color}
+                    updateCategories={updateCategories}
+                    count={count}
+                  />
+                );
+              })
+            )}
+          </>
         )}
       </div>
     </div>
