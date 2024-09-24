@@ -3,12 +3,15 @@ import Item from "../components/Item";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
+import LoadingSkeleton from "../components/LoadingSkeleton";
 
 export default function Products() {
   const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
   let count = 0;
 
   useEffect(() => {
+    setLoading(true);
     api
       .get("/inventory/")
       .then((response) => {
@@ -17,6 +20,7 @@ export default function Products() {
       .catch((error) => {
         console.error("Erro ao buscar dados:", error);
       });
+    setLoading(false);
   }, []);
 
   const subtitle = () => {
@@ -63,27 +67,33 @@ export default function Products() {
           </div>
         </div>
 
-        {items.length <= 0 ? (
-          <>
-            <p className="text-center">No items found</p>
-          </>
+        {loading ? (
+          <LoadingSkeleton />
         ) : (
-          items.map((item) => {
-            count++;
-            console.log(item);
-            return (
-              <Item
-                key={item.id}
-                id={item.id}
-                item={item.item}
-                description={item.description}
-                category={item.category}
-                quantity={item.quantity}
-                created={item.created_at}
-                count={count}
-              />
-            );
-          })
+          <>
+            {items.length <= 0 ? (
+              <>
+                <p className="text-center">No items found</p>
+              </>
+            ) : (
+              items.map((item) => {
+                count++;
+                console.log(item);
+                return (
+                  <Item
+                    key={item.id}
+                    id={item.id}
+                    item={item.item}
+                    description={item.description}
+                    category={item.category}
+                    quantity={item.quantity}
+                    created={item.created_at}
+                    count={count}
+                  />
+                );
+              })
+            )}
+          </>
         )}
       </div>
     </div>
