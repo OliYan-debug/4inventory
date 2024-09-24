@@ -1,13 +1,33 @@
 import { Check, Pencil, PencilOff, Trash } from "lucide-react";
 import { api } from "../services/api";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Category({ id, name, color, updateCategories, count }) {
   const [editable, setEditable] = useState(false);
+  const [checkDeleteOpen, setCheckDeleteOpen] = useState(false);
+  const ref = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setCheckDeleteOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, []);
 
   function handleUpdate() {
     editable ? setEditable(false) : setEditable(true);
+  }
+
+  function handleConfirmDelete() {
+    setCheckDeleteOpen(true);
+    setEditable(false);
   }
 
   function handleDelete() {
@@ -44,10 +64,47 @@ export default function Category({ id, name, color, updateCategories, count }) {
       });
   };
 
+  const CheckDeleteOpen = () => {
+    return (
+      <div
+        ref={ref}
+        className="absolute right-4 top-4 z-30 flex animate-fadeIn flex-col items-center rounded-lg rounded-tr-none border-red-500 bg-neutral-50 p-4 shadow-lg"
+      >
+        <span className="absolute -right-1 -top-1 size-3 animate-ping rounded-full bg-red-500 opacity-75"></span>
+        <span className="absolute -right-1 -top-1 size-3 rounded-full bg-red-500"></span>
+
+        <h2 className="font-medium text-neutral-600">
+          Confirm&nbsp;
+          <span className="underline">delete?</span>
+        </h2>
+        <p className="text-sm text-neutral-400">
+          This action cannot be undone.
+        </p>
+        <div className="mt-4 flex gap-2">
+          <button
+            type="button"
+            onClick={() => setCheckDeleteOpen(false)}
+            className="flex items-center justify-center rounded-lg border border-neutral-400 px-2 py-1 font-semibold text-neutral-400 transition hover:bg-neutral-200 hover:underline"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleDelete()}
+            className="flex w-32 items-center justify-center rounded-lg bg-red-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-red-500 hover:underline"
+          >
+            Yes, delete
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={`grid grid-cols-4 justify-items-center ${
+      className={`grid h-12 grid-cols-4 items-center justify-items-center ${
         count % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >
@@ -122,13 +179,18 @@ export default function Category({ id, name, color, updateCategories, count }) {
           )}
         </button>
 
-        <button
-          onClick={() => handleDelete()}
-          type="button"
-          className="transition hover:opacity-80 disabled:cursor-no-drop disabled:opacity-60"
-        >
-          <Trash size={18} color="#dc2626" />
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => handleConfirmDelete()}
+            type="button"
+            disabled={checkDeleteOpen}
+            className="transition hover:opacity-80 disabled:cursor-no-drop disabled:opacity-60"
+          >
+            <Trash size={18} color={!checkDeleteOpen ? "#dc2626" : "#737373"} />
+          </button>
+
+          {checkDeleteOpen && <CheckDeleteOpen />}
+        </div>
       </div>
     </form>
   );
