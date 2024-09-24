@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,8 @@ public class CategoryController {
     @Operation(summary = "Add a category")
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestBody Category category){
+        var categoryDB = categoryRepository.findByNameIgnoreCase(category.getName());
+        if(categoryDB != null) return ResponseEntity.badRequest().body("Category with name "+category.getName()+" already exists");
         if(category.getName() == null || category.getColor() == null){
             return ResponseEntity.badRequest().body("Category must have a name and a color");
         }
@@ -35,12 +38,17 @@ public class CategoryController {
     public ResponseEntity<?> update(@RequestBody Category categoryUpdate){
         Optional<Category> optionalItem = categoryRepository.findById(categoryUpdate.getId());
         if(optionalItem.isPresent()){
-            var categoryDB = optionalItem.get();
-            var name = categoryUpdate.getName() == null ? categoryDB.getName() : categoryUpdate.getName();
-            var color = categoryUpdate.getColor() == null ? categoryDB.getColor() : categoryUpdate.getColor();
-            categoryDB.setName(name);
-            categoryDB.setColor(color);
-            return ResponseEntity.ok(categoryRepository.save(categoryDB));
+            try{
+                var categoryDB = optionalItem.get();
+                var name = categoryUpdate.getName() == null ? categoryDB.getName() : categoryUpdate.getName();
+                var color = categoryUpdate.getColor() == null ? categoryDB.getColor() : categoryUpdate.getColor();
+                categoryDB.setName(name);
+                categoryDB.setColor(color);
+                return ResponseEntity.ok(categoryRepository.save(categoryDB));
+            } catch (HttpServerErrorException.InternalServerError e) {
+                System.out.println(e.getMessage());
+                return ResponseEntity.badRequest().body("Category with the same name already exists");
+            }
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The category id "+categoryUpdate.getId()+" not found");
     }
