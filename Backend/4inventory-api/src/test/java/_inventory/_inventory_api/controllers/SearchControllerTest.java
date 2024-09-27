@@ -1,11 +1,9 @@
-package _inventory._inventory_api.controller;
+package _inventory._inventory_api.controllers;
 
-import _inventory._inventory_api.repository.InventoryRepository;
+import _inventory._inventory_api.repositories.InventoryRepository;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class SearchControllerTest {

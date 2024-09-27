@@ -1,4 +1,4 @@
-package _inventory._inventory_api.model;
+package _inventory._inventory_api.models.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -22,13 +22,15 @@ public class InventoryItem {
     private LocalDateTime last_update;
     @ManyToMany()
     private Set<Category> category;
+
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         this.created_at = LocalDate.now();
         this.last_update = LocalDateTime.now();
     }
+
     @PreUpdate
-    public void preUpdate(){
+    public void preUpdate() {
         this.last_update = LocalDateTime.now();
     }
 

@@ -1,6 +1,6 @@
-package _inventory._inventory_api.repository;
+package _inventory._inventory_api.repositories;
 
-import _inventory._inventory_api.model.InventoryItem;
+import _inventory._inventory_api.models.entities.InventoryItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

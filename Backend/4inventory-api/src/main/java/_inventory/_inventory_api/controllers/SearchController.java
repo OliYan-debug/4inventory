@@ -1,7 +1,7 @@
-package _inventory._inventory_api.controller;
+package _inventory._inventory_api.controllers;
 
-import _inventory._inventory_api.model.InventoryItem;
-import _inventory._inventory_api.repository.InventoryRepository;
+import _inventory._inventory_api.models.entities.InventoryItem;
+import _inventory._inventory_api.services.SearchService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +16,11 @@ import java.util.List;
 @RequestMapping("/search")
 public class SearchController {
     @Autowired
-    private InventoryRepository inventoryRepo;
+    private SearchService searchService;
 
     @GetMapping(value = "/{textToSearch}")
     @Operation(summary = "Search a item by name")
-    public ResponseEntity<List<InventoryItem>> search(@PathVariable String textToSearch){
-        return ResponseEntity.ok(inventoryRepo.findByItemContainingIgnoreCase(textToSearch));
+    public ResponseEntity<List<InventoryItem>> search(@PathVariable String textToSearch) {
+        return ResponseEntity.ok(searchService.search(textToSearch));
     }
 }
