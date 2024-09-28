@@ -40,11 +40,11 @@ const router = createBrowserRouter([
         element: <SearchItem />,
       },
       {
-        path: "products/entry",
+        path: "products/entry/:itemId",
         element: <ItemEntry />,
       },
       {
-        path: "products/exit",
+        path: "products/exit/:itemId",
         element: <ItemExit />,
       },
       {
