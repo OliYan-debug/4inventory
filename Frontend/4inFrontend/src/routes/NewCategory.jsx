@@ -19,10 +19,28 @@ export default function NewCategory() {
     try {
       const response = await toast.promise(api.post("/category/add", data), {
         pending: "Adding category",
-        success: "Category added",
-        error: "Error when adding, try again",
+        success: {
+          render() {
+            return (
+              <p>
+                Category <span className="font-bold">{data.name}</span> added!
+              </p>
+            );
+          },
+        },
+        error: {
+          render({ data }) {
+            return (
+              <p>
+                Error when adding:
+                <span className="font-bold">{data.response.data.error}</span>.
+                Try again.
+              </p>
+            );
+          },
+        },
       });
-      console.log(response.data);
+      console.log(response);
       reset();
     } catch (error) {
       console.error(error);

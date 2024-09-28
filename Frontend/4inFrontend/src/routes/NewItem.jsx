@@ -59,8 +59,26 @@ export default function NewItem() {
     try {
       const response = await toast.promise(api.post("/inventory/add", data), {
         pending: "Adding item",
-        success: "Item added",
-        error: "Error when adding, try again",
+        success: {
+          render() {
+            return (
+              <p>
+                Item <span className="font-bold">{data.item}</span> added!
+              </p>
+            );
+          },
+        },
+        error: {
+          render({ data }) {
+            return (
+              <p>
+                Error when adding:
+                <span className="font-bold">{data.response.data.error}</span>.
+                Try again.
+              </p>
+            );
+          },
+        },
       });
       console.log(response.data);
       reset();
