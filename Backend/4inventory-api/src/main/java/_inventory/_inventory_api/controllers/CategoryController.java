@@ -41,7 +41,7 @@ public class CategoryController {
     public ResponseEntity<?> update(@RequestBody Category categoryUpdate) {
         try {
             return ResponseEntity.ok(categoryService.updateCategory(categoryUpdate));
-        } catch (CategoryIdNotFoundException e) {
+        } catch (CategoryIdNotFoundException | CategoryAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
 

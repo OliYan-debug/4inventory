@@ -42,6 +42,9 @@ public class CategoryService {
             var color = categoryUpdate.getColor() == null ? categoryDB.getColor() : categoryUpdate.getColor();
             categoryDB.setName(name);
             categoryDB.setColor(color);
+            var othersCategory = categoryRepository.findByNameIgnoreCase(name);
+            if (othersCategory != null && othersCategory.getId() != categoryUpdate.getId())
+                throw new CategoryAlreadyExistsException(name);
             return categoryRepository.save(categoryDB);
         } else {
             throw new CategoryIdNotFoundException(categoryUpdate.getId());
