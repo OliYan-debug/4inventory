@@ -35,7 +35,7 @@ export default function Products() {
       <Header title={"Products"} subtitle={subtitle()} />
 
       <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 py-4">
-        <div className="mb-2 grid grid-cols-6 grid-rows-1 justify-items-center">
+        <div className="mb-2 grid grid-cols-7 grid-rows-1 justify-items-center">
           <div className="col-auto flex items-center">
             <p className="font-bold text-neutral-600">ID</p>
             <ArrowDownUp size={16} color="#525252" className="ms-1" />
@@ -46,7 +46,7 @@ export default function Products() {
             <ArrowDownUp size={16} color="#525252" className="ms-1" />
           </div>
 
-          <div className="col-auto flex items-center">
+          <div className="col-span-2 flex items-center">
             <p className="font-bold text-neutral-600">Description</p>
             <ArrowDownUp size={16} color="#525252" className="ms-1" />
           </div>
