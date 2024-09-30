@@ -1,7 +1,5 @@
 package _inventory._inventory_api.services;
 
-import _inventory._inventory_api.models.dto.InventoryItemDTO;
-import _inventory._inventory_api.models.entities.Category;
 import _inventory._inventory_api.models.entities.InventoryItem;
 import _inventory._inventory_api.models.exceptions.items.ItemIdNotFoundException;
 import _inventory._inventory_api.models.exceptions.items.InvalidItemNameException;
@@ -13,7 +11,6 @@ import _inventory._inventory_api.repositories.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;

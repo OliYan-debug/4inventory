@@ -4,6 +4,7 @@ import _inventory._inventory_api.models.entities.Category;
 import _inventory._inventory_api.models.exceptions.categories.CategoryAlreadyExistsException;
 import _inventory._inventory_api.models.exceptions.categories.CategoryIdNotFoundException;
 import _inventory._inventory_api.models.exceptions.categories.InvalidCategoryException;
+import _inventory._inventory_api.models.records.MessageHandler;
 import _inventory._inventory_api.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class CategoryController {
         try {
             return ResponseEntity.status(200).body(categoryService.saveCategory(category));
         } catch (CategoryAlreadyExistsException | InvalidCategoryException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -42,20 +43,20 @@ public class CategoryController {
         try {
             return ResponseEntity.ok(categoryService.updateCategory(categoryUpdate));
         } catch (CategoryIdNotFoundException | CategoryAlreadyExistsException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
 
     }
 
     @Operation(summary = "Delete a category")
     @DeleteMapping("/remove")
-    public ResponseEntity<String> remove(@RequestBody Category categoryToDelete) {
+    public ResponseEntity<?> remove(@RequestBody Category categoryToDelete) {
         try {
-            return ResponseEntity.accepted().body(categoryService.deleteCategory(categoryToDelete));
-        }catch (CategoryIdNotFoundException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }catch (DataIntegrityViolationException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Category still been used in some items and you cannot delete it until remove from all of them");
+            return ResponseEntity.accepted().body(new MessageHandler(HttpStatus.ACCEPTED.value(), categoryService.deleteCategory(categoryToDelete)));
+        } catch (CategoryIdNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), "Category still been used in some items and you cannot delete it until remove from all of them"));
         }
     }
 }
