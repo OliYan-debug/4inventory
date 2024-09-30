@@ -1,6 +1,5 @@
 package _inventory._inventory_api.controllers;
 
-import _inventory._inventory_api.models.dto.InventoryItemDTO;
 import _inventory._inventory_api.models.entities.InventoryItem;
 import _inventory._inventory_api.models.exceptions.categories.CategoryIdNotFoundException;
 import _inventory._inventory_api.models.exceptions.items.ItemIdNotFoundException;
@@ -8,9 +7,11 @@ import _inventory._inventory_api.models.exceptions.items.InvalidItemNameExceptio
 import _inventory._inventory_api.models.exceptions.items.InvalidQuantityException;
 import _inventory._inventory_api.models.records.ItemAndCategory;
 import _inventory._inventory_api.models.records.ItemAndNewQuantity;
+import _inventory._inventory_api.models.records.MessageHandler;
 import _inventory._inventory_api.services.InventoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,17 +36,17 @@ public class InventoryController {
         try {
             return ResponseEntity.ok(inventoryService.saveItem(inventoryItem));
         } catch (InvalidItemNameException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
     @Operation(summary = "Remove a item from the inventory")
     @DeleteMapping("/remove")
-    public ResponseEntity<String> removeItem(@RequestBody InventoryItem inventoryItem) {
+    public ResponseEntity<?> removeItem(@RequestBody InventoryItem inventoryItem) {
         try {
-            return ResponseEntity.accepted().body(inventoryService.removeItem(inventoryItem));
+            return ResponseEntity.accepted().body(new MessageHandler(HttpStatus.ACCEPTED.value(), inventoryService.removeItem(inventoryItem)));
         } catch (ItemIdNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -55,7 +56,7 @@ public class InventoryController {
         try {
             return ResponseEntity.accepted().body(inventoryService.updateItem(itemUpdate));
         } catch (ItemIdNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -66,7 +67,7 @@ public class InventoryController {
         try {
             return ResponseEntity.accepted().body(inventoryService.updateItemQuantity(itemAndNewQuantity));
         } catch (ItemIdNotFoundException | InvalidQuantityException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -77,7 +78,7 @@ public class InventoryController {
         try {
             return ResponseEntity.accepted().body(inventoryService.addItemCategory(categoryRequest));
         } catch (CategoryIdNotFoundException | ItemIdNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
@@ -87,7 +88,7 @@ public class InventoryController {
         try {
             return ResponseEntity.accepted().body(inventoryService.removeItemCategory(categoryRequest));
         } catch (CategoryIdNotFoundException | ItemIdNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 
