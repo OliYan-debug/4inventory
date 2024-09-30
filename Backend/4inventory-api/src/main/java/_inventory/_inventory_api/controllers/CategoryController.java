@@ -4,6 +4,7 @@ import _inventory._inventory_api.models.entities.Category;
 import _inventory._inventory_api.models.exceptions.categories.CategoryAlreadyExistsException;
 import _inventory._inventory_api.models.exceptions.categories.CategoryIdNotFoundException;
 import _inventory._inventory_api.models.exceptions.categories.InvalidCategoryException;
+import _inventory._inventory_api.models.exceptions.items.ItemIdNotFoundException;
 import _inventory._inventory_api.models.records.MessageHandler;
 import _inventory._inventory_api.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,6 +58,15 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), "Category still been used in some items and you cannot delete it until remove from all of them"));
+        }
+    }
+    @GetMapping(value = "/id/{id}")
+    @Operation(summary = "Search a category by id")
+    public ResponseEntity<?> search(@PathVariable Long id) {
+        try{
+            return ResponseEntity.ok(categoryService.findById(id));
+        }catch(CategoryIdNotFoundException e){
+            return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
 }

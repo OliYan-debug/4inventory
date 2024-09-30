@@ -59,7 +59,15 @@ public class InventoryController {
             return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
-
+    @GetMapping(value = "/item/{id}")
+    @Operation(summary = "Find a item by id")
+    public ResponseEntity<?> findItemById(@PathVariable Long id) {
+        try{
+            return ResponseEntity.ok(inventoryService.findById(id));
+        }catch(ItemIdNotFoundException e){
+            return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
+        }
+    }
 
     @Operation(summary = "Update the quantity of a item")
     @PutMapping("/update/quantity")

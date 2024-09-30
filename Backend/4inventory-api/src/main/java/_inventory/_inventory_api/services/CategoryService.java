@@ -24,8 +24,16 @@ public class CategoryService {
         return categoryRepository.findByNameIgnoreCase(text);
     }
 
+    public Category findById(Long id) {
+        Optional<Category> categoryOptional = categoryRepository.findById(id);
+        if (categoryOptional.isPresent()) {
+            return categoryOptional.get();
+        }
+        throw new CategoryIdNotFoundException(id);
+    }
+
     public Category saveCategory(Category category) {
-        var categoryDB = categoryRepository.findByNameIgnoreCase(category.getName());
+        var categoryDB = findByName(category.getName());
         if (categoryDB != null)
             throw new CategoryAlreadyExistsException(category.getName());
         if (category.getName() == null || category.getColor() == null) {
@@ -46,9 +54,9 @@ public class CategoryService {
             if (othersCategory != null && othersCategory.getId() != categoryUpdate.getId())
                 throw new CategoryAlreadyExistsException(name);
             return categoryRepository.save(categoryDB);
-        } else {
-            throw new CategoryIdNotFoundException(categoryUpdate.getId());
         }
+        throw new CategoryIdNotFoundException(categoryUpdate.getId());
+
     }
 
     public String deleteCategory(Category category) {
@@ -56,8 +64,7 @@ public class CategoryService {
         if (optionalItem.isPresent()) {
             categoryRepository.deleteById(category.getId());
             return "Deleted item with id " + category.getId() + " successfully";
-        } else {
-            throw new CategoryIdNotFoundException(category.getId());
         }
+        throw new CategoryIdNotFoundException(category.getId());
     }
 }

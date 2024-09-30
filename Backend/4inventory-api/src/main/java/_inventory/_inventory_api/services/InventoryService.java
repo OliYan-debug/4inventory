@@ -27,7 +27,11 @@ public class InventoryService {
     public List<InventoryItem> findAll() {
         return inventoryRepo.findAll();
     }
-
+    public InventoryItem findById(Long itemId){
+        Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemId);
+        if(optionalItem.isPresent()) return optionalItem.get();
+        throw new ItemIdNotFoundException(itemId);
+    }
     public InventoryItem saveItem(InventoryItem item) {
         if (item.getItem() == null) throw new InvalidItemNameException("Name must not be empty");
         var inventoryItem = new InventoryItem();
