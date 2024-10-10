@@ -1,4 +1,17 @@
-package _inventory._inventory_api.models.records;
+package _inventory._inventory_api.models.dto;
 
-public record ItemAndNewQuantity(Long id, Integer quantity) {
+import _inventory._inventory_api.models.enums.RegistryLabel;
+import lombok.Data;
+
+@Data
+public class ItemAndRegistryDTO {
+    private Long id;
+    private Integer quantity;
+    private String justification;
+
+    public ItemAndRegistryDTO(String justification, Integer quantity, Long id) {
+        this.justification = justification;
+        this.quantity = quantity;
+        this.id = id;
+    }
 }

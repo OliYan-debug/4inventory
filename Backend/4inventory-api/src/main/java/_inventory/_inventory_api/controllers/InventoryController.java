@@ -1,12 +1,14 @@
 package _inventory._inventory_api.controllers;
 
 import _inventory._inventory_api.models.entities.InventoryItem;
+import _inventory._inventory_api.models.exceptions.JustificationNotFoundException;
 import _inventory._inventory_api.models.exceptions.categories.CategoryIdNotFoundException;
 import _inventory._inventory_api.models.exceptions.items.ItemIdNotFoundException;
 import _inventory._inventory_api.models.exceptions.items.InvalidItemNameException;
 import _inventory._inventory_api.models.exceptions.items.InvalidQuantityException;
 import _inventory._inventory_api.models.records.ItemAndCategory;
-import _inventory._inventory_api.models.records.ItemAndNewQuantity;
+import _inventory._inventory_api.models.dto.ItemAndRegistryDTO;
+import _inventory._inventory_api.models.records.ItemDelete;
 import _inventory._inventory_api.models.records.MessageHandler;
 import _inventory._inventory_api.services.InventoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,10 +44,10 @@ public class InventoryController {
 
     @Operation(summary = "Remove a item from the inventory")
     @DeleteMapping("/remove")
-    public ResponseEntity<?> removeItem(@RequestBody InventoryItem inventoryItem) {
+    public ResponseEntity<?> removeItem(@RequestBody ItemDelete inventoryItem) {
         try {
             return ResponseEntity.accepted().body(new MessageHandler(HttpStatus.ACCEPTED.value(), inventoryService.removeItem(inventoryItem)));
-        } catch (ItemIdNotFoundException e) {
+        } catch (ItemIdNotFoundException | JustificationNotFoundException e) {
             return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
@@ -71,10 +73,10 @@ public class InventoryController {
 
     @Operation(summary = "Update the quantity of a item")
     @PutMapping("/update/quantity")
-    public ResponseEntity<?> updateItemQuantity(@RequestBody ItemAndNewQuantity itemAndNewQuantity) {
+    public ResponseEntity<?> updateItemQuantity(@RequestBody ItemAndRegistryDTO itemAndRegistryDTO) {
         try {
-            return ResponseEntity.accepted().body(inventoryService.updateItemQuantity(itemAndNewQuantity));
-        } catch (ItemIdNotFoundException | InvalidQuantityException e) {
+            return ResponseEntity.accepted().body(inventoryService.updateItemQuantity(itemAndRegistryDTO));
+        } catch (ItemIdNotFoundException | InvalidQuantityException | JustificationNotFoundException e) {
             return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
