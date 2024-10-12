@@ -9,7 +9,12 @@ export default function Categories() {
   const [categories, setCategories] = useState([]);
   const [update, setUpdate] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [activeButton, setActiveButton] = useState(null);
   let count = 0;
+
+  const handleButtonClick = (id) => {
+    setActiveButton(id);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -23,6 +28,7 @@ export default function Categories() {
       });
     setUpdate(false);
     setLoading(false);
+    handleButtonClick(null);
   }, [update]);
 
   const updateCategories = () => {
@@ -81,6 +87,8 @@ export default function Categories() {
                     color={category.color}
                     updateCategories={updateCategories}
                     count={count}
+                    activeButton={activeButton}
+                    handleButtonClick={handleButtonClick}
                   />
                 );
               })

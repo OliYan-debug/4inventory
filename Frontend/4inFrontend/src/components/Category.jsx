@@ -2,8 +2,17 @@ import { Check, Pencil, PencilOff, Trash } from "lucide-react";
 import { api } from "../services/api";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
-export default function Category({ id, name, color, updateCategories, count }) {
+export default function Category({
+  id,
+  name,
+  color,
+  updateCategories,
+  count,
+  activeButton,
+  handleButtonClick,
+}) {
   const [editable, setEditable] = useState(false);
   const [checkDeleteOpen, setCheckDeleteOpen] = useState(false);
   const ref = useRef(null);
@@ -26,20 +35,45 @@ export default function Category({ id, name, color, updateCategories, count }) {
   }
 
   function handleConfirmDelete() {
-    setCheckDeleteOpen(true);
+    checkDeleteOpen ? setCheckDeleteOpen(false) : setCheckDeleteOpen(true);
     setEditable(false);
   }
 
-  function handleDelete() {
-    api
-      .delete("/category/remove", { data: { id, name, color } })
-      .then((response) => {
-        console.log(response.data);
-        updateCategories();
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar dados:", error);
-      });
+  async function handleDelete() {
+    try {
+      await toast.promise(
+        api.delete("/category/remove", { data: { id, name, color } }),
+        {
+          pending: "Updating category",
+          success: {
+            render() {
+              return (
+                <p>
+                  Category <span className="font-bold">{name}</span> deleted!
+                </p>
+              );
+            },
+          },
+          error: {
+            render({ data }) {
+              return (
+                <p>
+                  Error when updating:
+                  <span className="font-bold">
+                    {data.response.data.message}
+                  </span>
+                  . Try again.
+                </p>
+              );
+            },
+          },
+        },
+      );
+      updateCategories();
+    } catch (error) {
+      handleConfirmDelete();
+      console.error(error);
+    }
   }
 
   const {
@@ -50,18 +84,37 @@ export default function Category({ id, name, color, updateCategories, count }) {
     mode: "onChange",
   });
 
-  const onSubmit = (data) => {
-    data.id = id;
-    api
-      .put("/category/update", data)
-      .then((response) => {
-        console.log(response);
-        updateCategories();
-        handleUpdate();
-      })
-      .catch((error) => {
-        console.log(error);
+  const onSubmit = async (data) => {
+    try {
+      data.id = id;
+      await toast.promise(api.put("/category/update", data), {
+        pending: "Updating category",
+        success: {
+          render() {
+            return (
+              <p>
+                Category <span className="font-bold">{data.name}</span> updated!
+              </p>
+            );
+          },
+        },
+        error: {
+          render({ data }) {
+            return (
+              <p>
+                Error when updating:
+                <span className="font-bold">{data.response.data.message}</span>.
+                Try again.
+              </p>
+            );
+          },
+        },
       });
+      updateCategories();
+      handleUpdate();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const CheckDeleteOpen = () => {
@@ -126,6 +179,7 @@ export default function Category({ id, name, color, updateCategories, count }) {
             aria-invalid={errors.name ? "true" : "false"}
             type="text"
             id="name"
+            autoFocus
             className={`w-full rounded-lg border border-neutral-400 bg-transparent px-2 text-neutral-600 outline-none hover:border-neutral-500 focus-visible:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
               errors.name &&
               "border-red-600 bg-red-100 text-red-600 hover:border-red-600 focus-visible:border-red-600"
@@ -168,8 +222,14 @@ export default function Category({ id, name, color, updateCategories, count }) {
         </button>
 
         <button
-          onClick={() => handleUpdate()}
+          onClick={() => {
+            handleUpdate();
+            activeButton === id
+              ? handleButtonClick(null)
+              : handleButtonClick(id);
+          }}
           type="button"
+          disabled={activeButton !== null && activeButton !== id}
           className="transition hover:opacity-80 disabled:cursor-no-drop disabled:opacity-60"
         >
           {editable ? (
@@ -183,7 +243,7 @@ export default function Category({ id, name, color, updateCategories, count }) {
           <button
             onClick={() => handleConfirmDelete()}
             type="button"
-            disabled={checkDeleteOpen}
+            disabled={checkDeleteOpen || activeButton !== null}
             className="transition hover:opacity-80 disabled:cursor-no-drop disabled:opacity-60"
           >
             <Trash size={18} color={!checkDeleteOpen ? "#dc2626" : "#737373"} />
