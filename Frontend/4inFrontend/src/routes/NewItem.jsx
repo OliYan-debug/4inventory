@@ -73,7 +73,7 @@ export default function NewItem() {
             return (
               <p>
                 Error when adding:
-                <span className="font-bold">{data.response.data.error}</span>.
+                <span className="font-bold">{data.response.data.message}</span>.
                 Try again.
               </p>
             );
