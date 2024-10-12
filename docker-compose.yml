@@ -1,0 +1,35 @@
+services:
+  4inventory-frontend:
+    image: 4inventory-frontend:latest
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - 4inventory-api
+  4inventory-api:
+    image: 4inventory-api:latest
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    env_file: ".env"
+    depends_on: 
+      - db
+  db:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    env_file: ".env"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:  
+      - 9090:9090
