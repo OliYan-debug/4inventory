@@ -29,5 +29,5 @@ jobs:
 
       - name: Build and push frontend image
         run: |
-          docker build -t oliyan/4inventory-backend:latest ./Frontend
+          docker build -t oliyan/4inventory-frontendlatest ./Frontend
           docker push oliyan/4inventory-backend:latest
