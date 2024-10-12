@@ -2,19 +2,21 @@
 # Project TODO
 - [x] Support for docker hosting the API
 - [x] How to run the API in the readme
+- [x] Error handling
 - [ ] Routes tests
-- [ ] Error handling
 
 
 ## How to Run This API
 
 To get started with this API, you need to have Docker installed. Docker is the only requirement for now.
 
+| ONLY RUN THIS API IF YOU ARE NOT RUNNING THE MAIN APP OR THE API WILL NOT WORK 
+
 ### Setup Environment Variables
 
 1. **Create a `.env` File**
 
-   In the root folder where the `Dockerfile` and `docker-compose.yml` files are located, create a `.env` file.
+   In the root backend folder where the `Dockerfile` and `docker-compose.yml` files are located, create a `.env` file.
 
 2. **Set Environment Variables**
 
