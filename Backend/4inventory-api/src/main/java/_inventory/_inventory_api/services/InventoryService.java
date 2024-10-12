@@ -1,13 +1,17 @@
 package _inventory._inventory_api.services;
 
 import _inventory._inventory_api.models.entities.InventoryItem;
+import _inventory._inventory_api.models.entities.Registry;
+import _inventory._inventory_api.models.enums.RegistryLabel;
+import _inventory._inventory_api.models.exceptions.JustificationNotFoundException;
 import _inventory._inventory_api.models.exceptions.items.ItemIdNotFoundException;
 import _inventory._inventory_api.models.exceptions.items.InvalidItemNameException;
 import _inventory._inventory_api.models.exceptions.items.InvalidQuantityException;
 import _inventory._inventory_api.models.records.ItemAndCategory;
-import _inventory._inventory_api.models.records.ItemAndNewQuantity;
-import _inventory._inventory_api.repositories.CategoryRepository;
+import _inventory._inventory_api.models.dto.ItemAndRegistryDTO;
+import _inventory._inventory_api.models.records.ItemDelete;
 import _inventory._inventory_api.repositories.InventoryRepository;
+import _inventory._inventory_api.repositories.RegistryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +26,7 @@ public class InventoryService {
     @Autowired
     InventoryCategoryService inventoryCategoryService;
     @Autowired
-    CategoryRepository categoryRepo;
+    RegistryRepository registryRepository;
 
     public List<InventoryItem> findAll() {
         return inventoryRepo.findAll();
@@ -39,13 +43,17 @@ public class InventoryService {
         inventoryItem.setDescription(item.getDescription() == null ? "" : item.getDescription());
         inventoryItem.setQuantity(item.getQuantity() == null ? 0 : item.getQuantity());
         inventoryItem.setCategory(item.getCategory() == null ? Set.of() : item.getCategory());
-        return inventoryRepo.save(inventoryItem);
+        var savedItem = inventoryRepo.save(inventoryItem);
+        registryRepository.save(new Registry(savedItem.getId(), RegistryLabel.ADD, "Add a item"));
+        return savedItem;
     }
 
-    public String removeItem(InventoryItem item) {
-        var itemId = item.getId();
+    public String removeItem(ItemDelete item) {
+        var itemId = item.id();
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemId);
         if (optionalItem.isPresent()) {
+            if (item.justification() == null || item.justification().isEmpty()) throw new JustificationNotFoundException();
+            registryRepository.save(new Registry(optionalItem.get().getId(), RegistryLabel.REMOVE, item.justification()));
             inventoryRepo.deleteById(itemId);
             return "Item " + itemId + " deleted";
         }
@@ -67,16 +75,20 @@ public class InventoryService {
         throw new ItemIdNotFoundException(itemUpdate.getId());
     }
 
-    public InventoryItem updateItemQuantity(ItemAndNewQuantity itemAndNewQuantity) {
-        Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemAndNewQuantity.id());
+    public InventoryItem updateItemQuantity(ItemAndRegistryDTO itemAndRegistryDTO) {
+        Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemAndRegistryDTO.getId());
         if (optionalItem.isPresent()) {
-            if (itemAndNewQuantity.quantity() < 0)
+            if (itemAndRegistryDTO.getQuantity() < 0)
                 throw new InvalidQuantityException("Item quantity must be greater than 0");
             InventoryItem inventoryItem = optionalItem.get();
-            inventoryItem.setQuantity(itemAndNewQuantity.quantity());
-            return inventoryRepo.save(inventoryItem);
+            var label = itemAndRegistryDTO.getQuantity() > inventoryItem.getQuantity() ? RegistryLabel.CHECK_IN : RegistryLabel.CHECK_OUT;
+            inventoryItem.setQuantity(itemAndRegistryDTO.getQuantity());
+            var itemSaved = inventoryRepo.save(inventoryItem);
+            if(itemAndRegistryDTO.getJustification() == null || itemAndRegistryDTO.getJustification().isEmpty()) throw new JustificationNotFoundException();
+            registryRepository.save(new Registry(itemSaved.getId(), label, itemAndRegistryDTO.getJustification()));
+            return itemSaved;
         }
-        throw new ItemIdNotFoundException(itemAndNewQuantity.id());
+        throw new ItemIdNotFoundException(itemAndRegistryDTO.getId());
     }
 
     public InventoryItem addItemCategory(ItemAndCategory itemAndCategory) {
