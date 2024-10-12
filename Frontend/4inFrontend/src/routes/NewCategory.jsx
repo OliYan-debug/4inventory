@@ -4,8 +4,28 @@ import { ChevronRight, CirclePlus, Undo2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { api } from "../services/api";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import ModalMaxCategoriesError from "../components/ModalMaxCategoriesError";
 
 export default function NewCategory() {
+  const [categories, setCategories] = useState([]);
+  const [update, setUpdate] = useState(false);
+  const [maxCategories, setMaxCategories] = useState(false);
+
+  useEffect(() => {
+    setUpdate(false);
+    api
+      .get("/category/")
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar dados:", error);
+      });
+
+    setMaxCategories(categories.length >= 10);
+  }, [categories.length, update]);
+
   const {
     register,
     handleSubmit,
@@ -17,7 +37,7 @@ export default function NewCategory() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await toast.promise(api.post("/category/add", data), {
+      await toast.promise(api.post("/category/add", data), {
         pending: "Adding category",
         success: {
           render() {
@@ -33,15 +53,15 @@ export default function NewCategory() {
             return (
               <p>
                 Error when adding:
-                <span className="font-bold">{data.response.data.error}</span>.
+                <span className="font-bold">{data.response.data.message}</span>.
                 Try again.
               </p>
             );
           },
         },
       });
-      console.log(response);
       reset();
+      setUpdate(true);
     } catch (error) {
       console.error(error);
     }
@@ -62,6 +82,8 @@ export default function NewCategory() {
   return (
     <div className="flex flex-col gap-4">
       <Header title={"New Category"} subtitle={subtitle()} />
+
+      {maxCategories && <ModalMaxCategoriesError />}
 
       <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 p-4">
         <form
@@ -84,7 +106,7 @@ export default function NewCategory() {
               aria-invalid={errors.name ? "true" : "false"}
               type="text"
               id="name"
-              disabled={isSubmitting}
+              disabled={isSubmitting || maxCategories}
               className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
                 errors.name &&
                 "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
@@ -107,7 +129,7 @@ export default function NewCategory() {
               aria-invalid={errors.color ? "true" : "false"}
               type="color"
               id="color"
-              disabled={isSubmitting}
+              disabled={isSubmitting || maxCategories}
               className={`focus-visible::border-neutral-500 h-10 w-full rounded-lg border border-neutral-400 px-4 py-2 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
                 errors.color &&
                 "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
@@ -122,7 +144,7 @@ export default function NewCategory() {
 
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || maxCategories}
             className="mt-10 flex w-2/5 items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500 disabled:cursor-no-drop disabled:opacity-70"
           >
             <CirclePlus size={20} color="#fafafa" className="me-2" />
@@ -131,7 +153,7 @@ export default function NewCategory() {
 
           <Link
             to={"/categories"}
-            disabled={isSubmitting}
+            disabled={isSubmitting || maxCategories}
             className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80 disabled:cursor-no-drop disabled:opacity-70"
           >
             Back to categories
