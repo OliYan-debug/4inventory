@@ -1,5 +1,5 @@
 <p align="center">
-<img width="400" src="https://raw.githubusercontent.com/OliYan-debug/4inventory/refs/heads/main/Frontend/4inFrontend/src/assets/logo.svg?token=GHSAT0AAAAAACWE3KPBWLZQ66SWBMJQTAFQZYKPWEQ">
+<img width="400" src="Frontend/4inFrontend/src/assets/logo.svg">
 </p>
 
 
