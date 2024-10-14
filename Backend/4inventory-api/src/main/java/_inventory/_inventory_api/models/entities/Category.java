@@ -8,7 +8,7 @@ import lombok.Data;
 @Table(name = "tb_category")
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(nullable = false, unique = true)
     private String name;
