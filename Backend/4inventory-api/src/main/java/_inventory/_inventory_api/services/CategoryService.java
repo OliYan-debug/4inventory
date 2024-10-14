@@ -20,7 +20,7 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category findByName(String text) {
+    public List<Category> findByName(String text) {
         return categoryRepository.findByNameIgnoreCase(text);
     }
 
@@ -34,12 +34,11 @@ public class CategoryService {
 
     public Category saveCategory(Category category) {
         var categoryDB = findByName(category.getName());
-        if (categoryDB != null)
-            throw new CategoryAlreadyExistsException(category.getName());
         if (category.getName() == null || category.getColor() == null) {
             throw new InvalidCategoryException("Category must have a name and a color");
         }
-        return categoryRepository.save(category);
+        if (categoryDB.isEmpty()) return categoryRepository.save(category);
+        throw new CategoryAlreadyExistsException(category.getName());
     }
 
     public Category updateCategory(Category categoryUpdate) {
@@ -51,9 +50,9 @@ public class CategoryService {
             categoryDB.setName(name);
             categoryDB.setColor(color);
             var othersCategory = categoryRepository.findByNameIgnoreCase(name);
-            if (othersCategory != null && othersCategory.getId() != categoryUpdate.getId())
-                throw new CategoryAlreadyExistsException(name);
-            return categoryRepository.save(categoryDB);
+            if (othersCategory.isEmpty())
+                return categoryRepository.save(categoryDB);
+            throw new CategoryAlreadyExistsException(name);
         }
         throw new CategoryIdNotFoundException(categoryUpdate.getId());
 

@@ -12,7 +12,7 @@ import java.util.Set;
 @Table(name = "tb_inventory")
 public class InventoryItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(nullable = false)
     private String item;

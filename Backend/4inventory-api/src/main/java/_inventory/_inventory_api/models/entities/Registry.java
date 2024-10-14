@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "tb_registry")
 public class Registry {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long itemId;
     @Column(nullable = false)
