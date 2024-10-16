@@ -1,6 +1,6 @@
 import { FolderSearch, SearchIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import Search from "./Search";
+import Search from "./SearchModal";
 
 export default function Header({ title, subtitle }) {
   const [openSearch, setOpenSearch] = useState(false);
