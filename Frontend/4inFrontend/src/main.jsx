@@ -7,7 +7,7 @@ import ErrorPage from "./routes/ErrorPage";
 import Products from "./routes/Products";
 import NewItem from "./routes/NewItem";
 import DeleteItem from "./routes/DeleteItem";
-import SearchItem from "./routes/SearchItem";
+import SearchItem from "./routes/Search";
 import ItemEntry from "./routes/ItemEntry";
 import ItemExit from "./routes/ItemExit";
 import Categories from "./routes/Categories";
@@ -36,12 +36,24 @@ const router = createBrowserRouter([
         element: <DeleteItem />,
       },
       {
+        path: "products/delete/:itemId",
+        element: <DeleteItem />,
+      },
+      {
         path: "products/search",
         element: <SearchItem />,
       },
       {
+        path: "products/entry",
+        element: <ItemEntry />,
+      },
+      {
         path: "products/entry/:itemId",
         element: <ItemEntry />,
+      },
+      {
+        path: "products/exit",
+        element: <ItemExit />,
       },
       {
         path: "products/exit/:itemId",
