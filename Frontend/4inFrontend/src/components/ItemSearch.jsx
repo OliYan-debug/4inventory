@@ -1,13 +1,12 @@
 export default function ItemSearch({ id, item, handleSelect }) {
   return (
-    <button
-      type="button"
+    <li
       onClick={() => handleSelect(id)}
-      className="flex w-full justify-items-center gap-6 hover:bg-neutral-100"
+      className="cursor-pointer px-4 transition hover:bg-neutral-200"
     >
       <div className="py-2">
         <p className="text-neutral-500">{item}</p>
       </div>
-    </button>
+    </li>
   );
 }
