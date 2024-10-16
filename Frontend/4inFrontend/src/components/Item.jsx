@@ -61,8 +61,10 @@ export default function Item({
             </Link>
           </li>
           <li className="flex h-7 w-full cursor-pointer items-center border-t px-4 py-2 text-red-500 transition hover:bg-red-300 hover:font-medium">
-            <PackageX size={19} className="me-1" />
-            Delete Item
+            <Link to={`delete/${id}`} className="flex w-full items-center">
+              <PackageX size={19} className="me-1" />
+              Delete Item
+            </Link>
           </li>
         </ul>
       </div>

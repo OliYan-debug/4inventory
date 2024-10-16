@@ -1,48 +1,156 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
-import { ChevronRight, CircleMinus, ListRestart, X } from "lucide-react";
+import {
+  ChevronRight,
+  CircleMinus,
+  ListRestart,
+  SearchIcon,
+} from "lucide-react";
 import { useForm } from "react-hook-form";
 import { api } from "../services/api";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ItemSearch from "../components/ItemSearch";
+import { toast } from "react-toastify";
 
 export default function DeleteItem() {
+  let { itemId } = useParams();
+  const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState([]);
+  const ref = useRef(null);
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
+    clearErrors,
     formState: { errors },
   } = useForm({
     mode: "onChange",
   });
 
-  const onSubmit = (data) => console.log(data);
+  useEffect(() => {
+    if (itemId) {
+      api
+        .get(`/inventory/item/${itemId}`)
+        .then((response) => {
+          setSelectedItem(response.data);
+          setValue("item", selectedItem.item);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          toast.warning(
+            <p>
+              <span className="font-bold">{error.response.data.message}</span>{" "}
+              search other item{" "}
+            </p>,
+            {
+              toastId: itemId,
+            },
+          );
 
-  const [search, setSearch] = useState("");
-  const [items, setItems] = useState([]);
+          navigate("/products/delete");
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemId, navigate, selectedItem.item]);
+
+  const handleClickOutside = (event) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setItems("");
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, []);
+
+  const onSubmit = async (data) => {
+    data.id = selectedItem.id;
+    delete data.item;
+
+    try {
+      await toast.promise(
+        api.delete("/inventory/remove", {
+          data,
+        }),
+        {
+          pending: "Removing item...",
+          success: {
+            render() {
+              return <p>Item removed!</p>;
+            },
+          },
+          error: {
+            render({ data }) {
+              return (
+                <p>
+                  Error when remove:
+                  <span className="font-bold">
+                    {data.response.data.message}
+                  </span>
+                  . Try again.
+                </p>
+              );
+            },
+          },
+        },
+      );
+      reset();
+      navigate("/products/delete");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleSearchProduct = async (event) => {
-    setSearch(event.target.value);
+    errors && clearErrors();
+
+    if (event.target.value === "") {
+      return;
+    }
+
+    let search = event.target.value;
+
     try {
       const response = await api.get(`/search/${search}`);
       setItems(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
   function handleSelect(id) {
+    if (itemId) {
+      navigate(`/products/delete/${id}`);
+    }
+
     const itemFind = items.find((item) => item.id === Number(id));
     setValue("item", itemFind.item);
     setItems("");
+    setSelectedItem(itemFind);
+  }
+
+  async function handleSearch() {
+    await api
+      .get("/inventory/")
+      .then((response) => {
+        setItems(response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar dados:", error);
+      });
   }
 
   const subtitle = () => {
     return (
       <p className="mt-1 flex items-center text-sm text-neutral-500">
         <Link to={`/products`} className="hover:font-semibold">
-          Producs
+          Products
         </Link>
         <ChevronRight size={16} color="#737373" />
         <span className="font-semibold">Delete Item</span>
@@ -61,26 +169,41 @@ export default function DeleteItem() {
         >
           <div className="relative w-full">
             <label htmlFor="item" className="text-sm text-neutral-500">
-              Item Name or ID*
+              Item Name*
             </label>
-            <input
-              defaultValue=""
-              {...register("item", {
-                required: "Item name or ID is required",
-                maxLength: {
-                  value: 20,
-                  message: "Maximum character value exceeded",
-                },
-              })}
-              aria-invalid={errors.item ? "true" : "false"}
-              type="text"
-              id="item"
-              onChange={handleSearchProduct}
-              className={`focus-visible::border-neutral-500 ${items.length > 0 ? "rounded-t-lg border-b-0" : "rounded-lg"} w-full border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
-                errors.item &&
-                "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
-              }`}
-            />
+            <div className="relative flex items-center">
+              <input
+                defaultValue={itemId ? selectedItem.item : ""}
+                {...register("item", {
+                  required: "Item name is required",
+                  maxLength: {
+                    value: 20,
+                    message: "Maximum character value exceeded",
+                  },
+                })}
+                aria-invalid={errors.item ? "true" : "false"}
+                type="text"
+                id="item"
+                onChange={handleSearchProduct}
+                placeholder="Search items"
+                className={`focus-visible::border-neutral-500 ${items.length > 0 ? "rounded-t-lg border-b-0" : "rounded-lg"} w-full border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+                  errors.item &&
+                  "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
+                }`}
+              />
+
+              <button
+                type="button"
+                className="absolute right-2 hover:opacity-50"
+                onClick={() => {
+                  errors && clearErrors();
+                  handleSearch();
+                }}
+              >
+                <SearchIcon size={20} color="#737373" />
+              </button>
+            </div>
+
             {errors.item && (
               <p role="alert" className="mt-1 text-center text-xs text-red-600">
                 {errors.item?.message}
@@ -88,29 +211,23 @@ export default function DeleteItem() {
             )}
 
             {items.length > 0 && (
-              <div className="absolute w-full rounded-b-lg border border-neutral-400 bg-neutral-50 px-4 py-2 text-neutral-500 shadow-md">
-                <button
-                  type="button"
-                  className="absolute right-2 top-1 hover:opacity-50"
-                  onClick={() => setItems("")}
-                >
-                  <X size={18} color="#737373" />
-                </button>
-                {items.length <= 0 ? (
-                  <>
-                    <p className="text-center">No items found</p>
-                  </>
-                ) : (
-                  items.map((item) => {
-                    return (
-                      <ItemSearch
-                        key={item.id}
-                        id={item.id}
-                        item={item.item}
-                        handleSelect={handleSelect}
-                      />
-                    );
-                  })
+              <div
+                ref={ref}
+                className="absolute max-h-36 w-full overflow-y-auto rounded-b-lg border border-neutral-400 bg-neutral-50 py-2 text-neutral-500 shadow-md transition"
+              >
+                {items.length > 0 && (
+                  <ul className="flex w-full flex-col justify-items-center gap-px">
+                    {items.map((item) => {
+                      return (
+                        <ItemSearch
+                          key={item.id}
+                          id={item.id}
+                          item={item.item}
+                          handleSelect={handleSelect}
+                        />
+                      );
+                    })}
+                  </ul>
                 )}
               </div>
             )}
@@ -132,6 +249,7 @@ export default function DeleteItem() {
               aria-invalid={errors.justification ? "true" : "false"}
               type="text"
               id="justification"
+              disabled={selectedItem.length === 0}
               className={`h-26 focus-visible::border-neutral-500 w-full resize-none rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
                 errors.justification &&
                 "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
@@ -151,6 +269,7 @@ export default function DeleteItem() {
             <CircleMinus size={20} color="#fafafa" className="me-2" />
             Delete item
           </button>
+
           <button
             type="reset"
             className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80"
