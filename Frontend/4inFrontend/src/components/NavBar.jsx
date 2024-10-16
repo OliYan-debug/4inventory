@@ -50,7 +50,7 @@ export default function NavBar() {
             className="block pt-10 md:hidden"
           />
         </Link>
-        <span className="mt-px text-xs font-thin text-neutral-200">1.1.0</span>
+        <span className="mt-px text-xs font-thin text-neutral-200">1.1.1</span>
 
         {hiddenNav ? <HiddenNav /> : <NormalNav />}
       </div>
