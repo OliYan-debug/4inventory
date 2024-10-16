@@ -4,8 +4,8 @@ services:
     build:
       context: ./Frontend
       dockerfile: Dockerfile
-    environment:
-      - VITE_API_URL=http://4inventory-api:5000
+      args:
+        - VITE_API_URL=${VITE_API_URL}
     ports:
       - 3000:3000
     depends_on:
