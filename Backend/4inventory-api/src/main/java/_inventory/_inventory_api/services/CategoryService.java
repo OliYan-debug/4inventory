@@ -50,7 +50,7 @@ public class CategoryService {
             categoryDB.setName(name);
             categoryDB.setColor(color);
             var othersCategory = categoryRepository.findByNameIgnoreCase(name);
-            if (othersCategory.isEmpty())
+            if (othersCategory.isEmpty() || othersCategory.get(0).getId() == categoryDB.getId())
                 return categoryRepository.save(categoryDB);
             throw new CategoryAlreadyExistsException(name);
         }
