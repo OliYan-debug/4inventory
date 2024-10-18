@@ -139,15 +139,21 @@ class CategoryServiceTest {
         var thrown = assertThrows(CategoryIdNotFoundException.class, () -> categoryService.updateCategory(categoryUpdate));
         assertTrue(thrown.getMessage().contains("Category with id " + 100 + " not found!"));
     }
-
+    @Test
+    @DisplayName("Update a category with same name and other color")
+    void updateCategoryCase3() {
+        category.setColor("green");
+        assertThat(categoryService.updateCategory(category)).isEqualTo(category);
+    }
     @Test
     @DisplayName("Update a category with same name of other in the db throws exception")
-    void updateCategoryCase3() {
+    void updateCategoryCase4() {
         var categoryUpdate = new Category();
         categoryUpdate.setName("OKI");
         categoryUpdate.setColor("green");
         categoryService.saveCategory(categoryUpdate);
-        var thrown = assertThrows(CategoryAlreadyExistsException.class, () -> categoryService.updateCategory(categoryUpdate));
+        category.setName("OKI");
+        var thrown = assertThrows(CategoryAlreadyExistsException.class, () -> categoryService.updateCategory(category));
         assertTrue(thrown.getMessage().contains("Category with name " + categoryUpdate.getName() + " already exists"));
     }
 
