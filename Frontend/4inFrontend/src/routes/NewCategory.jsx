@@ -12,20 +12,6 @@ export default function NewCategory() {
   const [update, setUpdate] = useState(false);
   const [maxCategories, setMaxCategories] = useState(false);
 
-  useEffect(() => {
-    setUpdate(false);
-    api
-      .get("/category/")
-      .then((response) => {
-        setCategories(response.data);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar dados:", error);
-      });
-
-    setMaxCategories(categories.length >= 10);
-  }, [categories.length, update]);
-
   const {
     register,
     handleSubmit,
@@ -34,6 +20,20 @@ export default function NewCategory() {
   } = useForm({
     mode: "onChange",
   });
+
+  useEffect(() => {
+    setUpdate(false);
+    api
+      .get("/category/")
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+
+    setMaxCategories(categories.length >= 10);
+  }, [categories.length, update]);
 
   const onSubmit = async (data) => {
     try {

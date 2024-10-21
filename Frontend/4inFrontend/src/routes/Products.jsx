@@ -1,9 +1,10 @@
-import { ArrowDownUp } from "lucide-react";
+import { ArrowDownUp, Rat } from "lucide-react";
 import Item from "../components/Item";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import LoadingSkeleton from "../components/LoadingSkeleton";
+import { Link } from "react-router-dom";
 
 export default function Products() {
   const [items, setItems] = useState([]);
@@ -18,7 +19,7 @@ export default function Products() {
         setItems(response.data);
       })
       .catch((error) => {
-        console.error("Erro ao buscar dados:", error);
+        console.error("Error fetching data:", error);
       });
     setLoading(false);
   }, []);
@@ -35,63 +36,73 @@ export default function Products() {
       <Header title={"Products"} subtitle={subtitle()} />
 
       <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 py-4">
-        <div className="mb-2 grid grid-cols-7 grid-rows-1 justify-items-center">
-          <div className="col-auto flex items-center">
-            <p className="font-bold text-neutral-600">ID</p>
-            <ArrowDownUp size={16} color="#525252" className="ms-1" />
-          </div>
-
-          <div className="col-auto flex items-center">
-            <p className="font-bold text-neutral-600">Name</p>
-            <ArrowDownUp size={16} color="#525252" className="ms-1" />
-          </div>
-
-          <div className="col-span-2 flex items-center">
-            <p className="font-bold text-neutral-600">Description</p>
-            <ArrowDownUp size={16} color="#525252" className="ms-1" />
-          </div>
-
-          <div className="col-auto flex items-center">
-            <p className="font-bold text-neutral-600">Category</p>
-            <ArrowDownUp size={16} color="#525252" className="ms-1" />
-          </div>
-
-          <div className="col-auto flex items-center">
-            <p className="font-bold text-neutral-600">Quantity</p>
-            <ArrowDownUp size={16} color="#525252" className="ms-1" />
-          </div>
-
-          <div className="col-auto flex items-center">
-            <p className="font-bold text-neutral-600">Date of entry</p>
-            <ArrowDownUp size={16} color="#525252" className="ms-1" />
-          </div>
-        </div>
-
         {loading ? (
           <LoadingSkeleton />
         ) : (
           <>
             {items.length <= 0 ? (
-              <>
-                <p className="text-center">No items found</p>
-              </>
+              <div className="mt-10 flex animate-fadeIn flex-col items-center gap-2">
+                <Rat size={100} className="text-neutral-700" />
+                <p className="font-medium text-neutral-600">
+                  No items found...
+                </p>
+                <Link
+                  to={"/products/new"}
+                  className="flex rounded-lg bg-neutral-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-neutral-500"
+                >
+                  Try adding some
+                </Link>
+              </div>
             ) : (
-              items.map((item) => {
-                count++;
-                console.log(item);
-                return (
-                  <Item
-                    key={item.id}
-                    id={item.id}
-                    item={item.item}
-                    description={item.description}
-                    category={item.category}
-                    quantity={item.quantity}
-                    created={item.created_at}
-                    count={count}
-                  />
-                );
-              })
+              <>
+                <div className="mb-2 grid grid-cols-7 grid-rows-1 justify-items-center">
+                  <div className="col-auto flex items-center">
+                    <p className="font-bold text-neutral-600">ID</p>
+                    <ArrowDownUp size={16} color="#525252" className="ms-1" />
+                  </div>
+
+                  <div className="col-auto flex items-center">
+                    <p className="font-bold text-neutral-600">Name</p>
+                    <ArrowDownUp size={16} color="#525252" className="ms-1" />
+                  </div>
+
+                  <div className="col-span-2 flex items-center">
+                    <p className="font-bold text-neutral-600">Description</p>
+                    <ArrowDownUp size={16} color="#525252" className="ms-1" />
+                  </div>
+
+                  <div className="col-auto flex items-center">
+                    <p className="font-bold text-neutral-600">Category</p>
+                    <ArrowDownUp size={16} color="#525252" className="ms-1" />
+                  </div>
+
+                  <div className="col-auto flex items-center">
+                    <p className="font-bold text-neutral-600">Quantity</p>
+                    <ArrowDownUp size={16} color="#525252" className="ms-1" />
+                  </div>
+
+                  <div className="col-auto flex items-center">
+                    <p className="font-bold text-neutral-600">Date of entry</p>
+                    <ArrowDownUp size={16} color="#525252" className="ms-1" />
+                  </div>
+                </div>
+
+                {items.map((item) => {
+                  count++;
+                  return (
+                    <Item
+                      key={item.id}
+                      id={item.id}
+                      item={item.item}
+                      description={item.description}
+                      category={item.category}
+                      quantity={item.quantity}
+                      created={item.created_at}
+                      count={count}
+                    />
+                  );
+                })}
+              </>
             )}
           </>
         )}

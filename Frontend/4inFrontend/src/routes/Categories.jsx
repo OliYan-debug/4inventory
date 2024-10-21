@@ -1,9 +1,10 @@
-import { ArrowDownUp } from "lucide-react";
+import { ArrowDownUp, Rat } from "lucide-react";
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import Category from "../components/Category";
 import LoadingSkeleton from "../components/LoadingSkeleton";
+import { Link } from "react-router-dom";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
@@ -24,7 +25,7 @@ export default function Categories() {
         setCategories(response.data);
       })
       .catch((error) => {
-        console.error("Erro ao buscar dados:", error);
+        console.error("Error fetching data:", error);
       });
     setUpdate(false);
     setLoading(false);
@@ -47,51 +48,62 @@ export default function Categories() {
       <Header title={"Categories"} subtitle={subtitle()} />
 
       <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 py-4">
-        <div className="mb-2 grid grid-cols-4 grid-rows-1 justify-items-center">
-          <div className="col-auto flex items-center">
-            <p className="font-bold text-neutral-600">ID</p>
-            <ArrowDownUp size={16} color="#525252" className="ms-1" />
-          </div>
-
-          <div className="col-auto flex items-center">
-            <p className="font-bold text-neutral-600">Name</p>
-            <ArrowDownUp size={16} color="#525252" className="ms-1" />
-          </div>
-
-          <div className="col-auto flex items-center">
-            <p className="font-bold text-neutral-600">Color</p>
-            <ArrowDownUp size={16} color="#525252" className="ms-1" />
-          </div>
-
-          <div className="col-auto flex items-center">
-            <p className="font-bold text-neutral-600">Action</p>
-          </div>
-        </div>
-
         {loading ? (
           <LoadingSkeleton />
         ) : (
           <>
             {categories.length <= 0 ? (
-              <>
-                <p className="text-center">No categories found</p>
-              </>
+              <div className="mt-10 flex animate-fadeIn flex-col items-center gap-2">
+                <Rat size={100} className="text-neutral-700" />
+                <p className="font-medium text-neutral-600">
+                  No categories found...
+                </p>
+                <Link
+                  to={"/categories/new"}
+                  className="flex rounded-lg bg-neutral-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-neutral-500"
+                >
+                  Try adding some
+                </Link>
+              </div>
             ) : (
-              categories.map((category) => {
-                count++;
-                return (
-                  <Category
-                    key={category.id}
-                    id={category.id}
-                    name={category.name}
-                    color={category.color}
-                    updateCategories={updateCategories}
-                    count={count}
-                    activeButton={activeButton}
-                    handleButtonClick={handleButtonClick}
-                  />
-                );
-              })
+              <>
+                <div className="mb-2 grid grid-cols-4 grid-rows-1 justify-items-center">
+                  <div className="col-auto flex items-center">
+                    <p className="font-bold text-neutral-600">ID</p>
+                    <ArrowDownUp size={16} color="#525252" className="ms-1" />
+                  </div>
+
+                  <div className="col-auto flex items-center">
+                    <p className="font-bold text-neutral-600">Name</p>
+                    <ArrowDownUp size={16} color="#525252" className="ms-1" />
+                  </div>
+
+                  <div className="col-auto flex items-center">
+                    <p className="font-bold text-neutral-600">Color</p>
+                    <ArrowDownUp size={16} color="#525252" className="ms-1" />
+                  </div>
+
+                  <div className="col-auto flex items-center">
+                    <p className="font-bold text-neutral-600">Action</p>
+                  </div>
+                </div>
+
+                {categories.map((category) => {
+                  count++;
+                  return (
+                    <Category
+                      key={category.id}
+                      id={category.id}
+                      name={category.name}
+                      color={category.color}
+                      updateCategories={updateCategories}
+                      count={count}
+                      activeButton={activeButton}
+                      handleButtonClick={handleButtonClick}
+                    />
+                  );
+                })}
+              </>
             )}
           </>
         )}
