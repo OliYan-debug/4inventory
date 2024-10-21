@@ -49,15 +49,15 @@ export default function Item({
             Edit Item
           </li>
           <li className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium">
-            <Link to={`entry/${id}`} className="flex w-full items-center">
+            <Link to={`checkin/${id}`} className="flex w-full items-center">
               <PackagePlus size={19} className="me-1" />
-              Item Entry
+              Check-in
             </Link>
           </li>
           <li className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium">
-            <Link to={`exit/${id}`} className="flex w-full items-center">
+            <Link to={`checkout/${id}`} className="flex w-full items-center">
               <PackageMinus size={19} className="me-1" />
-              Item Exit
+              Check-out
             </Link>
           </li>
           <li className="flex h-7 w-full cursor-pointer items-center border-t px-4 py-2 text-red-500 transition hover:bg-red-300 hover:font-medium">
@@ -73,7 +73,7 @@ export default function Item({
 
   return (
     <div
-      className={`relative grid grid-cols-7 justify-items-center text-wrap ${
+      className={`relative grid animate-fadeIn grid-cols-7 justify-items-center text-wrap ${
         count % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >
@@ -98,12 +98,17 @@ export default function Item({
         <p className="text-neutral-500">{item}</p>
       </div>
 
-      <div className="col-span-2 flex items-center py-2">
+      <div className="group/description relative col-span-2 flex items-center justify-center py-2">
         <p className="text-neutral-500">
           {description.length > 20
             ? `${description.substring(0, 24)}...`
             : description}
         </p>
+
+        <div className="absolute top-10 z-10 hidden max-w-72 animate-fadeIn justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/description:flex">
+          <span className="absolute -top-1 block size-2 -translate-y-px rotate-45 border-l border-t border-neutral-500 bg-neutral-400"></span>
+          <p className="text-justify text-xs text-neutral-50">{description}</p>
+        </div>
       </div>
 
       <div className="col-auto flex items-center py-2">
