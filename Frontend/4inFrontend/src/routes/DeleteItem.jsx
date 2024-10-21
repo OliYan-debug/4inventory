@@ -1,11 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
-import {
-  ChevronRight,
-  CircleMinus,
-  ListRestart,
-  SearchIcon,
-} from "lucide-react";
+import { ChevronRight, CircleMinus, SearchIcon, Undo2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { api } from "../services/api";
 import { useEffect, useRef, useState } from "react";
@@ -270,13 +265,13 @@ export default function DeleteItem() {
             Delete item
           </button>
 
-          <button
-            type="reset"
+          <Link
+            to={"/products"}
             className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80"
           >
-            Cancel
-            <ListRestart size={20} color="#a3a3a3" className="ms-1" />
-          </button>
+            Back to products
+            <Undo2 size={20} color="#a3a3a3" className="ms-1" />
+          </Link>
         </form>
       </div>
     </div>
