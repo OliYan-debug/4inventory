@@ -64,17 +64,17 @@ export default function HiddenNav() {
 
               <li className="group/subProduct flex cursor-pointer rounded-b-lg py-1 font-medium transition hover:bg-neutral-400 hover:font-bold">
                 <span className="me-6 ms-1 h-6 w-2 rounded-md bg-neutral-50 opacity-0 group-hover/subitem:opacity-100"></span>
-                <Link to={`products/entry`} className="flex items-center">
+                <Link to={`products/checkin`} className="flex items-center">
                   <PackagePlus size={20} color="#fafafa" className="me-2" />
-                  Item Entry
+                  Check-in
                 </Link>
               </li>
 
               <li className="group/subProduct flex cursor-pointer rounded-b-lg py-1 font-medium transition hover:bg-neutral-400 hover:font-bold">
                 <span className="me-6 ms-1 h-6 w-2 rounded-md bg-neutral-50 opacity-0 group-hover/subitem:opacity-100"></span>
-                <Link to={`products/exit`} className="flex items-center">
+                <Link to={`products/checkout`} className="flex items-center">
                   <PackageMinus size={20} color="#fafafa" className="me-2" />
-                  Item Exit
+                  Check-out
                 </Link>
               </li>
             </ul>

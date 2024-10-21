@@ -1,13 +1,13 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
-import { ChevronRight, CircleMinus, SearchIcon, Undo2 } from "lucide-react";
+import { ChevronRight, CirclePlus, SearchIcon, Undo2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useEffect, useRef, useState } from "react";
 import { api } from "../services/api";
 import { toast } from "react-toastify";
 import ItemSearch from "../components/ItemSearch";
 
-export default function ItemExit() {
+export default function CheckIn() {
   let { itemId } = useParams();
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
@@ -44,7 +44,7 @@ export default function ItemExit() {
             },
           );
 
-          navigate("/products/exit");
+          navigate("/products/checkin");
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,34 +64,30 @@ export default function ItemExit() {
   }, []);
 
   const onSubmit = async (data) => {
+    console.log(selectedItem);
     if (Number.isNaN(data.quantity)) {
       toast.error("Quantity is invalid");
       return;
     }
 
-    if (data.quantity > selectedItem.quantity) {
-      toast.warning("Quantity requested is higher than current");
-      return;
-    }
-
-    data.quantity = selectedItem.quantity - data.quantity;
-
     data.id = selectedItem.id;
     delete data.item;
+
+    data.quantity += selectedItem.quantity;
 
     try {
       await toast.promise(api.put("/inventory/update/quantity", data), {
         pending: "Updating quantity...",
         success: {
           render() {
-            return <p>Quantity removed!</p>;
+            return <p>Quantity added!</p>;
           },
         },
         error: {
           render({ data }) {
             return (
               <p>
-                Error when remove:
+                Error when adding:
                 <span className="font-bold">{data.response.data.message}</span>.
                 Try again.
               </p>
@@ -128,7 +124,7 @@ export default function ItemExit() {
 
   function handleSelect(id) {
     if (itemId) {
-      navigate(`/products/exit/${id}`);
+      navigate(`/products/checkin/${id}`);
     }
 
     const itemFind = items.find((item) => item.id === Number(id));
@@ -155,14 +151,14 @@ export default function ItemExit() {
           Products
         </Link>
         <ChevronRight size={16} color="#737373" />
-        <span className="font-semibold">Item Exit</span>
+        <span className="font-semibold">Check-in</span>
       </p>
     );
   };
 
   return (
     <div className="flex flex-col gap-4">
-      <Header title={"Item Exit"} subtitle={subtitle()} />
+      <Header title={"Check-in"} subtitle={subtitle()} />
 
       <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 p-4">
         <form
@@ -237,7 +233,7 @@ export default function ItemExit() {
 
           <div className="w-full">
             <label htmlFor="quantity" className="text-sm text-neutral-500">
-              Remove* (Current:
+              Add* (Current:
               <span className="font-medium"> {selectedItem.quantity}</span>)
             </label>
             <input
@@ -253,9 +249,6 @@ export default function ItemExit() {
                   message: "Min. quantity to add is 1",
                 },
                 valueAsNumber: true,
-                validate: (value) =>
-                  value <= selectedItem.quantity ||
-                  "Quantity requested is higher than current",
               })}
               aria-invalid={errors.quantity ? "true" : "false"}
               type="number"
@@ -304,10 +297,10 @@ export default function ItemExit() {
 
           <button
             type="submit"
-            className="mt-10 flex w-2/5 items-center justify-center rounded-lg bg-red-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-red-500"
+            className="mt-10 flex w-2/5 items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500"
           >
-            <CircleMinus size={20} color="#fafafa" className="me-2" />
-            Item exit
+            <CirclePlus size={20} color="#fafafa" className="me-2" />
+            Check-in
           </button>
           <Link
             to={"/products"}

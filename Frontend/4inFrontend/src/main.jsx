@@ -1,6 +1,6 @@
+import "./index.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./routes/Root";
 import ErrorPage from "./routes/ErrorPage";
@@ -8,10 +8,10 @@ import Products from "./routes/Products";
 import NewItem from "./routes/NewItem";
 import DeleteItem from "./routes/DeleteItem";
 import SearchItem from "./routes/Search";
-import ItemEntry from "./routes/ItemEntry";
-import ItemExit from "./routes/ItemExit";
 import Categories from "./routes/Categories";
 import NewCategory from "./routes/NewCategory";
+import CheckOut from "./routes/CheckOut";
+import CheckIn from "./routes/Checkin";
 
 const router = createBrowserRouter([
   {
@@ -44,20 +44,20 @@ const router = createBrowserRouter([
         element: <SearchItem />,
       },
       {
-        path: "products/entry",
-        element: <ItemEntry />,
+        path: "products/checkin",
+        element: <CheckIn />,
       },
       {
-        path: "products/entry/:itemId",
-        element: <ItemEntry />,
+        path: "products/checkin/:itemId",
+        element: <CheckIn />,
       },
       {
-        path: "products/exit",
-        element: <ItemExit />,
+        path: "products/checkout",
+        element: <CheckOut />,
       },
       {
-        path: "products/exit/:itemId",
-        element: <ItemExit />,
+        path: "products/checkout/:itemId",
+        element: <CheckOut />,
       },
       {
         path: "categories",

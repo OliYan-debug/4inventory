@@ -1,13 +1,13 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
-import { ChevronRight, CirclePlus, SearchIcon, Undo2 } from "lucide-react";
+import { ChevronRight, CircleMinus, SearchIcon, Undo2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useEffect, useRef, useState } from "react";
 import { api } from "../services/api";
 import { toast } from "react-toastify";
 import ItemSearch from "../components/ItemSearch";
 
-export default function ItemEntry() {
+export default function CheckOut() {
   let { itemId } = useParams();
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState([]);
@@ -44,7 +44,7 @@ export default function ItemEntry() {
             },
           );
 
-          navigate("/products/entry");
+          navigate("/products/checkout");
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,30 +64,34 @@ export default function ItemEntry() {
   }, []);
 
   const onSubmit = async (data) => {
-    console.log(selectedItem);
     if (Number.isNaN(data.quantity)) {
       toast.error("Quantity is invalid");
       return;
     }
 
+    if (data.quantity > selectedItem.quantity) {
+      toast.warning("Quantity requested is higher than current");
+      return;
+    }
+
+    data.quantity = selectedItem.quantity - data.quantity;
+
     data.id = selectedItem.id;
     delete data.item;
-
-    data.quantity += selectedItem.quantity;
 
     try {
       await toast.promise(api.put("/inventory/update/quantity", data), {
         pending: "Updating quantity...",
         success: {
           render() {
-            return <p>Quantity added!</p>;
+            return <p>Quantity removed!</p>;
           },
         },
         error: {
           render({ data }) {
             return (
               <p>
-                Error when adding:
+                Error when remove:
                 <span className="font-bold">{data.response.data.message}</span>.
                 Try again.
               </p>
@@ -124,7 +128,7 @@ export default function ItemEntry() {
 
   function handleSelect(id) {
     if (itemId) {
-      navigate(`/products/entry/${id}`);
+      navigate(`/products/checkout/${id}`);
     }
 
     const itemFind = items.find((item) => item.id === Number(id));
@@ -151,14 +155,14 @@ export default function ItemEntry() {
           Products
         </Link>
         <ChevronRight size={16} color="#737373" />
-        <span className="font-semibold">Item Entry</span>
+        <span className="font-semibold">Check-out</span>
       </p>
     );
   };
 
   return (
     <div className="flex flex-col gap-4">
-      <Header title={"Item Entry"} subtitle={subtitle()} />
+      <Header title={"Check-out"} subtitle={subtitle()} />
 
       <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 p-4">
         <form
@@ -233,7 +237,7 @@ export default function ItemEntry() {
 
           <div className="w-full">
             <label htmlFor="quantity" className="text-sm text-neutral-500">
-              Add* (Current:
+              Remove* (Current:
               <span className="font-medium"> {selectedItem.quantity}</span>)
             </label>
             <input
@@ -249,6 +253,9 @@ export default function ItemEntry() {
                   message: "Min. quantity to add is 1",
                 },
                 valueAsNumber: true,
+                validate: (value) =>
+                  value <= selectedItem.quantity ||
+                  "Quantity requested is higher than current",
               })}
               aria-invalid={errors.quantity ? "true" : "false"}
               type="number"
@@ -297,10 +304,10 @@ export default function ItemEntry() {
 
           <button
             type="submit"
-            className="mt-10 flex w-2/5 items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500"
+            className="mt-10 flex w-2/5 items-center justify-center rounded-lg bg-red-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-red-500"
           >
-            <CirclePlus size={20} color="#fafafa" className="me-2" />
-            Item entry
+            <CircleMinus size={20} color="#fafafa" className="me-2" />
+            Check-out
           </button>
           <Link
             to={"/products"}
