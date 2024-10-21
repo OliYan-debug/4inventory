@@ -4,9 +4,9 @@ import {
   ChevronDown,
   ChevronRight,
   CirclePlus,
-  ListRestart,
   PlusIcon,
   ServerOff,
+  Undo2,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
@@ -16,20 +16,7 @@ import ModalCategoriesError from "../components/ModalCategoriesError";
 
 export default function NewItem() {
   const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    api
-      .get("/category/")
-      .then((response) => {
-        setCategories(response.data);
-      })
-      .catch((error) => {
-        toast.error("Error getting categories, try again");
-        setError(error);
-        console.error(error);
-      });
-  }, []);
+  const [getCategoriesError, setGetCategoriesError] = useState(false);
 
   const {
     register,
@@ -39,6 +26,19 @@ export default function NewItem() {
   } = useForm({
     mode: "onChange",
   });
+
+  useEffect(() => {
+    api
+      .get("/category/")
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch((error) => {
+        toast.error("Error getting categories, try again");
+        setGetCategoriesError(error);
+        console.error(error);
+      });
+  }, []);
 
   const onSubmit = async (data) => {
     const categoryFind = categories.find(
@@ -55,9 +55,9 @@ export default function NewItem() {
         },
       ],
     };
-    console.log(data);
+
     try {
-      const response = await toast.promise(api.post("/inventory/add", data), {
+      await toast.promise(api.post("/inventory/add", data), {
         pending: "Adding item",
         success: {
           render() {
@@ -80,7 +80,6 @@ export default function NewItem() {
           },
         },
       });
-      console.log(response.data);
       reset();
     } catch (error) {
       console.error(error);
@@ -91,7 +90,7 @@ export default function NewItem() {
     return (
       <p className="mt-1 flex items-center text-sm text-neutral-500">
         <Link to={`/products`} className="hover:font-semibold">
-          Producs
+          Products
         </Link>
         <ChevronRight size={16} color="#737373" />
         <span className="font-semibold">New Item</span>
@@ -103,14 +102,14 @@ export default function NewItem() {
     <div className="flex flex-col gap-4">
       <Header title={"New Product"} subtitle={subtitle()} />
 
-      {error !== false ? (
+      {getCategoriesError !== false ? (
         <div className="flex min-h-screen max-w-full flex-col items-center rounded-2xl bg-neutral-50 px-8 py-4 text-center">
           <h1 className="text-3xl font-bold text-neutral-800">Oops!</h1>
           <p className="mb-4 mt-2 text-sm text-neutral-500">
             Sorry, an unexpected error has occurred:
           </p>
           <span className="mb-6 font-medium text-neutral-600">
-            {error.statusText || error.message}
+            {getCategoriesError.statusText || getCategoriesError.message}
           </span>
           <ServerOff size={84} color="#262626" />
         </div>
@@ -141,7 +140,7 @@ export default function NewItem() {
                 disabled={isSubmitting}
                 className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
                   errors.item &&
-                  "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
+                  "border-red-600 bg-red-100 text-red-600 hover:border-red-600 focus-visible:border-red-600"
                 }`}
               />
               {errors.item && (
@@ -156,7 +155,7 @@ export default function NewItem() {
 
             <div className="w-full">
               <label htmlFor="category" className="text-sm text-neutral-500">
-                Category
+                Category*
               </label>
               <div className="relative mt-1 flex items-center">
                 <ChevronDown
@@ -165,11 +164,16 @@ export default function NewItem() {
                   className="absolute right-14"
                 />
                 <select
-                  {...register("category")}
+                  {...register("category", {
+                    required: "Category is required",
+                  })}
                   name="category"
                   id="category"
                   disabled={isSubmitting}
-                  className="z-10 w-full appearance-none rounded-l-lg border border-neutral-400 bg-transparent px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 focus:border-neutral-500"
+                  className={`z-10 w-full appearance-none rounded-l-lg border border-neutral-400 bg-transparent px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 focus:border-neutral-500 ${
+                    errors.category &&
+                    "border-red-600 bg-red-100 text-red-600 hover:border-red-600 focus-visible:border-red-600"
+                  }`}
                 >
                   <option value="">Select</option>
                   {categories.map((category) => (
@@ -180,11 +184,20 @@ export default function NewItem() {
                 </select>
                 <Link
                   to="/categories/new"
+                  title="Add new categories"
                   className="flex h-[42px] w-12 items-center justify-center rounded-r-lg bg-sky-400 transition hover:bg-sky-500"
                 >
                   <PlusIcon size={18} color="#fafafa" />
                 </Link>
               </div>
+              {errors.category && (
+                <p
+                  role="alert"
+                  className="mt-1 text-center text-xs text-red-600"
+                >
+                  {errors.category?.message}
+                </p>
+              )}
             </div>
 
             <div className="w-full">
@@ -258,13 +271,13 @@ export default function NewItem() {
               Add new item
             </button>
 
-            <button
-              type="reset"
+            <Link
+              to={"/products"}
               className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80"
             >
-              Cancel item
-              <ListRestart size={20} color="#a3a3a3" className="ms-1" />
-            </button>
+              Back to products
+              <Undo2 size={20} color="#a3a3a3" className="ms-1" />
+            </Link>
           </form>
         </div>
       )}

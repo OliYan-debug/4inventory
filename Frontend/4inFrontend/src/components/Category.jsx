@@ -17,6 +17,14 @@ export default function Category({
   const [checkDeleteOpen, setCheckDeleteOpen] = useState(false);
   const ref = useRef(null);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    mode: "onChange",
+  });
+
   const handleClickOutside = (event) => {
     if (ref.current && !ref.current.contains(event.target)) {
       setCheckDeleteOpen(false);
@@ -76,15 +84,18 @@ export default function Category({
     }
   }
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    mode: "onChange",
-  });
-
   const onSubmit = async (data) => {
+    let currentData = {
+      name: name,
+      color: color,
+    };
+
+    if (JSON.stringify(currentData) === JSON.stringify(data)) {
+      handleUpdate();
+      handleButtonClick(null);
+      return;
+    }
+
     try {
       data.id = id;
       await toast.promise(api.put("/category/update", data), {
@@ -157,7 +168,7 @@ export default function Category({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={`grid h-12 grid-cols-4 items-center justify-items-center ${
+      className={`grid h-12 animate-fadeIn grid-cols-4 items-center justify-items-center ${
         count % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >
