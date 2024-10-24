@@ -18,7 +18,7 @@ public class Registry {
     private RegistryLabel label;
     @Column(nullable = false)
     private String justification;
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     public Registry(){}
     public Registry(Long itemId, RegistryLabel label, String justification) {
@@ -29,6 +29,6 @@ public class Registry {
 
     @PrePersist
     public void prePersist() {
-        this.created_at = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 }
