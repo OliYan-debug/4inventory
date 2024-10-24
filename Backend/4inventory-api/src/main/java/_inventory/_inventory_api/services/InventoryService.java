@@ -13,9 +13,11 @@ import _inventory._inventory_api.models.records.ItemDelete;
 import _inventory._inventory_api.repositories.InventoryRepository;
 import _inventory._inventory_api.repositories.RegistryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -28,8 +30,10 @@ public class InventoryService {
     @Autowired
     RegistryRepository registryRepository;
 
-    public List<InventoryItem> findAll() {
-        return inventoryRepo.findAll();
+    public Page<InventoryItem> findAll(int page, int size, String sort) {
+        Sort sortable = Sort.by(Sort.Direction.fromString(sort.split(",")[1]), sort.split(",")[0]);
+        var pageable = PageRequest.of(page, size, sortable);
+        return inventoryRepo.findAll(pageable);
     }
     public InventoryItem findById(Long itemId){
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemId);
