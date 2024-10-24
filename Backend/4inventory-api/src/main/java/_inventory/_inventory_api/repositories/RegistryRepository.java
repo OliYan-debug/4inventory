@@ -1,7 +1,8 @@
 package _inventory._inventory_api.repositories;
 
 import _inventory._inventory_api.models.entities.Registry;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface RegistryRepository extends JpaRepository<Registry, Long> {
+public interface RegistryRepository extends PagingAndSortingRepository<Registry, Long> {
+    void save(Registry addAItem);
 }
