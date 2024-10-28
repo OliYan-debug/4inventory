@@ -1,7 +1,6 @@
 package _inventory._inventory_api.repositories;
 
-import _inventory._inventory_api.models.entities.InventoryItem;
-import org.springframework.data.jpa.repository.JpaRepository;
+import _inventory._inventory_api.domain.entities.InventoryItem;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

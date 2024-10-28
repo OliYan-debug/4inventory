@@ -1,6 +1,5 @@
-package _inventory._inventory_api.models.dto;
+package _inventory._inventory_api.domain.dto;
 
-import _inventory._inventory_api.models.enums.RegistryLabel;
 import lombok.Data;
 
 @Data

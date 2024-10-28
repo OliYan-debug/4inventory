@@ -1,11 +1,10 @@
 package _inventory._inventory_api.controllers;
 
-import _inventory._inventory_api.models.entities.Category;
-import _inventory._inventory_api.models.exceptions.categories.CategoryAlreadyExistsException;
-import _inventory._inventory_api.models.exceptions.categories.CategoryIdNotFoundException;
-import _inventory._inventory_api.models.exceptions.categories.InvalidCategoryException;
-import _inventory._inventory_api.models.exceptions.items.ItemIdNotFoundException;
-import _inventory._inventory_api.models.records.MessageHandler;
+import _inventory._inventory_api.domain.entities.Category;
+import _inventory._inventory_api.domain.exceptions.categories.CategoryAlreadyExistsException;
+import _inventory._inventory_api.domain.exceptions.categories.CategoryIdNotFoundException;
+import _inventory._inventory_api.domain.exceptions.categories.InvalidCategoryException;
+import _inventory._inventory_api.domain.records.MessageHandler;
 import _inventory._inventory_api.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;

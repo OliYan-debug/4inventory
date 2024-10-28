@@ -1,4 +1,4 @@
-package _inventory._inventory_api.models.exceptions.items;
+package _inventory._inventory_api.domain.exceptions.items;
 
 public class ItemIdNotFoundException extends RuntimeException {
     public ItemIdNotFoundException(Long id) {

@@ -1,10 +1,10 @@
 package _inventory._inventory_api.services;
 
-import _inventory._inventory_api.models.entities.Category;
-import _inventory._inventory_api.models.entities.InventoryItem;
-import _inventory._inventory_api.models.exceptions.categories.CategoryIdNotFoundException;
-import _inventory._inventory_api.models.exceptions.items.ItemIdNotFoundException;
-import _inventory._inventory_api.models.records.ItemAndCategory;
+import _inventory._inventory_api.domain.entities.Category;
+import _inventory._inventory_api.domain.entities.InventoryItem;
+import _inventory._inventory_api.domain.exceptions.categories.CategoryIdNotFoundException;
+import _inventory._inventory_api.domain.exceptions.items.ItemIdNotFoundException;
+import _inventory._inventory_api.domain.records.ItemAndCategory;
 import _inventory._inventory_api.repositories.CategoryRepository;
 import _inventory._inventory_api.repositories.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

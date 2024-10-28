@@ -1,15 +1,15 @@
 package _inventory._inventory_api.controllers;
 
-import _inventory._inventory_api.models.entities.InventoryItem;
-import _inventory._inventory_api.models.exceptions.JustificationNotFoundException;
-import _inventory._inventory_api.models.exceptions.categories.CategoryIdNotFoundException;
-import _inventory._inventory_api.models.exceptions.items.ItemIdNotFoundException;
-import _inventory._inventory_api.models.exceptions.items.InvalidItemNameException;
-import _inventory._inventory_api.models.exceptions.items.InvalidQuantityException;
-import _inventory._inventory_api.models.records.ItemAndCategory;
-import _inventory._inventory_api.models.dto.ItemAndRegistryDTO;
-import _inventory._inventory_api.models.records.ItemDelete;
-import _inventory._inventory_api.models.records.MessageHandler;
+import _inventory._inventory_api.domain.entities.InventoryItem;
+import _inventory._inventory_api.domain.exceptions.JustificationNotFoundException;
+import _inventory._inventory_api.domain.exceptions.categories.CategoryIdNotFoundException;
+import _inventory._inventory_api.domain.exceptions.items.ItemIdNotFoundException;
+import _inventory._inventory_api.domain.exceptions.items.InvalidItemNameException;
+import _inventory._inventory_api.domain.exceptions.items.InvalidQuantityException;
+import _inventory._inventory_api.domain.records.ItemAndCategory;
+import _inventory._inventory_api.domain.dto.ItemAndRegistryDTO;
+import _inventory._inventory_api.domain.records.ItemDelete;
+import _inventory._inventory_api.domain.records.MessageHandler;
 import _inventory._inventory_api.services.InventoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController()
 @RequestMapping("/inventory")

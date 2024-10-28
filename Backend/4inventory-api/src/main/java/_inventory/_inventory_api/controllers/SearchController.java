@@ -1,6 +1,6 @@
 package _inventory._inventory_api.controllers;
 
-import _inventory._inventory_api.models.entities.InventoryItem;
+import _inventory._inventory_api.domain.entities.InventoryItem;
 import _inventory._inventory_api.services.SearchService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
