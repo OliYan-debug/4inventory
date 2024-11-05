@@ -88,7 +88,7 @@ export default function NewItem() {
 
   const subtitle = () => {
     return (
-      <p className="mt-1 flex items-center text-sm text-neutral-500">
+      <p className="flex items-center text-sm text-neutral-500">
         <Link to={`/products`} className="hover:font-semibold">
           Products
         </Link>
@@ -114,12 +114,12 @@ export default function NewItem() {
           <ServerOff size={84} color="#262626" />
         </div>
       ) : (
-        <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 p-4">
+        <div className="flex min-h-screen max-w-full justify-center rounded-2xl bg-neutral-50 p-4">
           {categories.length === 0 ? <ModalCategoriesError /> : ""}
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col items-center gap-2 px-32 pt-8"
+            className="flex flex-col items-center gap-2 pt-8 md:w-1/2"
           >
             <div className="w-full">
               <label htmlFor="item" className="text-sm text-neutral-500">
@@ -265,7 +265,7 @@ export default function NewItem() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-10 flex w-2/5 items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500 disabled:cursor-no-drop disabled:opacity-70"
+              className="mt-10 flex items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500 disabled:cursor-no-drop disabled:opacity-70 md:w-2/5"
             >
               <CirclePlus size={20} color="#fafafa" className="me-2" />
               Add new item

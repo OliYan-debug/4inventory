@@ -37,7 +37,7 @@ export default function SearchItem() {
 
   const subtitle = () => {
     return (
-      <p className="mt-1 flex items-center text-sm text-neutral-500">
+      <p className="flex items-center text-sm text-neutral-500">
         <Link to={`/products`} className="hover:font-semibold">
           Products
         </Link>
@@ -51,10 +51,10 @@ export default function SearchItem() {
     <div className="flex flex-col gap-4">
       <Header title={"Search Item"} subtitle={subtitle()} />
 
-      <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 p-4">
+      <div className="flex min-h-screen w-full justify-center rounded-2xl bg-neutral-50 p-4">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center gap-2 px-32 pt-8"
+          className="flex flex-col items-center gap-2 pt-8 md:w-1/2"
         >
           <div className="relative flex w-full items-center px-4">
             <label htmlFor="search">
@@ -78,7 +78,7 @@ export default function SearchItem() {
 
             <button
               type="submit"
-              className="flex w-2/5 items-center justify-center rounded-lg bg-sky-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-sky-500"
+              className="hidden items-center justify-center rounded-lg bg-sky-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-sky-500 md:flex md:w-2/5"
             >
               <LucidePackageSearch size={20} color="#fafafa" className="me-2" />
               Search item

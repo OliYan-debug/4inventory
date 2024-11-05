@@ -62,7 +62,7 @@ export default function Search({ setOpenSearch }) {
       <form
         ref={ref}
         onSubmit={handleSubmit(onSubmit)}
-        className="flex w-[50vw] flex-col items-center rounded-2xl bg-neutral-50 py-4 text-center"
+        className="mx-4 flex min-h-36 w-full flex-col items-center rounded-2xl bg-neutral-50 py-4 text-center transition-all md:mx-0 md:w-[50vw]"
       >
         <div className="relative flex w-full items-center px-4">
           <button

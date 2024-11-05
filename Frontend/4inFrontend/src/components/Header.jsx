@@ -23,7 +23,7 @@ export default function Header({ title, subtitle }) {
 
   return (
     <div className="flex max-w-full flex-col items-center justify-between rounded-2xl bg-neutral-50 p-4 md:flex-row">
-      <div className="flex items-center gap-2 sm:flex-col sm:items-start">
+      <div className="mb-1 flex flex-col items-center justify-center md:items-start">
         <h1 className="w-full text-3xl font-bold text-neutral-800">{title}</h1>
         {subtitle}
       </div>
