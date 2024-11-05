@@ -143,7 +143,7 @@ export default function DeleteItem() {
 
   const subtitle = () => {
     return (
-      <p className="mt-1 flex items-center text-sm text-neutral-500">
+      <p className="flex items-center text-sm text-neutral-500">
         <Link to={`/products`} className="hover:font-semibold">
           Products
         </Link>
@@ -157,10 +157,10 @@ export default function DeleteItem() {
     <div className="flex flex-col gap-4">
       <Header title={"Delete Item"} subtitle={subtitle()} />
 
-      <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 p-4">
+      <div className="flex min-h-screen max-w-full justify-center rounded-2xl bg-neutral-50 p-4">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center gap-2 px-32 pt-8"
+          className="flex flex-col items-center gap-2 pt-8 md:w-1/2"
         >
           <div className="relative w-full">
             <label htmlFor="item" className="text-sm text-neutral-500">
@@ -259,7 +259,7 @@ export default function DeleteItem() {
 
           <button
             type="submit"
-            className="mt-10 flex w-2/5 items-center justify-center rounded-lg bg-red-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-red-500"
+            className="mt-10 flex items-center justify-center rounded-lg bg-red-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-red-500 md:w-2/5"
           >
             <CircleMinus size={20} color="#fafafa" className="me-2" />
             Delete item
