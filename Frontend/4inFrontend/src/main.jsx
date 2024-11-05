@@ -11,7 +11,7 @@ import SearchItem from "./routes/Search";
 import Categories from "./routes/Categories";
 import NewCategory from "./routes/NewCategory";
 import CheckOut from "./routes/CheckOut";
-import CheckIn from "./routes/Checkin";
+import CheckIn from "./routes/CheckIn";
 
 const router = createBrowserRouter([
   {
