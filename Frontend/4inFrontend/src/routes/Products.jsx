@@ -26,7 +26,7 @@ export default function Products() {
 
   const subtitle = () => {
     return (
-      <p className="mt-1 text-sm text-neutral-500">
+      <p className="text-sm text-neutral-500">
         Found: <span className="font-bold">{items.length}</span>
       </p>
     );
@@ -35,7 +35,7 @@ export default function Products() {
     <div className="flex flex-col gap-4">
       <Header title={"Products"} subtitle={subtitle()} />
 
-      <div className="min-h-screen max-w-full rounded-2xl bg-neutral-50 py-4">
+      <div className="min-h-screen w-full overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:overflow-x-hidden">
         {loading ? (
           <LoadingSkeleton />
         ) : (
@@ -55,7 +55,7 @@ export default function Products() {
               </div>
             ) : (
               <>
-                <div className="mb-2 grid grid-cols-7 grid-rows-1 justify-items-center">
+                <div className="mb-2 grid min-w-[840px] grid-cols-7 grid-rows-1 justify-items-center">
                   <div className="col-auto flex items-center">
                     <p className="font-bold text-neutral-600">ID</p>
                     <ArrowDownUp size={16} color="#525252" className="ms-1" />

@@ -73,7 +73,7 @@ export default function Item({
 
   return (
     <div
-      className={`relative grid animate-fadeIn grid-cols-7 justify-items-center text-wrap ${
+      className={`relative grid min-w-[840px] animate-fadeIn grid-cols-7 justify-items-center text-wrap ${
         count % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >

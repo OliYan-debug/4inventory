@@ -168,7 +168,7 @@ export default function Category({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={`grid h-12 animate-fadeIn grid-cols-4 items-center justify-items-center ${
+      className={`grid h-12 min-w-[400px] animate-fadeIn grid-cols-4 items-center justify-items-center ${
         count % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >
