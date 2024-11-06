@@ -16,7 +16,7 @@ export default function Products() {
     api
       .get("/inventory/")
       .then((response) => {
-        setItems(response.data);
+        setItems(response.data.content);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
