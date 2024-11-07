@@ -7,6 +7,7 @@ import _inventory._inventory_api.domain.exceptions.items.ItemIdNotFoundException
 import _inventory._inventory_api.domain.records.ItemAndCategory;
 import _inventory._inventory_api.repositories.CategoryRepository;
 import _inventory._inventory_api.repositories.InventoryRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class InventoryCategoryService {
     @Autowired
     InventoryRepository inventoryRepo;
 
+    @Transactional
     public InventoryItem addCategory(ItemAndCategory categoryRequest) {
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(categoryRequest.itemId());
         if (optionalItem.isPresent()) {
@@ -32,7 +34,7 @@ public class InventoryCategoryService {
             throw new ItemIdNotFoundException(categoryRequest.itemId());
         }
     }
-
+    @Transactional
     public InventoryItem removeCategory(ItemAndCategory categoryRequest) {
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(categoryRequest.itemId());
         if (optionalItem.isPresent()) {
