@@ -1,6 +1,6 @@
 package _inventory._inventory_api.services;
 
-import _inventory._inventory_api.models.entities.InventoryItem;
+import _inventory._inventory_api.domain.entities.InventoryItem;
 import _inventory._inventory_api.repositories.InventoryRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

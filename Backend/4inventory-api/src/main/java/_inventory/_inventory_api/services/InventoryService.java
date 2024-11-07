@@ -1,15 +1,15 @@
 package _inventory._inventory_api.services;
 
-import _inventory._inventory_api.models.entities.InventoryItem;
-import _inventory._inventory_api.models.entities.Registry;
-import _inventory._inventory_api.models.enums.RegistryLabel;
-import _inventory._inventory_api.models.exceptions.JustificationNotFoundException;
-import _inventory._inventory_api.models.exceptions.items.ItemIdNotFoundException;
-import _inventory._inventory_api.models.exceptions.items.InvalidItemNameException;
-import _inventory._inventory_api.models.exceptions.items.InvalidQuantityException;
-import _inventory._inventory_api.models.records.ItemAndCategory;
-import _inventory._inventory_api.models.dto.ItemAndRegistryDTO;
-import _inventory._inventory_api.models.records.ItemDelete;
+import _inventory._inventory_api.domain.entities.InventoryItem;
+import _inventory._inventory_api.domain.entities.Registry;
+import _inventory._inventory_api.domain.enums.RegistryLabel;
+import _inventory._inventory_api.domain.exceptions.JustificationNotFoundException;
+import _inventory._inventory_api.domain.exceptions.items.ItemIdNotFoundException;
+import _inventory._inventory_api.domain.exceptions.items.InvalidItemNameException;
+import _inventory._inventory_api.domain.exceptions.items.InvalidQuantityException;
+import _inventory._inventory_api.domain.records.ItemAndCategory;
+import _inventory._inventory_api.domain.dto.ItemAndRegistryDTO;
+import _inventory._inventory_api.domain.records.ItemDelete;
 import _inventory._inventory_api.repositories.InventoryRepository;
 import _inventory._inventory_api.repositories.RegistryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +74,9 @@ public class InventoryService {
             itemDB.setItem(item);
             itemDB.setDescription(description);
             itemDB.setQuantity(quantity);
-            return inventoryRepo.save(itemDB);
+            var updatedItem =  inventoryRepo.save(itemDB);
+            registryRepository.save(new Registry(updatedItem.getId(), RegistryLabel.UPDATE, "Update a item"));
+            return updatedItem;
         }
         throw new ItemIdNotFoundException(itemUpdate.getId());
     }

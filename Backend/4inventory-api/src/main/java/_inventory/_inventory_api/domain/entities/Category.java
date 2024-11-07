@@ -1,4 +1,4 @@
-package _inventory._inventory_api.models.entities;
+package _inventory._inventory_api.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

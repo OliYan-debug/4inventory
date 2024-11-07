@@ -1,9 +1,9 @@
 package _inventory._inventory_api.services;
 
-import _inventory._inventory_api.models.entities.Category;
-import _inventory._inventory_api.models.exceptions.categories.CategoryAlreadyExistsException;
-import _inventory._inventory_api.models.exceptions.categories.CategoryIdNotFoundException;
-import _inventory._inventory_api.models.exceptions.categories.InvalidCategoryException;
+import _inventory._inventory_api.domain.entities.Category;
+import _inventory._inventory_api.domain.exceptions.categories.CategoryAlreadyExistsException;
+import _inventory._inventory_api.domain.exceptions.categories.CategoryIdNotFoundException;
+import _inventory._inventory_api.domain.exceptions.categories.InvalidCategoryException;
 import _inventory._inventory_api.repositories.CategoryRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package _inventory._inventory_api.models.exceptions;
+package _inventory._inventory_api.domain.exceptions;
 
 public class JustificationNotFoundException extends RuntimeException{
     public JustificationNotFoundException() {

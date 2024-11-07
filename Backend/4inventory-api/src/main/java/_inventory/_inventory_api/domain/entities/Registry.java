@@ -1,6 +1,6 @@
-package _inventory._inventory_api.models.entities;
+package _inventory._inventory_api.domain.entities;
 
-import _inventory._inventory_api.models.enums.RegistryLabel;
+import _inventory._inventory_api.domain.enums.RegistryLabel;
 import jakarta.persistence.*;
 import lombok.Data;
 
