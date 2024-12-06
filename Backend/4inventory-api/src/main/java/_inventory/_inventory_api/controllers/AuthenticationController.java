@@ -7,6 +7,7 @@ import _inventory._inventory_api.domain.dto.RegisterDTO;
 import _inventory._inventory_api.domain.dto.ResetPasswordDTO;
 import _inventory._inventory_api.domain.entities.user.User;
 import _inventory._inventory_api.repositories.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ public class AuthenticationController {
     @Autowired
     private TokenService tokenService;
 
+    @Operation(summary = "User login")
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody @Valid AuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
@@ -36,6 +38,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
+    @Operation(summary = "User password reset")
     @PostMapping("/reset")
     public ResponseEntity<Object> resetPassword(@RequestBody @Valid ResetPasswordDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
@@ -50,6 +53,7 @@ public class AuthenticationController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "User register")
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody @Valid RegisterDTO data){
         if(this.userRepository.findByUsername(data.login()) != null) return ResponseEntity.badRequest().build();
