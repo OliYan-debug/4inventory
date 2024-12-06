@@ -19,6 +19,7 @@ import { useLocation } from "react-router-dom";
 const productsLinks = [
   { path: "products", label: "See Items", Icon: PackageCheck },
   { path: "products/new", label: "New Item", Icon: PackageIcon },
+  { path: "products/update", label: "Update Item", Icon: PackageOpen },
   { path: "products/delete", label: "Delete Item", Icon: PackageX },
   { path: "products/search", label: "Search Item", Icon: PackageSearch },
   { path: "products/checkin", label: "Check-in", Icon: PackagePlus },
