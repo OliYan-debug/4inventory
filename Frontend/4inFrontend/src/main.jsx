@@ -12,6 +12,9 @@ import Categories from "./routes/Categories";
 import NewCategory from "./routes/NewCategory";
 import CheckOut from "./routes/CheckOut";
 import CheckIn from "./routes/CheckIn";
+import Login from "./routes/Login";
+import Signin from "./routes/Signin";
+import UpdateItem from "./routes/UpdateItem";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +47,14 @@ const router = createBrowserRouter([
         element: <DeleteItem />,
       },
       {
+        path: "products/update",
+        element: <UpdateItem />,
+      },
+      {
+        path: "products/update/:itemId",
+        element: <UpdateItem />,
+      },
+      {
         path: "products/search",
         element: <SearchItem />,
       },
@@ -73,6 +84,8 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: "login", element: <Login /> },
+  { path: "signin", element: <Signin /> },
 ]);
 
 createRoot(document.getElementById("root")).render(
