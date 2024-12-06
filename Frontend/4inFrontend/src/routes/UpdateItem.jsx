@@ -1,30 +1,63 @@
 import { ChevronRight, CirclePlus, ServerOff, Undo2 } from "lucide-react";
 import Header from "../components/Header";
 import ModalCategoriesError from "../components/ModalCategoriesError";
-import InputDescription from "../components/InputDescription";
 import InputCategories from "../components/InputCategories";
-import InputItemName from "../components/InputItemName";
+import InputUpdateItemName from "../components/InputUpdateItemName";
+import InputDescription from "../components/InputDescription";
 import { api } from "../services/api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-export default function NewItem() {
+export default function UpdateItem() {
+  let { itemId } = useParams();
   const [categories, setCategories] = useState([]);
   const [getCategoriesError, setGetCategoriesError] = useState(false);
+  const [selectedItem, setSelectedItem] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     reset,
     resetField,
+    setValue,
     setError,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
   });
+
+  useEffect(() => {
+    if (itemId) {
+      api
+        .get(`/inventory/item/${itemId}`)
+        .then((response) => {
+          setSelectedItem(response.data);
+          setValue("item", selectedItem.item);
+          setValue("description", selectedItem.description);
+          setSelectedCategories(selectedItem.category || []);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          toast.warning(
+            <p>
+              <span className="font-bold">{error.response.data.message}</span>{" "}
+              search other item{" "}
+            </p>,
+            {
+              toastId: itemId,
+            },
+          );
+
+          navigate("/products/update");
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemId, navigate, selectedItem.item]);
 
   useEffect(() => {
     api
@@ -51,17 +84,19 @@ export default function NewItem() {
 
     data = {
       ...data,
+      id: selectedItem.id,
+      quantity: selectedItem.quantity,
       category: selectedCategories,
     };
 
     try {
-      await toast.promise(api.post("/inventory/add", data), {
-        pending: "Adding item",
+      await toast.promise(api.put("/inventory/update", data), {
+        pending: "Updating item",
         success: {
           render() {
             return (
               <p>
-                Item <span className="font-bold">{data.item}</span> added!
+                Item <span className="font-bold">{data.item}</span> updated!
               </p>
             );
           },
@@ -70,7 +105,7 @@ export default function NewItem() {
           render({ data }) {
             return (
               <p>
-                Error when adding:
+                Error when updating:
                 <span className="font-bold">{data.response.data.message}</span>.
                 Try again.
               </p>
@@ -92,14 +127,14 @@ export default function NewItem() {
           Products
         </Link>
         <ChevronRight size={16} color="#737373" />
-        <span className="font-semibold">New Item</span>
+        <span className="font-semibold">Update Product</span>
       </p>
     );
   };
 
   return (
     <div className="flex flex-col gap-4">
-      <Header title={"New Product"} subtitle={subtitle()} />
+      <Header title={"Update Item"} subtitle={subtitle()} />
 
       {getCategoriesError !== false ? (
         <div className="flex min-h-screen max-w-full flex-col items-center rounded-2xl bg-neutral-50 px-8 py-4 text-center">
@@ -120,9 +155,19 @@ export default function NewItem() {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col items-center gap-2 pt-8 md:w-1/2"
           >
-            <InputItemName register={register} errors={errors} />
+            <InputUpdateItemName
+              register={register}
+              errors={errors}
+              clearErrors={clearErrors}
+              setValue={setValue}
+              reset={reset}
+              itemId={itemId}
+              selectedItem={selectedItem}
+              setSelectedItem={setSelectedItem}
+            />
 
             <InputCategories
+              itemId={itemId}
               register={register}
               errors={errors}
               resetField={resetField}
@@ -131,46 +176,20 @@ export default function NewItem() {
               setSelectedCategories={setSelectedCategories}
             />
 
-            <InputDescription register={register} errors={errors} />
-
-            <div className="w-full">
-              <label htmlFor="quantity" className="text-sm text-neutral-500">
-                Quantity
-              </label>
-              <input
-                defaultValue="0"
-                {...register("quantity", {
-                  maxLength: {
-                    value: 20,
-                    message: "Maximum character value exceeded",
-                  },
-                })}
-                aria-invalid={errors.quantity ? "true" : "false"}
-                type="number"
-                id="quantity"
-                disabled={isSubmitting}
-                className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
-                  errors.quantity &&
-                  "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
-                }`}
-              />
-              {errors.quantity && (
-                <p
-                  role="alert"
-                  className="mt-1 text-center text-xs text-red-600"
-                >
-                  {errors.quantity?.message}
-                </p>
-              )}
-            </div>
+            <InputDescription
+              register={register}
+              errors={errors}
+              itemId={itemId}
+              selectedItem={selectedItem}
+            />
 
             <button
               type="submit"
               disabled={isSubmitting}
               className="mt-10 flex items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500 disabled:cursor-no-drop disabled:opacity-70 md:w-2/5"
             >
-              <CirclePlus size={20} color="#fafafa" className="me-2" />
-              Add new item
+              <CirclePlus size={20} className="me-2 text-neutral-50" />
+              Update item
             </button>
 
             <Link
@@ -178,7 +197,7 @@ export default function NewItem() {
               className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80"
             >
               Back to products
-              <Undo2 size={20} color="#a3a3a3" className="ms-1" />
+              <Undo2 size={20} className="ms-1 text-neutral-400" />
             </Link>
           </form>
         </div>

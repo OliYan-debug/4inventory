@@ -33,7 +33,6 @@ export default function Products() {
         },
       })
       .then((response) => {
-        // console.log(response);
         setItems(response.data.content);
         setTotalElements(response.data.totalElements);
         setTotalPages(response.data.totalPages);
@@ -89,7 +88,7 @@ export default function Products() {
                         id={item.id}
                         item={item.item}
                         description={item.description}
-                        category={item.category}
+                        categories={item.category}
                         quantity={item.quantity}
                         created={item.created_at}
                         count={count}
