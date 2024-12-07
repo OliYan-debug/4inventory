@@ -71,9 +71,11 @@ public class InventoryService {
             var item = itemUpdate.getItem() == null ? itemDB.getItem() : itemUpdate.getItem();
             var description = itemUpdate.getDescription() == null ? itemDB.getDescription() : itemUpdate.getDescription();
             var quantity = itemUpdate.getQuantity() == null ? itemDB.getQuantity() : itemUpdate.getQuantity();
+            var categories = itemUpdate.getCategory() == null ? itemDB.getCategory() : itemUpdate.getCategory();
             itemDB.setItem(item);
             itemDB.setDescription(description);
             itemDB.setQuantity(quantity);
+            itemDB.setCategory(categories);
             var updatedItem =  inventoryRepo.save(itemDB);
             registryRepository.save(new Registry(updatedItem.getId(), RegistryLabel.UPDATE, "Update a item"));
             return updatedItem;
