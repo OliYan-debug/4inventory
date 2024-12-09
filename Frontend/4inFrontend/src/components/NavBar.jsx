@@ -3,7 +3,8 @@ import logo from "../assets/logo.svg";
 import logoMin from "../assets/logoMin.svg";
 import { useState } from "react";
 import Menu from "./Menu";
-import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, LogOut } from "lucide-react";
+import useAuth from "../hooks/useAuth";
 
 export default function NavBar() {
   const [hiddenNav, setHiddenNav] = useState(false);
@@ -11,6 +12,9 @@ export default function NavBar() {
   function handleHiddenShowNavbar() {
     hiddenNav ? setHiddenNav(false) : setHiddenNav(true);
   }
+
+  const { logout } = useAuth();
+  const user = JSON.parse(sessionStorage.getItem("4inventory.user"));
 
   return (
     <nav
@@ -39,7 +43,7 @@ export default function NavBar() {
 
       <div className="flex w-full flex-col items-center transition-all">
         <div className="hidden md:flex md:flex-col md:items-center">
-          <Link to={"/"}>
+          <Link to={"/products"}>
             <img
               src={hiddenNav ? logoMin : logo}
               alt="4inventory"
@@ -57,6 +61,21 @@ export default function NavBar() {
         </div>
 
         <Menu hiddenNav={hiddenNav} />
+
+        <div className="mt-4 flex w-3/4 items-center justify-center gap-2 border-t pt-2">
+          <div className="flex size-12 items-center justify-center rounded-full border border-neutral-50 bg-neutral-500 font-medium">
+            {user?.sub[0].toUpperCase()}
+          </div>
+          <span className="font-thin">{user?.sub}</span>
+          <button
+            type="button"
+            onClick={() => {
+              logout();
+            }}
+          >
+            <LogOut size={20} className="transition hover:opacity-70" />
+          </button>
+        </div>
       </div>
     </nav>
   );
