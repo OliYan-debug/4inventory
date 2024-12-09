@@ -45,35 +45,26 @@ export default function Item({
       >
         <ul className="flex w-36 flex-col gap-1 text-neutral-600">
           <Link
-            to={`/products/update/${id}`}
+            to={`update/${id}`}
             className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium"
           >
             <Pencil size={19} className="me-1" />
             Edit Item
           </Link>
           <li className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium">
-            <Link
-              to={`/products/checkin/${id}`}
-              className="flex w-full items-center"
-            >
+            <Link to={`checkin/${id}`} className="flex w-full items-center">
               <PackagePlus size={19} className="me-1" />
               Check-in
             </Link>
           </li>
           <li className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium">
-            <Link
-              to={`/products/checkout/${id}`}
-              className="flex w-full items-center"
-            >
+            <Link to={`checkout/${id}`} className="flex w-full items-center">
               <PackageMinus size={19} className="me-1" />
               Check-out
             </Link>
           </li>
           <li className="flex h-7 w-full cursor-pointer items-center border-t px-4 py-2 text-red-500 transition hover:bg-red-300 hover:font-medium">
-            <Link
-              to={`/products/delete/${id}`}
-              className="flex w-full items-center"
-            >
+            <Link to={`delete/${id}`} className="flex w-full items-center">
               <PackageX size={19} className="me-1" />
               Delete Item
             </Link>
