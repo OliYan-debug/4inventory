@@ -17,13 +17,13 @@ import MenuDropdownButton from "./MenuDropdownButton";
 import { useLocation } from "react-router-dom";
 
 const productsLinks = [
-  { path: "products", label: "See Items", Icon: PackageCheck },
-  { path: "products/new", label: "New Item", Icon: PackageIcon },
-  { path: "products/update", label: "Update Item", Icon: PackageOpen },
-  { path: "products/delete", label: "Delete Item", Icon: PackageX },
-  { path: "products/search", label: "Search Item", Icon: PackageSearch },
-  { path: "products/checkin", label: "Check-in", Icon: PackagePlus },
-  { path: "products/checkout", label: "Check-out", Icon: PackageMinus },
+  { path: "/products", label: "See Items", Icon: PackageCheck },
+  { path: "new", label: "New Item", Icon: PackageIcon },
+  { path: "update", label: "Update Item", Icon: PackageOpen },
+  { path: "delete", label: "Delete Item", Icon: PackageX },
+  { path: "search", label: "Search Item", Icon: PackageSearch },
+  { path: "checkin", label: "Check-in", Icon: PackagePlus },
+  { path: "checkout", label: "Check-out", Icon: PackageMinus },
 ];
 
 const categoriesLinks = [
