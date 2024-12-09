@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import InputPassword from "../components/InputPassword";
 import InputUserName from "../components/InputUsername";
 import { Loader2 } from "lucide-react";
+import useAuth from "../hooks/useAuth";
 
 export default function Login() {
   const {
@@ -14,8 +15,15 @@ export default function Login() {
     mode: "onChange",
   });
 
+  const { login } = useAuth();
+
   const onSubmit = async (data) => {
-    console.log(data);
+    const newData = {
+      login: data.username,
+      password: data.password,
+    };
+
+    await login(newData);
   };
 
   return (
