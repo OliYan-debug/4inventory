@@ -126,6 +126,7 @@ export default function Search({ setOpenSearch }) {
                       id={item.id}
                       item={item.item}
                       category={item.category[0].name}
+                      setOpenSearch={setOpenSearch}
                     />
                   );
                 })}
