@@ -1,7 +1,6 @@
 import "./index.css";
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Root from "./routes/Root";
 import ErrorPage from "./routes/ErrorPage";
 import Products from "./routes/Products";
@@ -15,81 +14,140 @@ import CheckIn from "./routes/CheckIn";
 import Login from "./routes/Login";
 import Signin from "./routes/Signin";
 import UpdateItem from "./routes/UpdateItem";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AuthProvider from "./contexts/AuthProvider";
+import NotFound from "./routes/NotFound";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "/",
-        element: <Products />,
-      },
-      {
-        path: "products",
-        element: <Products />,
-      },
-      {
-        path: "products/:page",
-        element: <Products />,
-      },
-      {
-        path: "products/new",
-        element: <NewItem />,
-      },
-      {
-        path: "products/delete",
-        element: <DeleteItem />,
-      },
-      {
-        path: "products/delete/:itemId",
-        element: <DeleteItem />,
-      },
-      {
-        path: "products/update",
-        element: <UpdateItem />,
-      },
-      {
-        path: "products/update/:itemId",
-        element: <UpdateItem />,
-      },
-      {
-        path: "products/search",
-        element: <SearchItem />,
-      },
-      {
-        path: "products/checkin",
-        element: <CheckIn />,
-      },
-      {
-        path: "products/checkin/:itemId",
-        element: <CheckIn />,
-      },
-      {
-        path: "products/checkout",
-        element: <CheckOut />,
-      },
-      {
-        path: "products/checkout/:itemId",
-        element: <CheckOut />,
-      },
-      {
-        path: "categories",
-        element: <Categories />,
-      },
-      {
-        path: "categories/new",
-        element: <NewCategory />,
-      },
-    ],
-  },
-  { path: "login", element: <Login /> },
-  { path: "signin", element: <Signin /> },
-]);
+const App = () => (
+  <BrowserRouter>
+    <AuthProvider>
+      <Routes>
+        <Route path="/products" element={<Root />} errorElement={<ErrorPage />}>
+          <Route
+            path="/products"
+            element={
+              <ProtectedRoute>
+                <Products />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/products/:page"
+            element={
+              <ProtectedRoute>
+                <Products />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="new"
+            element={
+              <ProtectedRoute>
+                <NewItem />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="delete"
+            element={
+              <ProtectedRoute>
+                <DeleteItem />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="delete/:itemId"
+            element={
+              <ProtectedRoute>
+                <DeleteItem />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="update"
+            element={
+              <ProtectedRoute>
+                <UpdateItem />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="update/:itemId"
+            element={
+              <ProtectedRoute>
+                <UpdateItem />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="search"
+            element={
+              <ProtectedRoute>
+                <SearchItem />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="checkin"
+            element={
+              <ProtectedRoute>
+                <CheckIn />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="checkin/:itemId"
+            element={
+              <ProtectedRoute>
+                <CheckIn />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="checkout"
+            element={
+              <ProtectedRoute>
+                <CheckOut />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="checkout/:itemId"
+            element={
+              <ProtectedRoute>
+                <CheckOut />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="categories"
+            element={
+              <ProtectedRoute>
+                <Categories />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="categories/new"
+            element={
+              <ProtectedRoute>
+                <NewCategory />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
 
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
+        <Route path="/" element={<Login />} errorElement={<ErrorPage />} />
+        <Route path="/login" element={<Login />} errorElement={<ErrorPage />} />
+        <Route
+          path="/signin"
+          element={<Signin />}
+          errorElement={<ErrorPage />}
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AuthProvider>
+  </BrowserRouter>
 );
+
+createRoot(document.getElementById("root")).render(<App />);
