@@ -18,13 +18,15 @@ public class Registry {
     private RegistryLabel label;
     @Column(nullable = false)
     private String justification;
+    private String author;
     private LocalDateTime createdAt;
 
     public Registry(){}
-    public Registry(Long itemId, RegistryLabel label, String justification) {
+    public Registry(Long itemId, RegistryLabel label, String justification, String author) {
         this.itemId = itemId;
         this.label = label;
         this.justification = justification;
+        this.author = author;
     }
 
     @PrePersist
