@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import InputCreatePassword from "../components/InputCreatePassword";
 import InputConfirmPassword from "../components/InputConfirmPassword";
-import InputName from "../components/InputName";
 import InputUserName from "../components/InputUsername";
 import { Loader2 } from "lucide-react";
+import useAuth from "../hooks/useAuth";
 
 export default function Signin() {
   const {
@@ -20,8 +20,15 @@ export default function Signin() {
 
   const [invalidPassword, setInvalidPassword] = useState(true);
 
+  const { signup } = useAuth();
+
   const onSubmit = async (data) => {
-    console.log(data);
+    const newData = {
+      login: data.username,
+      password: data.password,
+    };
+
+    await signup(newData);
   };
 
   return (
@@ -41,12 +48,6 @@ export default function Signin() {
             onSubmit={handleSubmit(onSubmit)}
             className="mt-10 flex flex-col gap-8"
           >
-            <InputName
-              register={register}
-              errors={errors}
-              isSubmitting={isSubmitting}
-            />
-
             <InputUserName
               register={register}
               errors={errors}
