@@ -1,15 +1,24 @@
 import axios from "axios";
 
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return parts.pop().split(";").shift();
+  }
+  return null;
+}
+
 function getAPIClient() {
   const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
   });
 
-  // api.interceptors.request.use((config) => {
-  //   console.log(config);
+  const token = getCookie("4inventory.token");
 
-  //   return config;
-  // });
+  if (token) {
+    api.defaults.headers["Authorization"] = `Bearer ${token}`;
+  }
 
   return api;
 }
