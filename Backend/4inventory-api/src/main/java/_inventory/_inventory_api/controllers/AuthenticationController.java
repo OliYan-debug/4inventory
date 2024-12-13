@@ -37,7 +37,7 @@ public class AuthenticationController {
 
     @Operation(summary = "User password reset")
     @PostMapping("/reset")
-    public ResponseEntity<Object> resetPassword(@RequestHeader(value = "authorization") String authHeader ,@RequestBody @Valid ResetPasswordDTO data){
+    public ResponseEntity<Object> resetPassword(@RequestHeader(value = "authorization") String authHeader, @RequestBody @Valid ResetPasswordDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         if(data.newPassword() == null) return ResponseEntity.badRequest().build();
@@ -60,6 +60,14 @@ public class AuthenticationController {
 
         this.userRepository.save(newUser);
 
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Logout user ('Set a token as invalid')")
+    @PostMapping("/logout")
+    public ResponseEntity<Object> logout(@RequestHeader(value = "authorization") String authHeader){
+        var token = authHeader.split(" ")[1];
+        tokenService.revokeToken(token);
         return ResponseEntity.ok().build();
     }
 }
