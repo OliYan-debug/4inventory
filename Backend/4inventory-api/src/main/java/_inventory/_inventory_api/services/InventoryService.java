@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -35,11 +37,13 @@ public class InventoryService {
         var pageable = PageRequest.of(page, size, sortable);
         return inventoryRepo.findAll(pageable);
     }
-    public InventoryItem findById(Long itemId){
+
+    public InventoryItem findById(Long itemId) {
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemId);
-        if(optionalItem.isPresent()) return optionalItem.get();
+        if (optionalItem.isPresent()) return optionalItem.get();
         throw new ItemIdNotFoundException(itemId);
     }
+
     public InventoryItem saveItem(InventoryItem item) {
         if (item.getItem() == null) throw new InvalidItemNameException("Name must not be empty");
         var inventoryItem = new InventoryItem();
@@ -48,7 +52,7 @@ public class InventoryService {
         inventoryItem.setQuantity(item.getQuantity() == null ? 0 : item.getQuantity());
         inventoryItem.setCategory(item.getCategory() == null ? Set.of() : item.getCategory());
         var savedItem = inventoryRepo.save(inventoryItem);
-        registryRepository.save(new Registry(savedItem.getId(), RegistryLabel.ADD, "Add a item"));
+        registryRepository.save(new Registry(savedItem.getId(), RegistryLabel.ADD, "Add a item", recoverUsername()));
         return savedItem;
     }
 
@@ -56,8 +60,9 @@ public class InventoryService {
         var itemId = item.id();
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemId);
         if (optionalItem.isPresent()) {
-            if (item.justification() == null || item.justification().isEmpty()) throw new JustificationNotFoundException();
-            registryRepository.save(new Registry(optionalItem.get().getId(), RegistryLabel.REMOVE, item.justification()));
+            if (item.justification() == null || item.justification().isEmpty())
+                throw new JustificationNotFoundException();
+            registryRepository.save(new Registry(optionalItem.get().getId(), RegistryLabel.REMOVE, item.justification(), recoverUsername()));
             inventoryRepo.deleteById(itemId);
             return "Item " + itemId + " deleted";
         }
@@ -67,18 +72,24 @@ public class InventoryService {
     public InventoryItem updateItem(InventoryItem itemUpdate) {
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemUpdate.getId());
         if (optionalItem.isPresent()) {
-            var itemDB = optionalItem.get();
-            var item = itemUpdate.getItem() == null ? itemDB.getItem() : itemUpdate.getItem();
-            var description = itemUpdate.getDescription() == null ? itemDB.getDescription() : itemUpdate.getDescription();
-            var quantity = itemUpdate.getQuantity() == null ? itemDB.getQuantity() : itemUpdate.getQuantity();
-            itemDB.setItem(item);
-            itemDB.setDescription(description);
-            itemDB.setQuantity(quantity);
-            var updatedItem =  inventoryRepo.save(itemDB);
-            registryRepository.save(new Registry(updatedItem.getId(), RegistryLabel.UPDATE, "Update a item"));
+            var itemDB = getUpdateItem(optionalItem.get(), itemUpdate);
+            var updatedItem = inventoryRepo.save(itemDB);
+            registryRepository.save(new Registry(updatedItem.getId(), RegistryLabel.UPDATE, "Update a item", recoverUsername()));
             return updatedItem;
         }
         throw new ItemIdNotFoundException(itemUpdate.getId());
+    }
+
+    private InventoryItem getUpdateItem(InventoryItem itemDB, InventoryItem itemUpdate){
+        var item = itemUpdate.getItem() == null ? itemDB.getItem() : itemUpdate.getItem();
+        var description = itemUpdate.getDescription() == null ? itemDB.getDescription() : itemUpdate.getDescription();
+        var quantity = itemUpdate.getQuantity() == null ? itemDB.getQuantity() : itemUpdate.getQuantity();
+        var categories = itemUpdate.getCategory() == null ? itemDB.getCategory() : itemUpdate.getCategory();
+        itemDB.setItem(item);
+        itemDB.setDescription(description);
+        itemDB.setQuantity(quantity);
+        itemDB.setCategory(categories);
+        return itemDB;
     }
 
     public InventoryItem updateItemQuantity(ItemAndRegistryDTO itemAndRegistryDTO) {
@@ -90,8 +101,9 @@ public class InventoryService {
             var label = itemAndRegistryDTO.getQuantity() > inventoryItem.getQuantity() ? RegistryLabel.CHECK_IN : RegistryLabel.CHECK_OUT;
             inventoryItem.setQuantity(itemAndRegistryDTO.getQuantity());
             var itemSaved = inventoryRepo.save(inventoryItem);
-            if(itemAndRegistryDTO.getJustification() == null || itemAndRegistryDTO.getJustification().isEmpty()) throw new JustificationNotFoundException();
-            registryRepository.save(new Registry(itemSaved.getId(), label, itemAndRegistryDTO.getJustification()));
+            if (itemAndRegistryDTO.getJustification() == null || itemAndRegistryDTO.getJustification().isEmpty())
+                throw new JustificationNotFoundException();
+            registryRepository.save(new Registry(itemSaved.getId(), label, itemAndRegistryDTO.getJustification(), recoverUsername()));
             return itemSaved;
         }
         throw new ItemIdNotFoundException(itemAndRegistryDTO.getId());
@@ -104,4 +116,11 @@ public class InventoryService {
     public InventoryItem removeItemCategory(ItemAndCategory itemAndCategory) {
         return inventoryCategoryService.removeCategory(itemAndCategory);
     }
+
+    private String recoverUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()) return authentication.getName();
+        return null;
+    }
 }
+

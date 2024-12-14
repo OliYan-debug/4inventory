@@ -14,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -40,16 +37,16 @@ public class AuthenticationController {
 
     @Operation(summary = "User password reset")
     @PostMapping("/reset")
-    public ResponseEntity<Object> resetPassword(@RequestBody @Valid ResetPasswordDTO data){
+    public ResponseEntity<Object> resetPassword(@RequestHeader(value = "authorization") String authHeader, @RequestBody @Valid ResetPasswordDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         if(data.newPassword() == null) return ResponseEntity.badRequest().build();
         var encryptedPassword = new BCryptPasswordEncoder().encode(data.newPassword());
         var user = userRepository.findByUsername(data.login());
-        var id = user.getId();
-        var roles = user.getRole();
-        var userChanged = new User(id, data.login(), encryptedPassword, roles);
-        userRepository.save(userChanged);
+        user.setPassword(encryptedPassword);
+        userRepository.save(user);
+        var token = authHeader.split(" ")[1];
+        tokenService.revokeToken(token);
         return ResponseEntity.ok().build();
     }
 
@@ -63,6 +60,14 @@ public class AuthenticationController {
 
         this.userRepository.save(newUser);
 
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Logout user ('Set a token as invalid')")
+    @PostMapping("/logout")
+    public ResponseEntity<Object> logout(@RequestHeader(value = "authorization") String authHeader){
+        var token = authHeader.split(" ")[1];
+        tokenService.revokeToken(token);
         return ResponseEntity.ok().build();
     }
 }
