@@ -110,6 +110,7 @@ export default function Products() {
             first={response.first}
             last={response.last}
             setSize={setSize}
+            path={"products"}
           />
         )}
       </div>
