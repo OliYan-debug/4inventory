@@ -14,7 +14,7 @@ export default function NavBar() {
   }
 
   const { logout } = useAuth();
-  const user = JSON.parse(sessionStorage.getItem("4inventory.user"));
+  const user = JSON.parse(localStorage.getItem("4inventory.user"));
 
   return (
     <nav
@@ -56,7 +56,7 @@ export default function NavBar() {
             />
           </Link>
           <span className="mt-px text-xs font-thin text-neutral-200">
-            1.2.4
+            1.3.5
           </span>
         </div>
 
