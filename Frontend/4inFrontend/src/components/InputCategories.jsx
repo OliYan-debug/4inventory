@@ -130,6 +130,7 @@ export default function InputCategories({
             selectedCategories.length === 0 ? "Select categories" : ""
           }
           onChange={handleSearchCategories}
+          onClick={handleGetCategories}
           onKeyDown={handleKeyPress}
           disabled={maxTagsLimit}
           autoComplete="off"
