@@ -1,10 +1,11 @@
 import logo from "../assets/logo.svg";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputPassword from "../components/InputPassword";
 import InputUserName from "../components/InputUsername";
 import { Loader2 } from "lucide-react";
 import useAuth from "../hooks/useAuth";
+import { useEffect } from "react";
 
 export default function Login() {
   const {
@@ -16,6 +17,15 @@ export default function Login() {
   });
 
   const { login } = useAuth();
+  const isAuthenticated = localStorage.getItem("4inventory.isAuthenticated");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("isAuth:" + isAuthenticated);
+    if (isAuthenticated) {
+      navigate("/products");
+    }
+  }, [isAuthenticated]);
 
   const onSubmit = async (data) => {
     const newData = {
