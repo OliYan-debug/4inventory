@@ -52,7 +52,7 @@ public class InventoryService {
         inventoryItem.setQuantity(item.getQuantity() == null ? 0 : item.getQuantity());
         inventoryItem.setCategory(item.getCategory() == null ? Set.of() : item.getCategory());
         var savedItem = inventoryRepo.save(inventoryItem);
-        registryRepository.save(new Registry(savedItem.getId(), RegistryLabel.ADD, "Add a item", recoverUsername()));
+        registryRepository.save(new Registry(savedItem.getId(), savedItem.getItem(), RegistryLabel.ADD, "Add a item", recoverUsername()));
         return savedItem;
     }
 
@@ -62,7 +62,8 @@ public class InventoryService {
         if (optionalItem.isPresent()) {
             if (item.justification() == null || item.justification().isEmpty())
                 throw new JustificationNotFoundException();
-            registryRepository.save(new Registry(optionalItem.get().getId(), RegistryLabel.REMOVE, item.justification(), recoverUsername()));
+            var itemDB = optionalItem.get();
+            registryRepository.save(new Registry(itemDB.getId(), itemDB.getItem(),RegistryLabel.REMOVE, item.justification(), recoverUsername()));
             inventoryRepo.deleteById(itemId);
             return "Item " + itemId + " deleted";
         }
@@ -74,7 +75,7 @@ public class InventoryService {
         if (optionalItem.isPresent()) {
             var itemDB = getUpdateItem(optionalItem.get(), itemUpdate);
             var updatedItem = inventoryRepo.save(itemDB);
-            registryRepository.save(new Registry(updatedItem.getId(), RegistryLabel.UPDATE, "Update a item", recoverUsername()));
+            registryRepository.save(new Registry(updatedItem.getId(), updatedItem.getItem(), RegistryLabel.UPDATE, "Update a item", recoverUsername()));
             return updatedItem;
         }
         throw new ItemIdNotFoundException(itemUpdate.getId());
@@ -103,7 +104,7 @@ public class InventoryService {
             var itemSaved = inventoryRepo.save(inventoryItem);
             if (itemAndRegistryDTO.getJustification() == null || itemAndRegistryDTO.getJustification().isEmpty())
                 throw new JustificationNotFoundException();
-            registryRepository.save(new Registry(itemSaved.getId(), label, itemAndRegistryDTO.getJustification(), recoverUsername()));
+            registryRepository.save(new Registry(itemSaved.getId(), itemSaved.getItem(), label, itemAndRegistryDTO.getJustification(), recoverUsername()));
             return itemSaved;
         }
         throw new ItemIdNotFoundException(itemAndRegistryDTO.getId());
