@@ -27,7 +27,7 @@ const productsLinks = [
 ];
 
 const categoriesLinks = [
-  { path: "categories", label: "See Categorys", Icon: FolderOpen },
+  { path: "categories", label: "See Categories", Icon: FolderOpen },
   { path: "categories/new", label: "New Category", Icon: FolderInput },
 ];
 
@@ -41,7 +41,7 @@ export default function Menu({ hiddenNav }) {
       >
         <MenuButton
           label={"DashBoard"}
-          path={""}
+          path={"/products/dashboard"}
           Icon={ChartColumnBig}
           hiddenNav={hiddenNav}
           active={location.pathname === "/dashboard"}
