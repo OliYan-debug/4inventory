@@ -1,20 +1,24 @@
 package _inventory._inventory_api.controllers;
 
 import _inventory._inventory_api.config.security.TokenService;
-import _inventory._inventory_api.domain.dto.AuthenticationDTO;
-import _inventory._inventory_api.domain.dto.LoginResponseDTO;
-import _inventory._inventory_api.domain.dto.RegisterDTO;
-import _inventory._inventory_api.domain.dto.ResetPasswordDTO;
+import _inventory._inventory_api.domain.dto.*;
 import _inventory._inventory_api.domain.entities.user.User;
+import _inventory._inventory_api.domain.enums.UserRoles;
 import _inventory._inventory_api.repositories.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/auth")
@@ -68,6 +72,16 @@ public class AuthenticationController {
     public ResponseEntity<Object> logout(@RequestHeader(value = "authorization") String authHeader){
         var token = authHeader.split(" ")[1];
         tokenService.revokeToken(token);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Change the user role")
+    @PostMapping("/change-role")
+    public ResponseEntity<Object> changeRole(@RequestBody ChangeRoleDTO data){
+        var userDB = this.userRepository.findByUsername(data.login());
+        if(userDB == null || userDB.getUsername().equalsIgnoreCase("admin")) return ResponseEntity.badRequest().build();
+        userDB.setRole(data.role());
+        userRepository.save(userDB);
         return ResponseEntity.ok().build();
     }
 }
