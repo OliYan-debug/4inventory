@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Map;
 
 @Service
 public class TokenService {
@@ -31,6 +32,7 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("4Inventory-api")
                     .withSubject(user.getUsername())
+                    .withClaim("role", user.getRole().name())
                     .withExpiresAt(this.genExpirationDate())
                     .sign(algorithm);
             return token;
