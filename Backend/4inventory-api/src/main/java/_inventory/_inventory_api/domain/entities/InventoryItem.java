@@ -18,20 +18,20 @@ public class InventoryItem {
     private String item;
     private String description;
     private Integer quantity;
-    private LocalDate created_at;
-    private LocalDateTime last_update;
+    private LocalDate createdAt;
+    private LocalDateTime lastUpdate;
     @ManyToMany()
     private Set<Category> category;
 
     @PrePersist
     public void prePersist() {
-        this.created_at = LocalDate.now();
-        this.last_update = LocalDateTime.now();
+        this.createdAt = LocalDate.now();
+        this.lastUpdate = LocalDateTime.now();
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.last_update = LocalDateTime.now();
+        this.lastUpdate = LocalDateTime.now();
     }
 
 }
