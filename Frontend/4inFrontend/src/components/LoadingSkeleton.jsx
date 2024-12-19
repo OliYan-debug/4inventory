@@ -1,4 +1,4 @@
-export default function LoadingSkeleton() {
+export function LoadingSkeleton() {
   const Item = ({ width, bgColor }) => (
     <div className="flex items-center py-2">
       <div className={`h-4 ${width} rounded-full ${bgColor}`}></div>

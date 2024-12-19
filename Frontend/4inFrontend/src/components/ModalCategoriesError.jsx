@@ -1,7 +1,7 @@
-import { Plus, TextSearch } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Plus, TextSearch } from "lucide-react";
 
-export default function ModalCategoriesError() {
+export function ModalCategoriesError() {
   return (
     <div className="fixed inset-0 z-50 flex h-screen w-screen animate-fadeIn items-center justify-center bg-black/50">
       <div className="flex w-[30vw] flex-col items-center rounded-2xl bg-neutral-50 px-8 py-6 text-center">

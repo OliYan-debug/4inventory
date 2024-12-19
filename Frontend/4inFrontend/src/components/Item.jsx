@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Ellipsis,
   PackageMinus,
@@ -5,16 +7,14 @@ import {
   PackageX,
   Pencil,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 
-export default function Item({
+export function Item({
   id,
   item,
   description,
   categories,
   quantity,
-  created,
+  createdAt,
   count,
 }) {
   const [itemMenuOpen, setItemMenuOpen] = useState(false);
@@ -134,7 +134,7 @@ export default function Item({
 
       <div className="col-auto flex items-center py-2">
         <p className="text-neutral-500">
-          {created[0]}-{created[1]}-{created[2]}
+          {createdAt[0]}-{createdAt[1]}-{createdAt[2]}
         </p>
       </div>
     </div>

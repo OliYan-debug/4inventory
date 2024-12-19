@@ -1,7 +1,7 @@
-import { ChevronDown, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { ChevronDown, X } from "lucide-react";
 
-export default function InputCategories({
+export function InputCategories({
   register,
   errors,
   resetField,

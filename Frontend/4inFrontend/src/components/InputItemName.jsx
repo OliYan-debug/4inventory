@@ -1,4 +1,4 @@
-export default function InputItemName({ register, errors }) {
+export function InputItemName({ register, errors }) {
   return (
     <div className="w-full">
       <label htmlFor="item" className="text-sm text-neutral-500">

@@ -1,7 +1,7 @@
-import { Box, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Box, ChevronRight } from "lucide-react";
 
-export default function ItemFound({ id, item, category, setOpenSearch }) {
+export function ItemFound({ id, item, category, setOpenSearch }) {
   return (
     <Link
       to={`/products/update/${id}`}

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-export default function Pagination({
+export function Pagination({
   totalElements,
   totalPages,
   pageNumber,

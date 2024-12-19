@@ -1,7 +1,7 @@
-import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
-export default function InputCreatePassword({
+export function InputCreatePassword({
   register,
   errors,
   setInvalidPassword,
@@ -41,22 +41,22 @@ export default function InputCreatePassword({
               validatePassword: (value) => {
                 const lowerCaseLetters = /[a-z]/;
                 if (!value.match(lowerCaseLetters)) {
-                  return "Do you need lowercase letters";
+                  return "You must use lowercase letters";
                 }
 
                 const upperCaseLetters = /[A-Z]/;
                 if (!value.match(upperCaseLetters)) {
-                  return "Do you need uppercase letters";
+                  return "You must use uppercase letters";
                 }
 
                 const numbers = /[0-9]/;
                 if (!value.match(numbers)) {
-                  return "Do you need numbers";
+                  return "You must use numbers";
                 }
 
                 const specialCharacters = /[!@#$%^&*()-=_+{};':"|,.<>?]/;
                 if (!value.match(specialCharacters)) {
-                  return "Do you need special characters";
+                  return "You must use special characters";
                 }
 
                 setInvalidPassword(false);

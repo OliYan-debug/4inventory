@@ -1,5 +1,5 @@
 import { HistoryIcon, Rat } from "lucide-react";
-import { DashboardHeader } from "./DashboardHeader";
+import { HistoryHeader } from "./HistoryHeader";
 import { Registry } from "./Registry";
 
 export function History({ registers, setSort }) {
@@ -19,7 +19,7 @@ export function History({ registers, setSort }) {
         </div>
       ) : (
         <>
-          <DashboardHeader setSort={setSort} />
+          <HistoryHeader setSort={setSort} />
 
           {registers.map((registry) => {
             count++;
@@ -27,7 +27,7 @@ export function History({ registers, setSort }) {
               <Registry
                 key={registry.id}
                 id={registry.id}
-                item={registry.itemId}
+                item={registry.item}
                 type={registry.label}
                 justification={registry.justification}
                 author={registry.author}

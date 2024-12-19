@@ -1,4 +1,4 @@
-export default function ItemSearch({ id, item, handleSelect }) {
+export function ItemSearch({ id, item, handleSelect }) {
   return (
     <li
       onClick={() => handleSelect(id)}

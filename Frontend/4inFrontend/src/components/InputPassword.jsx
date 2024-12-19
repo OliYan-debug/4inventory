@@ -1,7 +1,7 @@
-import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
-export default function InputPassword({ register, errors, isSubmitting }) {
+export function InputPassword({ register, errors, isSubmitting }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleEyeClick = () => {

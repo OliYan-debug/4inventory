@@ -1,4 +1,4 @@
-export default function InputName({ register, errors, isSubmitting }) {
+export function InputName({ register, errors, isSubmitting }) {
   return (
     <div>
       <div className="relative flex w-full items-center">

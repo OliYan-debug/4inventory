@@ -1,9 +1,4 @@
-export default function InputDescription({
-  register,
-  errors,
-  itemId,
-  selectedItem,
-}) {
+export function InputDescription({ register, errors, itemId, selectedItem }) {
   return (
     <div className="w-full">
       <label htmlFor="description" className="text-sm text-neutral-500">
