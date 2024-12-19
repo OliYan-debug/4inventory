@@ -1,27 +1,30 @@
-import logo from "../assets/logo.svg";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import InputPassword from "../components/InputPassword";
-import InputUserName from "../components/InputUsername";
 import { Loader2 } from "lucide-react";
 import useAuth from "../hooks/useAuth";
-import { useEffect } from "react";
+import logo from "../assets/logo.svg";
+import { InputPassword } from "../components/InputPassword";
+import { InputUserName } from "../components/InputUsername";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const {
     register,
     handleSubmit,
+    setError,
+    resetField,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
   });
 
-  const { login } = useAuth();
+  const { login, authError, setAuthError, authSuccess, setAuthSuccess } =
+    useAuth();
   const isAuthenticated = localStorage.getItem("4inventory.isAuthenticated");
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("isAuth:" + isAuthenticated);
     if (isAuthenticated) {
       navigate("/products");
     }
@@ -35,6 +38,28 @@ export default function Login() {
 
     await login(newData);
   };
+
+  useEffect(() => {
+    if (authSuccess) {
+      toast.success(authSuccess);
+    }
+    setAuthSuccess(null);
+  }, [authSuccess]);
+
+  useEffect(() => {
+    if (authError) {
+      toast.error(authError.message);
+
+      setError("username", { type: "invalid" }, { shouldFocus: true });
+
+      resetField("password");
+      setError("password", {
+        type: "invalid",
+        message: "Invalid user or password, try again.",
+      });
+    }
+    setAuthError(null);
+  }, [authError]);
 
   return (
     <div className="m-0 w-screen bg-neutral-300 p-4 md:h-screen">
