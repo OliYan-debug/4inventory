@@ -1,11 +1,11 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
-import Header from "../components/Header";
-import { ChevronRight, CircleMinus, SearchIcon, Undo2 } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { useEffect, useRef, useState } from "react";
-import { api } from "../services/api";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import ItemSearch from "../components/ItemSearch";
+import { ChevronRight, CircleMinus, SearchIcon, Undo2 } from "lucide-react";
+import { api } from "../services/api";
+import { Header } from "../components/Header";
+import { ItemSearch } from "../components/ItemSearch";
 
 export default function CheckOut() {
   let { itemId } = useParams();

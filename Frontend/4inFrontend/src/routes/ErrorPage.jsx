@@ -1,5 +1,5 @@
-import { ServerOff } from "lucide-react";
 import { useRouteError } from "react-router-dom";
+import { ServerOff } from "lucide-react";
 
 function ErrorPage() {
   const error = useRouteError();

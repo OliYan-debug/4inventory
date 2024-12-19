@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import Header from "../components/Header";
-import { ChevronRight, CirclePlus, Undo2 } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { api } from "../services/api";
-import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
-import ModalMaxCategoriesError from "../components/ModalMaxCategoriesError";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { ChevronRight, CirclePlus, Undo2 } from "lucide-react";
+import { api } from "../services/api";
+import { Header } from "../components/Header";
+import { ModalMaxCategoriesError } from "../components/ModalMaxCategoriesError";
 
 export default function NewCategory() {
   const [categories, setCategories] = useState([]);

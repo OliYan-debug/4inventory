@@ -1,14 +1,14 @@
-import { ChevronRight, CirclePlus, ServerOff, Undo2 } from "lucide-react";
-import Header from "../components/Header";
-import ModalCategoriesError from "../components/ModalCategoriesError";
-import InputDescription from "../components/InputDescription";
-import InputCategories from "../components/InputCategories";
-import InputItemName from "../components/InputItemName";
-import { api } from "../services/api";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { ChevronRight, CirclePlus, ServerOff, Undo2 } from "lucide-react";
+import { api } from "../services/api";
+import { Header } from "../components/Header";
+import { ModalCategoriesError } from "../components/ModalCategoriesError";
+import { InputDescription } from "../components/InputDescription";
+import { InputCategories } from "../components/InputCategories";
+import { InputItemName } from "../components/InputItemName";
 
 export default function NewItem() {
   const [categories, setCategories] = useState([]);
