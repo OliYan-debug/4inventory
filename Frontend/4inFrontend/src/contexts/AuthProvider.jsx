@@ -8,14 +8,15 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [cookies, setCookie, removeCookie] = useCookies(["4inventory.token"]);
-  const [error, setError] = useState(null);
+  const [authError, setAuthError] = useState(null);
+  const [authSuccess, setAuthSuccess] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const cookieToken = cookies["4inventory.token"];
+    const token = cookies["4inventory.token"];
 
-    if (cookieToken) {
-      api.defaults.headers["Authorization"] = `Bearer ${cookieToken}`;
+    if (token) {
+      api.defaults.headers["Authorization"] = `Bearer ${token}`;
     } else {
       removeCookie("4inventory.token");
 
@@ -24,18 +25,19 @@ const AuthProvider = ({ children }) => {
 
       navigate("/");
     }
-  }, [cookies]);
+  }, [cookies, removeCookie]);
 
-  const signup = async (data) => {
+  const signin = async (data) => {
     await api
       .post("/auth/register", data)
       .then((response) => {
         if (response.status === 200) {
+          setAuthSuccess("User created successfully! Log in to continue.");
           navigate("/login");
         }
       })
       .catch((error) => {
-        setError(error.response.data.message);
+        setAuthError(error);
       });
   };
 
@@ -46,12 +48,12 @@ const AuthProvider = ({ children }) => {
         const token = response.data.token;
 
         if (!token) {
-          setError("Token undefined");
+          setAuthError("Token undefined.");
           return false;
         }
 
         setCookie("4inventory.token", token, {
-          maxAge: 60 * 2, //2 hours
+          maxAge: 2 * 60 * 60, //2 hours
         });
 
         const decoded = jwtDecode(token);
@@ -61,15 +63,38 @@ const AuthProvider = ({ children }) => {
 
         api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
+        setAuthSuccess(
+          <p>
+            Login successful! <br />
+            Welcome, <span className="font-bold"> {decoded.sub}.</span>
+          </p>,
+        );
         navigate("/products");
       })
       .catch((error) => {
-        setError(error.response.data.message);
+        setAuthError(error);
       });
   };
 
   const logout = async () => {
     try {
+      await api
+        .post("/auth/logout")
+        .then((response) => {
+          if (response.status === 200) {
+            setAuthSuccess(
+              <p>
+                <span className="font-bold">You are logged out.</span>
+                <br />
+                To access again, please log in.
+              </p>,
+            );
+          }
+        })
+        .catch((error) => {
+          setAuthError(error);
+        });
+
       removeCookie("4inventory.token");
 
       localStorage.removeItem("4inventory.user");
@@ -86,9 +111,11 @@ const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        error,
-        setError,
-        signup,
+        authError,
+        setAuthError,
+        authSuccess,
+        setAuthSuccess,
+        signin,
         login,
         logout,
       }}
