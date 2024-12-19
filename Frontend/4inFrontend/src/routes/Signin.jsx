@@ -1,11 +1,12 @@
-import logo from "../assets/logo.svg";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import InputCreatePassword from "../components/InputCreatePassword";
-import InputConfirmPassword from "../components/InputConfirmPassword";
-import InputUserName from "../components/InputUsername";
 import { Loader2 } from "lucide-react";
+import logo from "../assets/logo.svg";
+import { InputConfirmPassword } from "../components/InputConfirmPassword";
+import { InputCreatePassword } from "../components/InputCreatePassword";
+import { InputCreateUserName } from "../components/InputCreateUsername";
+import { toast } from "react-toastify";
 import useAuth from "../hooks/useAuth";
 
 export default function Signin() {
@@ -19,17 +20,31 @@ export default function Signin() {
   });
 
   const [invalidPassword, setInvalidPassword] = useState(true);
-
-  const { signup } = useAuth();
+  const { signin, error, setError, success, setSuccess } = useAuth();
 
   const onSubmit = async (data) => {
     const newData = {
       login: data.username,
       password: data.password,
+      role: "USER", //default role
     };
 
-    await signup(newData);
+    await signin(newData);
   };
+
+  useEffect(() => {
+    if (success) {
+      toast.success(success);
+    }
+    setSuccess(null);
+  }, [success]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message);
+    }
+    setError(null);
+  }, [error]);
 
   return (
     <div className="m-0 w-screen bg-neutral-300 p-4 md:h-screen">
@@ -48,7 +63,7 @@ export default function Signin() {
             onSubmit={handleSubmit(onSubmit)}
             className="mt-10 flex flex-col gap-8"
           >
-            <InputUserName
+            <InputCreateUserName
               register={register}
               errors={errors}
               isSubmitting={isSubmitting}
