@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { ChevronRight } from "lucide-react";
 import { Link, useParams } from "react-router";
-import Header from "../components/Header";
-import { Card } from "../components/Card";
-import Pagination from "../components/Pagination";
-import { api } from "../services/api";
 import { useCookies } from "react-cookie";
+import { ChevronRight } from "lucide-react";
+import { api } from "../services/api";
+import { Header } from "../components/Header";
+import { Card } from "../components/Card";
 import { History } from "../components/History";
+import { Pagination } from "../components/Pagination";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
   let { page } = useParams();
@@ -21,6 +23,22 @@ export default function Dashboard() {
   const [totalItems, setTotalItems] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalCategories, setTotalCategories] = useState(0);
+
+  const user = JSON.parse(localStorage.getItem("4inventory.user"));
+  const isAdmin = user.role === "ADMIN";
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAdmin) {
+      toast.warn(
+        <p>
+          <span className="font-bold">Only administrators </span> can access
+          this page!
+        </p>,
+      );
+      navigate("/");
+    }
+  }, [isAdmin]);
 
   useEffect(() => {
     api
@@ -88,14 +106,14 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Header title={"Products"} subtitle={subtitle()} />
+      <Header title={"Dashboard"} subtitle={subtitle()} />
 
       <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div className="flex flex-col gap-4">
           <div className="flex w-full flex-row justify-center gap-6">
             <Card title="Products" total={totalItems} />
             <Card title="Categories" total={totalCategories} />
-            <Card title="Quantity items" total={totalQuantity} />
+            <Card title="Items Quantity" total={totalQuantity} />
           </div>
 
           <History registers={registers} setSort={setSort} />
