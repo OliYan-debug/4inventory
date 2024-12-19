@@ -1,4 +1,4 @@
-export function InputUserName({ register, errors, isSubmitting }) {
+export function InputCreateUserName({ register, errors, isSubmitting }) {
   return (
     <div>
       <div className="relative flex w-full items-center">
@@ -18,6 +18,31 @@ export function InputUserName({ register, errors, isSubmitting }) {
             maxLength: {
               value: 20,
               message: "Maximum character value exceeded",
+            },
+            minLength: {
+              value: 3,
+              message: "Minimum 3 characters",
+            },
+            validate: {
+              validate: (value) => {
+                const reservedWords = [
+                  "admin",
+                  "root",
+                  "superuser",
+                  "superadmin",
+                  "user",
+                ];
+                if (reservedWords.includes(value.toLowerCase())) {
+                  return "System Reserved user name, try another";
+                }
+
+                const regex = /^[a-zA-Z0-9._-]+$/;
+                if (!value.match(regex)) {
+                  return "The username can only contain letters, numbers, underlines, hyphens and dots";
+                }
+
+                return true;
+              },
             },
           })}
           aria-invalid={errors.username ? "true" : "false"}
