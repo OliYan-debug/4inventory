@@ -5,10 +5,10 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-export function DashboardHeader({ setSort }) {
+export function HistoryHeader({ setSort }) {
   const columnsDefault = [
     { label: "ID", sorting: true, order: "asc" },
-    { label: "Item ID", sorting: false, order: "desc" },
+    { label: "Item", sorting: false, order: "desc" },
     { label: "Type", sorting: false, order: "desc" },
     { label: "Justification", sorting: false, order: "desc" },
     { label: "Author", sorting: false, order: "desc" },
@@ -33,11 +33,19 @@ export function DashboardHeader({ setSort }) {
     setColumns(newColumns);
 
     let { label, order } = newColumns[selectedIndex];
+    let sort = "";
 
+    //verify labels
     label = label === "Type" ? "Label" : label;
-    label = label === "Item ID" ? "itemId" : label;
 
-    let sort = `${label.toLocaleLowerCase()},${order}`;
+    if (label === "Date") {
+      label = "createdAt";
+      setSort(`${label},${order}`);
+
+      return;
+    }
+
+    sort = `${label.toLocaleLowerCase()},${order}`;
 
     setSort(sort);
   };
