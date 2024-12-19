@@ -1,14 +1,14 @@
-import { ChevronRight, CirclePlus, ServerOff, Undo2 } from "lucide-react";
-import Header from "../components/Header";
-import ModalCategoriesError from "../components/ModalCategoriesError";
-import InputCategories from "../components/InputCategories";
-import InputUpdateItemName from "../components/InputUpdateItemName";
-import InputDescription from "../components/InputDescription";
-import { api } from "../services/api";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { ChevronRight, CirclePlus, ServerOff, Undo2 } from "lucide-react";
+import { api } from "../services/api";
+import { Header } from "../components/Header";
+import { ModalCategoriesError } from "../components/ModalCategoriesError";
+import { InputCategories } from "../components/InputCategories";
+import { InputUpdateItemName } from "../components/InputUpdateItemName";
+import { InputDescription } from "../components/InputDescription";
 
 export default function UpdateItem() {
   let { itemId } = useParams();
@@ -94,11 +94,7 @@ export default function UpdateItem() {
         pending: "Updating item",
         success: {
           render() {
-            return (
-              <p>
-                Item <span className="font-bold">{data.item}</span> updated!
-              </p>
-            );
+            return <p>Item updated!</p>;
           },
         },
         error: {
