@@ -15,10 +15,14 @@ import CheckIn from "./routes/CheckIn";
 import Login from "./routes/Login";
 import Signin from "./routes/Signin";
 import UpdateItem from "./routes/UpdateItem";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./services/ProtectedRoute";
 import AuthProvider from "./contexts/AuthProvider";
 import NotFound from "./routes/NotFound";
 import Dashboard from "./routes/Dashboard";
+import PageTitle from "./components/PageTitle";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Logout from "./routes/Logout";
 
 export const App = () => (
   <BrowserRouter>
@@ -34,6 +38,7 @@ export const App = () => (
               path="/products"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Products" />
                   <Products />
                 </ProtectedRoute>
               }
@@ -50,6 +55,7 @@ export const App = () => (
               path="new"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | New Product" />
                   <NewItem />
                 </ProtectedRoute>
               }
@@ -58,6 +64,7 @@ export const App = () => (
               path="delete"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Delete Product" />
                   <DeleteItem />
                 </ProtectedRoute>
               }
@@ -66,6 +73,7 @@ export const App = () => (
               path="delete/:itemId"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Delete Product" />
                   <DeleteItem />
                 </ProtectedRoute>
               }
@@ -74,6 +82,7 @@ export const App = () => (
               path="update"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Update Product" />
                   <UpdateItem />
                 </ProtectedRoute>
               }
@@ -82,6 +91,7 @@ export const App = () => (
               path="update/:itemId"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Update Product" />
                   <UpdateItem />
                 </ProtectedRoute>
               }
@@ -90,6 +100,7 @@ export const App = () => (
               path="search"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Search Product" />
                   <SearchItem />
                 </ProtectedRoute>
               }
@@ -98,6 +109,7 @@ export const App = () => (
               path="checkin"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Product CheckIn" />
                   <CheckIn />
                 </ProtectedRoute>
               }
@@ -106,6 +118,7 @@ export const App = () => (
               path="checkin/:itemId"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Product CheckIn" />
                   <CheckIn />
                 </ProtectedRoute>
               }
@@ -114,6 +127,7 @@ export const App = () => (
               path="checkout"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Product CheckOut" />
                   <CheckOut />
                 </ProtectedRoute>
               }
@@ -122,6 +136,7 @@ export const App = () => (
               path="checkout/:itemId"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Product CheckOut" />
                   <CheckOut />
                 </ProtectedRoute>
               }
@@ -130,6 +145,7 @@ export const App = () => (
               path="categories"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Categories" />
                   <Categories />
                 </ProtectedRoute>
               }
@@ -138,6 +154,7 @@ export const App = () => (
               path="categories/new"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | New Category" />
                   <NewCategory />
                 </ProtectedRoute>
               }
@@ -146,6 +163,7 @@ export const App = () => (
               path="dashboard"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Dashboard" />
                   <Dashboard />
                 </ProtectedRoute>
               }
@@ -154,6 +172,7 @@ export const App = () => (
               path="dashboard/:page"
               element={
                 <ProtectedRoute>
+                  <PageTitle title="4Inventory | Dashboard" />
                   <Dashboard />
                 </ProtectedRoute>
               }
@@ -163,16 +182,37 @@ export const App = () => (
           <Route path="/" element={<Login />} errorElement={<ErrorPage />} />
           <Route
             path="/login"
-            element={<Login />}
+            element={
+              <>
+                <PageTitle title="4Inventory | Login" />
+                <Login />
+              </>
+            }
             errorElement={<ErrorPage />}
           />
           <Route
             path="/signin"
-            element={<Signin />}
+            element={
+              <>
+                <PageTitle title="4Inventory | Signin" />
+                <Signin />
+              </>
+            }
+            errorElement={<ErrorPage />}
+          />
+          <Route
+            path="/logout"
+            element={
+              <>
+                <PageTitle title="4Inventory | logout" />
+                <Logout />
+              </>
+            }
             errorElement={<ErrorPage />}
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ToastContainer />
       </CookiesProvider>
     </AuthProvider>
   </BrowserRouter>
