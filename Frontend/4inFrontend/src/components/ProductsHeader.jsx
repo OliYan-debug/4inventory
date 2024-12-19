@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-export default function ProductsHeader({ setSort }) {
+export function ProductsHeader({ setSort }) {
   const columnsDefault = [
     { label: "ID", sorting: true, order: "asc" },
     { label: "Item", sorting: false, order: "desc" },
@@ -15,7 +15,7 @@ export default function ProductsHeader({ setSort }) {
     { label: "Date of entry", sorting: false, order: "desc" },
   ];
 
-  const [columns, setColums] = useState(columnsDefault);
+  const [columns, setColumns] = useState(columnsDefault);
 
   const handleSort = (selectedIndex) => {
     const newColumns = [...columns];
@@ -30,9 +30,17 @@ export default function ProductsHeader({ setSort }) {
       }
     });
 
-    setColums(newColumns);
+    setColumns(newColumns);
 
     let { label, order } = newColumns[selectedIndex];
+
+    if (label === "Date of entry") {
+      label = "createdAt";
+      setSort(`${label},${order}`);
+
+      return;
+    }
+
     let sort = `${label.toLocaleLowerCase()},${order}`;
 
     setSort(sort);
