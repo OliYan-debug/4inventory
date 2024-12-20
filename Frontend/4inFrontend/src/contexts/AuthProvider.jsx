@@ -84,9 +84,8 @@ const AuthProvider = ({ children }) => {
           if (response.status === 200) {
             setAuthSuccess(
               <p>
-                <span className="font-bold">You are logged out.</span>
-                <br />
-                To access again, please log in.
+                You are
+                <span className="font-bold"> logged out.</span>
               </p>,
             );
           }
