@@ -13,7 +13,7 @@ export function ModalCategoriesError() {
           No category found, try to register one:
         </p>
         <Link
-          to={"/products/categories/new"}
+          to={"/categories/new"}
           className="mt-6 flex items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500 disabled:cursor-no-drop disabled:opacity-70"
         >
           Add category

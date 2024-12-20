@@ -48,7 +48,7 @@ export default function Categories() {
     <div className="flex flex-col gap-4">
       <Header title={"Categories"} subtitle={Subtitle()}>
         <Link
-          to={"/products/categories/new"}
+          to={"/categories/new"}
           className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
         >
           New <PlusCircle size={16} />

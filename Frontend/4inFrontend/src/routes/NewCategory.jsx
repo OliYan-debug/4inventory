@@ -70,7 +70,7 @@ export default function NewCategory() {
   const subtitle = () => {
     return (
       <p className="flex items-center text-sm text-neutral-500">
-        <Link to={`/products/categories`} className="hover:font-semibold">
+        <Link to={`/categories`} className="hover:font-semibold">
           Category
         </Link>
         <ChevronRight size={16} color="#737373" />
@@ -152,7 +152,7 @@ export default function NewCategory() {
           </button>
 
           <Link
-            to={"/products/categories"}
+            to={"/categories"}
             disabled={isSubmitting || maxCategories}
             className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80 disabled:cursor-no-drop disabled:opacity-70"
           >
