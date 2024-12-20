@@ -22,7 +22,7 @@ export default function Logout() {
 
   useEffect(() => {
     logout();
-  }, [logout]);
+  }, []);
 
   return;
 }
