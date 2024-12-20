@@ -94,7 +94,11 @@ export default function UpdateItem() {
         pending: "Updating item",
         success: {
           render() {
-            return <p>Item updated!</p>;
+            return (
+              <p>
+                Item <span className="font-bold">{data.item}</span> updated!
+              </p>
+            );
           },
         },
         error: {
@@ -109,8 +113,7 @@ export default function UpdateItem() {
           },
         },
       });
-      reset();
-      setSelectedCategories([]);
+      navigate("/products");
     } catch (error) {
       console.error(error);
     }
