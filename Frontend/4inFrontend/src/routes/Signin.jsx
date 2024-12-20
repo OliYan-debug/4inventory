@@ -20,7 +20,8 @@ export default function Signin() {
   });
 
   const [invalidPassword, setInvalidPassword] = useState(true);
-  const { signin, error, setError, success, setSuccess } = useAuth();
+  const { signin, authError, setAuthError, authSuccess, setAuthSuccess } =
+    useAuth();
 
   const onSubmit = async (data) => {
     const newData = {
@@ -33,18 +34,18 @@ export default function Signin() {
   };
 
   useEffect(() => {
-    if (success) {
-      toast.success(success);
+    if (authSuccess) {
+      toast.success(authSuccess);
     }
-    setSuccess(null);
-  }, [success]);
+    setAuthSuccess(null);
+  }, [authSuccess]);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error.message);
+    if (authError) {
+      toast.error(authError.message);
     }
-    setError(null);
-  }, [error]);
+    setAuthError(null);
+  }, [authError]);
 
   return (
     <div className="m-0 w-screen bg-neutral-300 p-4 md:h-screen">
