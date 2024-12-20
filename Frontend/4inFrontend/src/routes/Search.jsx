@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import Header from "../components/Header";
+import { useForm } from "react-hook-form";
 import {
   ChevronRight,
   LucidePackageSearch,
@@ -7,10 +8,9 @@ import {
   SearchIcon,
   Undo2,
 } from "lucide-react";
-import { useForm } from "react-hook-form";
-import ItemFound from "../components/ItemFound";
-import { useState } from "react";
 import { api } from "../services/api";
+import { Header } from "../components/Header";
+import { ItemFound } from "../components/ItemFound";
 
 export default function SearchItem() {
   const [items, setItems] = useState([]);

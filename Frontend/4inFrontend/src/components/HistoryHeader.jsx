@@ -5,14 +5,14 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-export function ProductsHeader({ setSort }) {
+export function HistoryHeader({ setSort }) {
   const columnsDefault = [
     { label: "ID", sorting: true, order: "asc" },
     { label: "Item", sorting: false, order: "desc" },
-    { label: "Description", sorting: false, order: "desc" },
-    { label: "Category", sorting: false, order: "desc" },
-    { label: "Quantity", sorting: false, order: "desc" },
-    { label: "Date of entry", sorting: false, order: "desc" },
+    { label: "Type", sorting: false, order: "desc" },
+    { label: "Justification", sorting: false, order: "desc" },
+    { label: "Author", sorting: false, order: "desc" },
+    { label: "Date", sorting: false, order: "desc" },
   ];
 
   const [columns, setColumns] = useState(columnsDefault);
@@ -33,15 +33,19 @@ export function ProductsHeader({ setSort }) {
     setColumns(newColumns);
 
     let { label, order } = newColumns[selectedIndex];
+    let sort = "";
 
-    if (label === "Date of entry") {
+    //verify labels
+    label = label === "Type" ? "Label" : label;
+
+    if (label === "Date") {
       label = "createdAt";
       setSort(`${label},${order}`);
 
       return;
     }
 
-    let sort = `${label.toLocaleLowerCase()},${order}`;
+    sort = `${label.toLocaleLowerCase()},${order}`;
 
     setSort(sort);
   };
@@ -52,7 +56,7 @@ export function ProductsHeader({ setSort }) {
         <li
           onClick={() => handleSort(index)}
           key={index}
-          className={`col-auto flex cursor-pointer items-center text-neutral-600 transition hover:text-sky-400 ${column.label === "Description" && "col-span-2"}`}
+          className={`col-auto flex cursor-pointer items-center text-neutral-600 transition hover:text-sky-400 ${column.label === "Justification" && "col-span-2"}`}
         >
           <p className={`${column.sorting ? "font-bold" : "font-semibold"}`}>
             {column.label}

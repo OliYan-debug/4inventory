@@ -1,12 +1,13 @@
-import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
-export default function InputPassword({ register, errors, isSubmitting }) {
+export function InputPassword({ register, errors, isSubmitting }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleEyeClick = () => {
     showPassword ? setShowPassword(false) : setShowPassword(true);
   };
+
   return (
     <div>
       <div className="relative flex w-full items-center">
@@ -29,7 +30,7 @@ export default function InputPassword({ register, errors, isSubmitting }) {
             },
           })}
           aria-invalid={errors.password ? "true" : "false"}
-          type="password"
+          type={showPassword ? "text" : "password"}
           id="password"
           disabled={isSubmitting}
           placeholder="your password"

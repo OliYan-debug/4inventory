@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
-export default function MenuButton({ label, path, Icon, hiddenNav, active }) {
+export function MenuButton({ label, path, Icon, hiddenNav, active }) {
   return (
     <li
-      className={`group/item hiddenNavhiddenNav relative flex cursor-pointer justify-center px-4 font-medium transition hover:bg-neutral-500 hover:font-bold md:rounded-s-lg md:px-0 md:py-4 ${active && "bg-neutral-600 font-bold"}`}
+      className={`group/item relative flex cursor-pointer justify-center px-4 font-medium transition hover:bg-neutral-500 hover:font-bold md:rounded-s-lg md:px-0 md:py-4 ${active && "bg-neutral-600 font-bold"}`}
     >
       <Link to={path} className={"flex w-full flex-col-reverse md:flex-row"}>
         <span

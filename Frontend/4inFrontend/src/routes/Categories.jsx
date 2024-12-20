@@ -1,10 +1,10 @@
-import { ArrowDownUp, Rat } from "lucide-react";
-import Header from "../components/Header";
 import { useEffect, useState } from "react";
-import { api } from "../services/api";
-import Category from "../components/Category";
-import LoadingSkeleton from "../components/LoadingSkeleton";
 import { Link } from "react-router-dom";
+import { ArrowDownUp, PlusCircle, Rat } from "lucide-react";
+import { api } from "../services/api";
+import { Header } from "../components/Header";
+import { LoadingSkeleton } from "../components/LoadingSkeleton";
+import { Category } from "../components/Category";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
@@ -36,16 +36,24 @@ export default function Categories() {
     setUpdate(true);
   };
 
-  const subtitle = () => {
+  const Subtitle = () => {
     return (
       <p className="mt-1 w-full text-sm text-neutral-500">
         Found: <span className="font-bold">{categories.length}</span>
       </p>
     );
   };
+
   return (
     <div className="flex flex-col gap-4">
-      <Header title={"Categories"} subtitle={subtitle()} />
+      <Header title={"Categories"} subtitle={Subtitle()}>
+        <Link
+          to={"/categories/new"}
+          className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
+        >
+          New <PlusCircle size={16} />
+        </Link>
+      </Header>
 
       <div className="min-h-screen w-full overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:overflow-x-hidden">
         {loading ? (

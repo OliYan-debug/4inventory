@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.svg";
 
-export default function Logo() {
+export function Logo() {
   return (
     <div
       className={
@@ -14,7 +14,7 @@ export default function Logo() {
             <img src={logo} alt="4inventory" />
           </Link>
           <span className="mt-px text-xs font-thin text-neutral-200">
-            1.1.2
+            1.3.6
           </span>
         </div>
       </div>

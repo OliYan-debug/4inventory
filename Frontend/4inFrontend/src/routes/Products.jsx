@@ -1,13 +1,13 @@
-import Item from "../components/Item";
-import Header from "../components/Header";
 import { useEffect, useState } from "react";
-import { api } from "../services/api";
-import LoadingSkeleton from "../components/LoadingSkeleton";
 import { Link, useParams } from "react-router-dom";
-import Pagination from "../components/Pagination";
 import { useCookies } from "react-cookie";
-import ProductsHeader from "../components/ProductsHeader";
-import { Rat } from "lucide-react";
+import { PlusCircle, Rat } from "lucide-react";
+import { api } from "../services/api";
+import { Header } from "../components/Header";
+import { Item } from "../components/Item";
+import { ProductsHeader } from "../components/ProductsHeader";
+import { Pagination } from "../components/Pagination";
+import { LoadingSkeleton } from "../components/LoadingSkeleton";
 
 export default function Products() {
   let { page } = useParams();
@@ -55,7 +55,14 @@ export default function Products() {
   };
   return (
     <div className="flex flex-col gap-4">
-      <Header title={"Products"} subtitle={subtitle()} />
+      <Header title={"Products"} subtitle={subtitle()}>
+        <Link
+          to={"/products/new"}
+          className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
+        >
+          New <PlusCircle size={16} />
+        </Link>
+      </Header>
 
       <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div>
@@ -90,7 +97,7 @@ export default function Products() {
                         description={item.description}
                         categories={item.category}
                         quantity={item.quantity}
-                        created={item.created_at}
+                        createdAt={item.createdAt}
                         count={count}
                       />
                     );
@@ -110,6 +117,7 @@ export default function Products() {
             first={response.first}
             last={response.last}
             setSize={setSize}
+            path={"products"}
           />
         )}
       </div>

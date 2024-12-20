@@ -1,8 +1,6 @@
 import { Outlet } from "react-router-dom";
-import NavBar from "../components/NavBar";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Logo from "../components/Logo";
+import { Logo } from "../components/Logo";
+import { NavBar } from "../components/NavBar";
 
 function root() {
   return (
@@ -13,7 +11,6 @@ function root() {
         <Logo />
         <Outlet />
       </div>
-      <ToastContainer />
     </div>
   );
 }

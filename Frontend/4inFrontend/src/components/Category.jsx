@@ -1,10 +1,10 @@
-import { Check, Pencil, PencilOff, Trash } from "lucide-react";
-import { api } from "../services/api";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { Check, Pencil, PencilOff, Trash } from "lucide-react";
+import { api } from "../services/api";
 
-export default function Category({
+export function Category({
   id,
   name,
   color,

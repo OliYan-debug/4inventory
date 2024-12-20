@@ -1,7 +1,7 @@
-import { ChevronDown, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { ChevronDown, X } from "lucide-react";
 
-export default function InputCategories({
+export function InputCategories({
   register,
   errors,
   resetField,
@@ -130,6 +130,7 @@ export default function InputCategories({
             selectedCategories.length === 0 ? "Select categories" : ""
           }
           onChange={handleSearchCategories}
+          onClick={handleGetCategories}
           onKeyDown={handleKeyPress}
           disabled={maxTagsLimit}
           autoComplete="off"

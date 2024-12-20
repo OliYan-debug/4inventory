@@ -1,10 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../services/api";
-import { useEffect, useRef, useState } from "react";
 import { SearchIcon, X } from "lucide-react";
-import ItemSearch from "./ItemSearch";
+import { ItemSearch } from "./ItemSearch";
 
-export default function InputUpdateItemName({
+export function InputUpdateItemName({
   register,
   errors,
   setValue,

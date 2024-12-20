@@ -1,9 +1,14 @@
-import { Box, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Box, ChevronRight } from "lucide-react";
 
-export default function ItemFound({ id, item, category }) {
+export function ItemFound({ id, item, category, setOpenSearch }) {
   return (
-    <Link to={`produtc/${id}`}>
+    <Link
+      to={`/products/update/${id}`}
+      onClick={() => {
+        setOpenSearch(false);
+      }}
+    >
       <li className="group flex h-16 w-full animate-fadeIn cursor-pointer flex-row items-center gap-3 rounded-lg bg-neutral-300 px-2 transition hover:bg-sky-400">
         <span className="flex size-8 items-center justify-center rounded-lg border border-neutral-500 group-hover:border-neutral-50">
           <Box

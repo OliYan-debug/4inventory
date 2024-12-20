@@ -1,8 +1,8 @@
-import { FolderSearch, SearchIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import Search from "./SearchModal";
+import { FolderSearch, SearchIcon } from "lucide-react";
+import { Search } from "./SearchModal";
 
-export default function Header({ title, subtitle }) {
+export function Header({ title, subtitle, children }) {
   const [openSearch, setOpenSearch] = useState(false);
 
   //open search shortcut key
@@ -23,9 +23,14 @@ export default function Header({ title, subtitle }) {
 
   return (
     <div className="flex max-w-full flex-col items-center justify-between rounded-2xl bg-neutral-50 p-4 md:flex-row">
-      <div className="mb-1 flex flex-col items-center justify-center md:items-start">
-        <h1 className="w-full text-3xl font-bold text-neutral-800">{title}</h1>
-        {subtitle}
+      <div className="mb-1 flex items-center gap-3">
+        <div className="flex flex-col items-center md:items-start">
+          <h1 className="w-full text-3xl font-bold text-neutral-800">
+            {title}
+          </h1>
+          {subtitle}
+        </div>
+        {children}
       </div>
 
       <form className="mt-0 flex gap-2 sm:mt-2">

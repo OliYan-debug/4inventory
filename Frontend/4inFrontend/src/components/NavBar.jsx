@@ -1,11 +1,12 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import logoMin from "../assets/logoMin.svg";
-import { useState } from "react";
-import Menu from "./Menu";
+import { Menu } from "./Menu";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import { Avatar } from "./Avatar";
 
-export default function NavBar() {
+export function NavBar() {
   const [hiddenNav, setHiddenNav] = useState(false);
 
   function handleHiddenShowNavbar() {
@@ -39,7 +40,7 @@ export default function NavBar() {
 
       <div className="flex w-full flex-col items-center transition-all">
         <div className="hidden md:flex md:flex-col md:items-center">
-          <Link to={"/"}>
+          <Link to={"/products"}>
             <img
               src={hiddenNav ? logoMin : logo}
               alt="4inventory"
@@ -52,11 +53,13 @@ export default function NavBar() {
             />
           </Link>
           <span className="mt-px text-xs font-thin text-neutral-200">
-            1.2.4
+            1.3.6
           </span>
         </div>
 
         <Menu hiddenNav={hiddenNav} />
+
+        <Avatar hiddenNav={hiddenNav} />
       </div>
     </nav>
   );

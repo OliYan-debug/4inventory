@@ -1,8 +1,11 @@
+import { useLocation } from "react-router-dom";
 import {
   ChartColumnBig,
   Folder,
   FolderInput,
   FolderOpen,
+  Lock,
+  LogOut,
   PackageCheck,
   PackageIcon,
   PackageMinus,
@@ -10,42 +13,88 @@ import {
   PackagePlus,
   PackageSearch,
   PackageX,
-  Settings,
+  UserCircle,
+  UserPen,
 } from "lucide-react";
-import MenuButton from "./MenuButton";
-import MenuDropdownButton from "./MenuDropdownButton";
-import { useLocation } from "react-router-dom";
+import { MenuButton } from "./MenuButton";
+import { MenuDropdownButton } from "./MenuDropdownButton";
 
 const productsLinks = [
-  { path: "products", label: "See Items", Icon: PackageCheck },
-  { path: "products/new", label: "New Item", Icon: PackageIcon },
-  { path: "products/update", label: "Update Item", Icon: PackageOpen },
-  { path: "products/delete", label: "Delete Item", Icon: PackageX },
-  { path: "products/search", label: "Search Item", Icon: PackageSearch },
-  { path: "products/checkin", label: "Check-in", Icon: PackagePlus },
-  { path: "products/checkout", label: "Check-out", Icon: PackageMinus },
+  { path: "/products", label: "See Items", Icon: PackageCheck, active: true },
+  { path: "/products/new", label: "New Item", Icon: PackageIcon, active: true },
+  {
+    path: "/products/update",
+    label: "Update Item",
+    Icon: PackageOpen,
+    active: true,
+  },
+  {
+    path: "/products/delete",
+    label: "Delete Item",
+    Icon: PackageX,
+    active: true,
+  },
+  {
+    path: "/products/search",
+    label: "Search Item",
+    Icon: PackageSearch,
+    active: true,
+  },
+  {
+    path: "/products/checkin",
+    label: "Check-in",
+    Icon: PackagePlus,
+    active: true,
+  },
+  {
+    path: "/products/checkout",
+    label: "Check-out",
+    Icon: PackageMinus,
+    active: true,
+  },
 ];
 
 const categoriesLinks = [
-  { path: "categories", label: "See Categorys", Icon: FolderOpen },
-  { path: "categories/new", label: "New Category", Icon: FolderInput },
+  {
+    path: "/categories",
+    label: "See Categories",
+    Icon: FolderOpen,
+    active: true,
+  },
+  {
+    path: "/categories/new",
+    label: "New Category",
+    Icon: FolderInput,
+    active: true,
+  },
 ];
 
-export default function Menu({ hiddenNav }) {
+const userLinks = [
+  { path: "", label: "My profile", Icon: UserPen, active: false },
+  { path: "", label: "Change password", Icon: Lock, active: false },
+  { path: "/logout", label: "Logout", Icon: LogOut, active: true },
+];
+
+export function Menu({ hiddenNav }) {
   let location = useLocation();
+
+  const user = JSON.parse(localStorage.getItem("4inventory.user"));
+  const isAdmin = user.role === "ADMIN";
 
   return (
     <>
       <ul
-        className={`flex h-14 w-full justify-around sm:mt-2 md:mt-4 md:h-auto md:flex-col md:justify-normal md:py-4 ${hiddenNav ? "md:gap-1" : "md:gap-0"}`}
+        className={`flex h-14 w-full justify-evenly sm:mt-2 md:mt-4 md:h-auto md:flex-col md:justify-normal md:py-4 ${hiddenNav ? "md:gap-1" : "md:gap-0"}`}
       >
-        <MenuButton
-          label={"DashBoard"}
-          path={""}
-          Icon={ChartColumnBig}
-          hiddenNav={hiddenNav}
-          active={location.pathname === "/dashboard"}
-        />
+        {isAdmin && (
+          <MenuButton
+            label={"DashBoard"}
+            path={"/dashboard"}
+            Icon={ChartColumnBig}
+            hiddenNav={hiddenNav}
+            active={location.pathname === "/dashboard"}
+          />
+        )}
 
         <MenuDropdownButton
           label="Products"
@@ -63,12 +112,12 @@ export default function Menu({ hiddenNav }) {
           pathname={location.pathname}
         />
 
-        <MenuButton
-          label={"Settings"}
-          path={""}
-          Icon={Settings}
+        <MenuDropdownButton
+          label="User"
+          Icon={UserCircle}
+          links={userLinks}
           hiddenNav={hiddenNav}
-          active={location.pathname === "/settings"}
+          pathname={location.pathname}
         />
       </ul>
     </>

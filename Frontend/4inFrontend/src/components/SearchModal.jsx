@@ -1,10 +1,10 @@
 import { Rat, SearchIcon } from "lucide-react";
 import { api } from "../services/api";
-import ItemFound from "./ItemFound";
+import { ItemFound } from "./ItemFound";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
-export default function Search({ setOpenSearch }) {
+export function Search({ setOpenSearch }) {
   const [items, setItems] = useState([]);
   const [search, setSearch] = useState("");
   const ref = useRef(null);
@@ -126,6 +126,7 @@ export default function Search({ setOpenSearch }) {
                       id={item.id}
                       item={item.item}
                       category={item.category[0].name}
+                      setOpenSearch={setOpenSearch}
                     />
                   );
                 })}
