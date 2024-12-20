@@ -32,11 +32,13 @@ export function MenuDropdownButton({
 
   //Verify if the url pathname is the same as the label name
   useEffect(() => {
-    if (pathname.includes("categories")) {
-      console.log("AI");
+    if (label === "Products" && pathname.startsWith("/products")) {
+      setActiveLink(true);
+    } else if (label === "Categories" && pathname.startsWith("/categories")) {
+      setActiveLink(true);
+    } else {
+      setActiveLink(false);
     }
-
-    setActiveLink(label.toLocaleLowerCase() === pathname.substring(1));
   }, [label, pathname]);
 
   return (
@@ -75,11 +77,12 @@ export function MenuDropdownButton({
           </div>
         </button>
 
+        {/* Desktop submenu */}
         <div
           ref={ref}
-          className={`absolute bottom-14 z-20 hidden w-screen rounded-lg bg-neutral-500 shadow-lg transition-all duration-150 ease-in md:-right-48 md:bottom-auto md:top-3 md:flex md:min-h-16 md:w-48 md:-translate-y-3 md:rounded-none md:rounded-bl-lg md:rounded-br-lg md:rounded-tr-lg md:group-hover/item:translate-x-0 ${open ? "visible opacity-100" : "invisible opacity-0"}`}
+          className={`absolute bottom-14 z-20 hidden rounded-lg bg-neutral-500 shadow-lg transition-all duration-150 ease-in md:-right-48 md:bottom-auto md:top-3 md:flex md:min-h-16 md:w-48 md:-translate-y-3 md:rounded-none md:rounded-bl-lg md:rounded-br-lg md:rounded-tr-lg md:group-hover/item:translate-x-0 ${open ? "visible opacity-100" : "invisible opacity-0"}`}
         >
-          <ul>
+          <ul className="w-full">
             {links.map((link, index) => (
               <li
                 key={index}
@@ -99,18 +102,19 @@ export function MenuDropdownButton({
         </div>
       </li>
 
+      {/* Mobile submenu */}
       <div
         ref={ref}
         className={`absolute bottom-14 z-20 block w-full rounded-t-lg bg-neutral-500 pb-2 pt-4 shadow-lg transition-all duration-150 ease-in md:hidden ${open ? "visible opacity-100" : "invisible opacity-0"}`}
       >
         <button
           onClick={() => {
-            handleOpenDropdown;
+            handleOpenDropdown();
           }}
           type="button"
-          className="absolute right-3 top-2"
+          className="absolute right-3 top-2 z-10 rounded-lg p-px transition hover:bg-neutral-400/70"
         >
-          <X size={22} className="text-neutral-50 hover:opacity-80" />
+          <X size={22} className="text-neutral-50 hover:opacity-90" />
         </button>
         <ul>
           {links.map((link, index) => (

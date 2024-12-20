@@ -29,6 +29,7 @@ export const App = () => (
     <AuthProvider>
       <CookiesProvider defaultSetOptions={{ path: "/" }}>
         <Routes>
+          {/* Products routes */}
           <Route
             path="/products"
             element={<Root />}
@@ -141,8 +142,41 @@ export const App = () => (
                 </ProtectedRoute>
               }
             />
+          </Route>
+
+          <Route
+            path="/dashboard"
+            element={<Root />}
+            errorElement={<ErrorPage />}
+          >
             <Route
-              path="categories"
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <PageTitle title="4Inventory | Dashboard" />
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/:page"
+              element={
+                <ProtectedRoute>
+                  <PageTitle title="4Inventory | Dashboard" />
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+
+          {/* Categories routes */}
+          <Route
+            path="/categories"
+            element={<Root />}
+            errorElement={<ErrorPage />}
+          >
+            <Route
+              path="/categories"
               element={
                 <ProtectedRoute>
                   <PageTitle title="4Inventory | Categories" />
@@ -151,29 +185,11 @@ export const App = () => (
               }
             />
             <Route
-              path="categories/new"
+              path="/categories/new"
               element={
                 <ProtectedRoute>
                   <PageTitle title="4Inventory | New Category" />
                   <NewCategory />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="dashboard"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Dashboard" />
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="dashboard/:page"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Dashboard" />
-                  <Dashboard />
                 </ProtectedRoute>
               }
             />

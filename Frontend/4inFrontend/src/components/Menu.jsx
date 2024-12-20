@@ -21,23 +21,48 @@ import { MenuDropdownButton } from "./MenuDropdownButton";
 
 const productsLinks = [
   { path: "/products", label: "See Items", Icon: PackageCheck, active: true },
-  { path: "new", label: "New Item", Icon: PackageIcon, active: true },
-  { path: "update", label: "Update Item", Icon: PackageOpen, active: true },
-  { path: "delete", label: "Delete Item", Icon: PackageX, active: true },
-  { path: "search", label: "Search Item", Icon: PackageSearch, active: true },
-  { path: "checkin", label: "Check-in", Icon: PackagePlus, active: true },
-  { path: "checkout", label: "Check-out", Icon: PackageMinus, active: true },
+  { path: "/products/new", label: "New Item", Icon: PackageIcon, active: true },
+  {
+    path: "/products/update",
+    label: "Update Item",
+    Icon: PackageOpen,
+    active: true,
+  },
+  {
+    path: "/products/delete",
+    label: "Delete Item",
+    Icon: PackageX,
+    active: true,
+  },
+  {
+    path: "/products/search",
+    label: "Search Item",
+    Icon: PackageSearch,
+    active: true,
+  },
+  {
+    path: "/products/checkin",
+    label: "Check-in",
+    Icon: PackagePlus,
+    active: true,
+  },
+  {
+    path: "/products/checkout",
+    label: "Check-out",
+    Icon: PackageMinus,
+    active: true,
+  },
 ];
 
 const categoriesLinks = [
   {
-    path: "categories",
+    path: "/categories",
     label: "See Categories",
     Icon: FolderOpen,
     active: true,
   },
   {
-    path: "categories/new",
+    path: "/categories/new",
     label: "New Category",
     Icon: FolderInput,
     active: true,
@@ -64,10 +89,10 @@ export function Menu({ hiddenNav }) {
         {isAdmin && (
           <MenuButton
             label={"DashBoard"}
-            path={"/products/dashboard"}
+            path={"/dashboard"}
             Icon={ChartColumnBig}
             hiddenNav={hiddenNav}
-            active={location.pathname === "/products/dashboard"}
+            active={location.pathname === "/dashboard"}
           />
         )}
 
