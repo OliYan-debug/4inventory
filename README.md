@@ -1,8 +1,17 @@
 <p align="center">
 <img width="400" src="Frontend/4inFrontend/src/assets/logo.svg">
 </p>
+<div align="center">
+    <img src="https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions" />
+    <img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS" />
+    <img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="React" />
+    <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white" alt="Postgres" />
+    <img src="https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white" alt="Spring" />
+</div>
 
+# What is 4Inventory
 
+A simple yet powerful inventory system to help people organize their items in an easy and modern way
 
 ## How to Run This APP
 
@@ -11,11 +20,11 @@ To <b>get started</b> with this APP, you need to have Docker installed. Docker i
 
 ### Setup Environment Variables
 
-1. **Create a `.env` File**
+1. **Rename or copy `.env-example` to `.env` File**
 
-   In the root folder where the `docker-compose.yml` files are located, create a `.env` file.
-
-2. **Set Environment Variables**
+   In the root folder where the `docker-compose.yml` files are located
+   
+3. **Set Environment Variables**
 
    Add the following variables to your `.env` file:
    ```env
@@ -32,6 +41,10 @@ To <b>get started</b> with this APP, you need to have Docker installed. Docker i
    `Note: Only CHANGE THIS if you know exactly what you are doing. otherwise you can break the whole setup`
 
    ```env
+   # Your API url (default: http://localhost:5000)
+
+   VITE_API_URL=http://localhost:5000
+
    # Postgres Settings just change if you know what you are doing
 
    POSTGRES_DB=${DATABASE}
@@ -65,3 +78,11 @@ To <b>get started</b> with this APP, you need to have Docker installed. Docker i
    ```
    http://localhost:3000
    ```
+3. On the initial access, you have two options: register as a normal user or log in using the default admin credentials provided below:
+   - username: `admin`
+   - password: `admin123`
+
+
+## 🚀 Development Team:
+- [André Luis](https://github.com/aandreluis) - Frontend and Design 🖌️
+- [Yan Oliveira](https://github.com/Oliyan-debug) - Backend e DevOps 💻
