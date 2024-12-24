@@ -85,4 +85,4 @@ To <b>get started</b> with this APP, you need to have Docker installed. Docker i
 
 ## 🚀 Development Team:
 - [André Luis](https://github.com/aandreluis) - Frontend and Design 🖌️
-- [Yan Oliveira](https://github.com/Oliyan-debug) - Backend e DevOps 💻
+- [Yan Oliveira](https://github.com/Oliyan-debug) - Backend and DevOps 💻
