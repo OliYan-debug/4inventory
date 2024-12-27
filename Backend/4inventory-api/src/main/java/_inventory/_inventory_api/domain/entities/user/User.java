@@ -21,11 +21,17 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private UserRoles role;
 
-    public User(String username, String password, UserRoles role){
+    public User(String name, String username, String password, UserRoles role){
+        this.name = name;
         this.username = username;
         this.password = password;
         this.role = role;
