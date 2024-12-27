@@ -18,7 +18,7 @@ public class AdminLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         var admin = repository.findByUsername("admin");
         if(admin == null){
-            var adminUser = new User("admin", new BCryptPasswordEncoder().encode("admin123"), UserRoles.ADMIN);
+            var adminUser = new User("admin","admin", new BCryptPasswordEncoder().encode("admin123"), UserRoles.ADMIN);
             repository.save(adminUser);
         }
     }
