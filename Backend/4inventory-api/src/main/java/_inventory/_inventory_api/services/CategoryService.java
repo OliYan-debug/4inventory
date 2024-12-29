@@ -36,6 +36,8 @@ public class CategoryService {
         var categoryDB = findByName(category.getName());
         if (category.getName() == null || category.getColor() == null) {
             throw new InvalidCategoryException("Category must have a name and a color");
+        } if(category.getName().isBlank() || category.getColor().isBlank()){
+            throw new InvalidCategoryException("Category must have a valid name and a color ");
         }
         if (categoryDB.isEmpty()) return categoryRepository.save(category);
         throw new CategoryAlreadyExistsException(category.getName());
