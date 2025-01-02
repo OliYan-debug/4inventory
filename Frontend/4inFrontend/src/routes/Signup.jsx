@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
@@ -6,10 +6,10 @@ import logo from "../assets/logo.svg";
 import { InputConfirmPassword } from "../components/InputConfirmPassword";
 import { InputCreatePassword } from "../components/InputCreatePassword";
 import { InputCreateUserName } from "../components/InputCreateUsername";
-import { toast } from "react-toastify";
 import useAuth from "../hooks/useAuth";
+import { InputName } from "../components/InputName";
 
-export default function Signin() {
+export default function Signup() {
   const {
     register,
     handleSubmit,
@@ -20,32 +20,18 @@ export default function Signin() {
   });
 
   const [invalidPassword, setInvalidPassword] = useState(true);
-  const { signin, authError, setAuthError, authSuccess, setAuthSuccess } =
-    useAuth();
+  const { signup } = useAuth();
 
   const onSubmit = async (data) => {
     const newData = {
+      name: data.name,
       login: data.username,
       password: data.password,
       role: "USER", //default role
     };
 
-    await signin(newData);
+    await signup(newData);
   };
-
-  useEffect(() => {
-    if (authSuccess) {
-      toast.success(authSuccess);
-    }
-    setAuthSuccess(null);
-  }, [authSuccess]);
-
-  useEffect(() => {
-    if (authError) {
-      toast.error(authError.message);
-    }
-    setAuthError(null);
-  }, [authError]);
 
   return (
     <div className="m-0 w-screen bg-neutral-300 p-4 md:h-screen">
@@ -56,7 +42,7 @@ export default function Signin() {
               Create an Account 🔐
             </h1>
             <h3 className="w-full text-xl font-medium text-neutral-800">
-              Sign in!
+              Sign up!
             </h3>
           </div>
 
@@ -64,6 +50,12 @@ export default function Signin() {
             onSubmit={handleSubmit(onSubmit)}
             className="mt-10 flex flex-col gap-8"
           >
+            <InputName
+              register={register}
+              errors={errors}
+              isSubmitting={isSubmitting}
+            />
+
             <InputCreateUserName
               register={register}
               errors={errors}
@@ -100,7 +92,7 @@ export default function Signin() {
                     />
                   </span>
                 ) : (
-                  <span>Sign in</span>
+                  <span>Sign up</span>
                 )}
               </button>
 
