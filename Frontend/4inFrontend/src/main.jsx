@@ -13,7 +13,7 @@ import NewCategory from "./routes/NewCategory";
 import CheckOut from "./routes/CheckOut";
 import CheckIn from "./routes/CheckIn";
 import Login from "./routes/Login";
-import Signin from "./routes/Signin";
+import Signup from "./routes/Signup";
 import UpdateItem from "./routes/UpdateItem";
 import ProtectedRoute from "./services/ProtectedRoute";
 import AuthProvider from "./contexts/AuthProvider";
@@ -152,7 +152,7 @@ export const App = () => (
             <Route
               path="/dashboard"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute roles={["ADMIN"]}>
                   <PageTitle title="4Inventory | Dashboard" />
                   <Dashboard />
                 </ProtectedRoute>
@@ -161,7 +161,7 @@ export const App = () => (
             <Route
               path="/dashboard/:page"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute roles={["ADMIN"]}>
                   <PageTitle title="4Inventory | Dashboard" />
                   <Dashboard />
                 </ProtectedRoute>
@@ -196,6 +196,7 @@ export const App = () => (
           </Route>
 
           <Route path="/" element={<Login />} errorElement={<ErrorPage />} />
+
           <Route
             path="/login"
             element={
@@ -207,15 +208,16 @@ export const App = () => (
             errorElement={<ErrorPage />}
           />
           <Route
-            path="/signin"
+            path="/signup"
             element={
               <>
-                <PageTitle title="4Inventory | Signin" />
-                <Signin />
+                <PageTitle title="4Inventory | Signup" />
+                <Signup />
               </>
             }
             errorElement={<ErrorPage />}
           />
+
           <Route
             path="/logout"
             element={
@@ -226,6 +228,7 @@ export const App = () => (
             }
             errorElement={<ErrorPage />}
           />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ToastContainer />
