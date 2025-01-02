@@ -7,8 +7,8 @@ import { Header } from "../components/Header";
 import { Card } from "../components/Card";
 import { History } from "../components/History";
 import { Pagination } from "../components/Pagination";
-import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import useAuth from "../hooks/useAuth";
 
 export default function Dashboard() {
   let { page } = useParams();
@@ -24,42 +24,47 @@ export default function Dashboard() {
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalCategories, setTotalCategories] = useState(0);
 
-  const user = JSON.parse(localStorage.getItem("4inventory.user"));
-  const isAdmin = user.role === "ADMIN";
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    if (!isAdmin) {
-      toast.warn(
-        <p>
-          <span className="font-bold">Only administrators </span> can access
-          this page!
-        </p>,
-      );
-      navigate("/");
+    if (user) {
+      if (user.role !== "ADMIN") {
+        toast.warn(
+          <p>
+            <span className="font-bold">Only administrators </span> can access
+            this page!
+          </p>,
+        );
+      }
+
+      setIsAdmin(user.role === "ADMIN");
     }
-  }, [isAdmin]);
+    console.log(user);
+  }, [user]);
 
   useEffect(() => {
-    api
-      .get("/registry/", {
-        params: {
-          page,
-          size: cookies.paginationSize || 10,
-          sort,
-        },
-      })
-      .then((response) => {
-        setRegisters(response.data.content);
-        setTotalElements(response.data.totalElements);
-        setTotalPages(response.data.totalPages);
-        setPageNumber(response.data.pageable.pageNumber);
-        setResponse(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, [cookies.paginationSize, page, size, sort]);
+    if (isAdmin) {
+      api
+        .get("/registry/", {
+          params: {
+            page,
+            size: cookies.paginationSize || 10,
+            sort,
+          },
+        })
+        .then((response) => {
+          setRegisters(response.data.content);
+          setTotalElements(response.data.totalElements);
+          setTotalPages(response.data.totalPages);
+          setPageNumber(response.data.pageable.pageNumber);
+          setResponse(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    }
+  }, [cookies.paginationSize, isAdmin, page, size, sort]);
 
   useEffect(() => {
     api
@@ -105,33 +110,37 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <Header title={"Dashboard"} subtitle={subtitle()} />
-
-      <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
+    <>
+      {isAdmin && (
         <div className="flex flex-col gap-4">
-          <div className="flex w-full flex-row justify-center gap-6">
-            <Card title="Products" total={totalItems} />
-            <Card title="Categories" total={totalCategories} />
-            <Card title="Items Quantity" total={totalQuantity} />
+          <Header title={"Dashboard"} subtitle={subtitle()} />
+
+          <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
+            <div className="flex flex-col gap-4">
+              <div className="flex w-full flex-row justify-center gap-6">
+                <Card title="Products" total={totalItems} />
+                <Card title="Categories" total={totalCategories} />
+                <Card title="Items Quantity" total={totalQuantity} />
+              </div>
+
+              <History registers={registers} setSort={setSort} />
+            </div>
+
+            {registers.length > 0 && (
+              <Pagination
+                totalElements={totalElements}
+                totalPages={totalPages}
+                pageNumber={pageNumber}
+                numberOfElements={response.numberOfElements}
+                first={response.first}
+                last={response.last}
+                setSize={setSize}
+                path={"products/dashboard"}
+              />
+            )}
           </div>
-
-          <History registers={registers} setSort={setSort} />
         </div>
-
-        {registers.length > 0 && (
-          <Pagination
-            totalElements={totalElements}
-            totalPages={totalPages}
-            pageNumber={pageNumber}
-            numberOfElements={response.numberOfElements}
-            first={response.first}
-            last={response.last}
-            setSize={setSize}
-            path={"products/dashboard"}
-          />
-        )}
-      </div>
-    </div>
+      )}
+    </>
   );
 }
