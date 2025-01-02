@@ -27,6 +27,11 @@ public class UserValidator {
             throw new RegisterException("Username must not contain spaces");
     }
 
+    public void validateUserPassword(String newPassword){
+        if (!passwordRegexMatcher(newPassword))
+            throw new RegisterException("Password must match requirements: UpperCase letter, LowerCase letter, Number and at least 8 characters");
+    }
+
     public Boolean passwordRegexMatcher(String password) {
         var pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@#$%^&*()_+!~`\\-={}|\\[\\]\\\\:\";'<>?,./]{8,}");
         var matcher = pattern.matcher(password);
