@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { MenuButton } from "./MenuButton";
 import { MenuDropdownButton } from "./MenuDropdownButton";
+import useAuth from "../hooks/useAuth";
+import { useEffect, useState } from "react";
 
 const productsLinks = [
   { path: "/products", label: "See Items", Icon: PackageCheck, active: true },
@@ -78,8 +80,14 @@ const userLinks = [
 export function Menu({ hiddenNav }) {
   let location = useLocation();
 
-  const user = JSON.parse(localStorage.getItem("4inventory.user"));
-  const isAdmin = user.role === "ADMIN";
+  const { user } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setIsAdmin(user.role === "ADMIN");
+    }
+  }, [user]);
 
   return (
     <>
