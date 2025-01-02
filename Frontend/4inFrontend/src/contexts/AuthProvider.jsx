@@ -3,41 +3,48 @@ import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { api } from "../services/api";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [cookies, setCookie, removeCookie] = useCookies(["4inventory.token"]);
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const [authError, setAuthError] = useState(null);
   const [authSuccess, setAuthSuccess] = useState(null);
-  const navigate = useNavigate();
+
+  const token = cookies["4inventory.token"];
+  const [authToken, setAuthToken] = useState(token);
 
   useEffect(() => {
-    const token = cookies["4inventory.token"];
+    if (token !== authToken) {
+      toast.error("Invalid Token, please log in again. #1");
 
-    if (token) {
-      api.defaults.headers["Authorization"] = `Bearer ${token}`;
+      logout();
     } else {
-      removeCookie("4inventory.token");
+      if (token) {
+        let user = jwtDecode(token);
+        setUser(user);
 
-      localStorage.removeItem("4inventory.user");
-      localStorage.removeItem("4inventory.isAuthenticated");
-
-      navigate("/");
+        api.defaults.headers["Authorization"] = `Bearer ${token}`;
+      }
     }
-  }, [cookies, removeCookie]);
+  }, [token]);
 
-  const signin = async (data) => {
+  const signup = async (data) => {
     await api
       .post("/auth/register", data)
       .then((response) => {
         if (response.status === 200) {
-          setAuthSuccess("User created successfully! Log in to continue.");
+          toast.success("User created successfully! Log in to continue.");
+
           navigate("/login");
         }
       })
       .catch((error) => {
-        setAuthError(error);
+        console.log(error);
+        toast.error(error.response.data.message);
       });
   };
 
@@ -48,7 +55,8 @@ const AuthProvider = ({ children }) => {
         const token = response.data.token;
 
         if (!token) {
-          setAuthError("Token undefined.");
+          toast.error("Token undefined.");
+          setAuthError(true);
           return false;
         }
 
@@ -58,63 +66,57 @@ const AuthProvider = ({ children }) => {
 
         const decoded = jwtDecode(token);
 
-        localStorage.setItem("4inventory.user", JSON.stringify(decoded));
-        localStorage.setItem("4inventory.isAuthenticated", true);
-
         api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-        setAuthSuccess(
+        toast.success(
           <p>
             Login successful! <br />
             Welcome, <span className="font-bold"> {decoded.sub}.</span>
           </p>,
         );
+
+        setAuthToken(token);
         navigate("/products");
       })
       .catch((error) => {
-        setAuthError(error);
+        toast.error(error.response.data.message);
+        setAuthError(true);
       });
   };
 
   const logout = async () => {
-    try {
-      await api
-        .post("/auth/logout")
-        .then((response) => {
-          if (response.status === 200) {
-            setAuthSuccess(
-              <p>
-                You are
-                <span className="font-bold"> logged out.</span>
-              </p>,
-            );
-          }
-        })
-        .catch((error) => {
-          setAuthError(error);
-        });
+    await api
+      .post("/auth/logout")
+      .then((response) => {
+        if (response.status === 200) {
+          toast.info(
+            <p>
+              You are
+              <span className="font-bold"> logged out.</span>
+            </p>,
+          );
 
-      removeCookie("4inventory.token");
+          removeCookie("4inventory.token");
+          setAuthToken(undefined);
+          api.defaults.headers["Authorization"] = null;
 
-      localStorage.removeItem("4inventory.user");
-      localStorage.removeItem("4inventory.isAuthenticated");
-
-      api.defaults.headers["Authorization"] = null;
-
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-    }
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   return (
     <AuthContext.Provider
       value={{
+        user,
         authError,
         setAuthError,
         authSuccess,
         setAuthSuccess,
-        signin,
+        signup,
         login,
         logout,
       }}
