@@ -1,18 +1,11 @@
 package _inventory._inventory_api.controllers;
 
+import _inventory._inventory_api.domain.dto.ResetPasswordDTO;
 import _inventory._inventory_api.domain.dto.UserUpdateDTO;
-import _inventory._inventory_api.domain.entities.user.User;
-import _inventory._inventory_api.domain.exceptions.users.UserException;
-import _inventory._inventory_api.domain.records.MessageHandler;
-import _inventory._inventory_api.repositories.UserRepository;
 import _inventory._inventory_api.services.UserService;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,4 +29,10 @@ public class UserController {
             return ResponseEntity.accepted().build();
     }
 
+    @Operation(summary = "User password reset")
+    @PostMapping("/reset-password")
+    public ResponseEntity<Object> resetPassword(@RequestHeader(value = "authorization") String authHeader, @RequestBody @Valid ResetPasswordDTO data) {
+        userService.resetPassword(authHeader, data);
+        return ResponseEntity.ok().build();
+    }
 }
