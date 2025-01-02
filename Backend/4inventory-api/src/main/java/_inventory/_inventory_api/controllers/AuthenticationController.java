@@ -30,13 +30,6 @@ public class AuthenticationController {
         }
     }
 
-    @Operation(summary = "User password reset")
-    @PostMapping("/reset")
-    public ResponseEntity<Object> resetPassword(@RequestHeader(value = "authorization") String authHeader, @RequestBody @Valid ResetPasswordDTO data) {
-        authenticationService.resetPassword(authHeader, data);
-        return ResponseEntity.ok().build();
-    }
-
     @Operation(summary = "User register")
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody @Valid RegisterDTO data) {

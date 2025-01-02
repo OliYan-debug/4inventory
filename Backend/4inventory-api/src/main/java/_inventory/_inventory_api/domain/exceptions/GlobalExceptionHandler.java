@@ -1,5 +1,6 @@
 package _inventory._inventory_api.domain.exceptions;
 
+import _inventory._inventory_api.domain.exceptions.security.InvalidAuthException;
 import _inventory._inventory_api.domain.exceptions.security.RegisterException;
 import _inventory._inventory_api.domain.exceptions.users.UserException;
 import _inventory._inventory_api.domain.utils.ResponseErrorHandler;
@@ -40,5 +41,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserException.class)
     public ResponseEntity<Object> handleUserException(UserException e) {
         return responseErrorHandler.generate(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidAuthException.class)
+    public ResponseEntity<Object> handleInvalidAuthException(InvalidAuthException e) {
+        return responseErrorHandler.generate(HttpStatus.FORBIDDEN, e.getMessage());
     }
 }

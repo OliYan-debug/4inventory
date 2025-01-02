@@ -5,7 +5,6 @@ import _inventory._inventory_api.domain.utils.UserValidator;
 import _inventory._inventory_api.domain.dto.AuthenticationDTO;
 import _inventory._inventory_api.domain.dto.ChangeRoleDTO;
 import _inventory._inventory_api.domain.dto.RegisterDTO;
-import _inventory._inventory_api.domain.dto.ResetPasswordDTO;
 import _inventory._inventory_api.domain.entities.user.User;
 import _inventory._inventory_api.domain.exceptions.users.UserException;
 import _inventory._inventory_api.repositories.UserRepository;
@@ -37,18 +36,6 @@ public class AuthenticationService {
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         var newUser = new User(data.name(), data.login(), encryptedPassword, data.role());
         this.userRepository.save(newUser);
-    }
-
-    public void resetPassword(String authHeader, ResetPasswordDTO data) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        var auth = this.authenticationManager.authenticate(usernamePassword);
-        if (data.newPassword() == null) throw new UserException("New password must not be empty");
-        var encryptedPassword = new BCryptPasswordEncoder().encode(data.newPassword());
-        var user = userRepository.findByUsername(data.login());
-        user.setPassword(encryptedPassword);
-        userRepository.save(user);
-        var token = authHeader.split(" ")[1];
-        tokenService.revokeToken(token);
     }
 
     public void logout(String authHeader){
