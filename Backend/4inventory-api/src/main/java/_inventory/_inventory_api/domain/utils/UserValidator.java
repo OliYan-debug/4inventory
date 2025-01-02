@@ -28,7 +28,7 @@ public class UserValidator {
     }
 
     public Boolean passwordRegexMatcher(String password) {
-        var pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d]{8,}$");
+        var pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@#$%^&*()_+!~`\\-={}|\\[\\]\\\\:\";'<>?,./]{8,}");
         var matcher = pattern.matcher(password);
         return matcher.matches();
     }
