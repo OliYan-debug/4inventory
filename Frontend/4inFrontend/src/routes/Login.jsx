@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import useAuth from "../hooks/useAuth";
 import logo from "../assets/logo.svg";
@@ -19,16 +19,7 @@ export default function Login() {
     mode: "onChange",
   });
 
-  const { login, authError, setAuthError, authSuccess, setAuthSuccess } =
-    useAuth();
-  const isAuthenticated = localStorage.getItem("4inventory.isAuthenticated");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/products");
-    }
-  }, [isAuthenticated]);
+  const { login, authError, setAuthError } = useAuth();
 
   const onSubmit = async (data) => {
     const newData = {
@@ -40,15 +31,8 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (authSuccess) {
-      toast.success(authSuccess);
-    }
-    setAuthSuccess(null);
-  }, [authSuccess]);
-
-  useEffect(() => {
     if (authError) {
-      toast.error(authError.message);
+      toast.error(authError);
 
       setError("username", { type: "invalid" }, { shouldFocus: true });
 
@@ -116,10 +100,10 @@ export default function Login() {
                 </p>
               </div>
               <Link
-                to={"/signin"}
+                to={"/signup"}
                 className="mt-4 font-bold text-neutral-600 underline hover:text-neutral-700"
               >
-                Sign in
+                Sign up
               </Link>
             </div>
           </form>
