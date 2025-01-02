@@ -1,12 +1,11 @@
-import { LogOut } from "lucide-react";
-import useAuth from "../hooks/useAuth";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { Loader2, LogOut } from "lucide-react";
+import useAuth from "../hooks/useAuth";
 
 export function Avatar({ hiddenNav = false }) {
-  const { logout, authError, setAuthError, authSuccess, setAuthSuccess } =
+  const { user, logout, authError, setAuthError, authSuccess, setAuthSuccess } =
     useAuth();
-  const user = JSON.parse(localStorage.getItem("4inventory.user"));
 
   useEffect(() => {
     if (authSuccess) {
@@ -27,10 +26,26 @@ export function Avatar({ hiddenNav = false }) {
       className={`mt-4 hidden w-3/4 items-center justify-center gap-2 border-t pt-2 md:flex ${hiddenNav ? "flex-col" : "flex-row"}`}
     >
       <div className="flex size-12 items-center justify-center rounded-full border border-neutral-50 bg-neutral-500 font-medium">
-        {user?.sub[0].toUpperCase()}
+        {!user ? (
+          <>
+            <span className="flex items-center justify-center">
+              <Loader2 className="animate-spin" size={18} />
+            </span>
+          </>
+        ) : (
+          <>{user?.sub[0].toUpperCase()}</>
+        )}
       </div>
       {!hiddenNav && (
-        <span className="hidden font-thin md:flex">{user?.sub}</span>
+        <div className="hidden font-thin md:flex">
+          {!user ? (
+            <>
+              <div className="flex h-4 w-16 animate-pulse rounded-lg bg-neutral-300"></div>
+            </>
+          ) : (
+            <span>{user.sub}</span>
+          )}
+        </div>
       )}
 
       <button
