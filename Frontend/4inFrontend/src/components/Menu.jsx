@@ -72,8 +72,13 @@ const categoriesLinks = [
 ];
 
 const userLinks = [
-  { path: "", label: "My profile", Icon: UserPen, active: false },
-  { path: "", label: "Change password", Icon: Lock, active: false },
+  { path: "/user/profile", label: "My profile", Icon: UserPen, active: true },
+  {
+    path: "/user/password",
+    label: "Change password",
+    Icon: Lock,
+    active: true,
+  },
   { path: "/logout", label: "Logout", Icon: LogOut, active: true },
 ];
 
