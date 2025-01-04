@@ -42,7 +42,7 @@ export function InputConfirmPassword({
             },
             validate: {
               validatePassword: (value) => {
-                if (value !== getValues("password")) {
+                if (value !== getValues("createPassword")) {
                   return "Passwords are different";
                 }
 
