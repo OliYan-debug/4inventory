@@ -40,7 +40,6 @@ export default function Dashboard() {
 
       setIsAdmin(user.role === "ADMIN");
     }
-    console.log(user);
   }, [user]);
 
   useEffect(() => {
