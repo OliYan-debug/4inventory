@@ -95,17 +95,25 @@ const AuthProvider = ({ children }) => {
               <span className="font-bold"> logged out.</span>
             </p>,
           );
-
-          removeCookie("4inventory.token");
-          setAuthToken(undefined);
-          api.defaults.headers["Authorization"] = null;
-
-          navigate("/");
         }
       })
       .catch((error) => {
+        if (error.status === 403) {
+          toast.info(
+            <p>
+              You are
+              <span className="font-bold"> logged out.</span>
+            </p>,
+          );
+        }
         toast.error(error.message);
       });
+
+    removeCookie("4inventory.token");
+    setAuthToken(undefined);
+    api.defaults.headers["Authorization"] = null;
+
+    navigate("/");
   };
 
   return (
