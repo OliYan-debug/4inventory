@@ -23,6 +23,7 @@ import PageTitle from "./components/PageTitle";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Logout from "./routes/Logout";
+import User from "./routes/User";
 
 export const App = () => (
   <BrowserRouter>
@@ -190,6 +191,28 @@ export const App = () => (
                 <ProtectedRoute>
                   <PageTitle title="4Inventory | New Category" />
                   <NewCategory />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+
+          {/* User routes */}
+          <Route path="/user" element={<Root />} errorElement={<ErrorPage />}>
+            <Route
+              path="/user"
+              element={
+                <ProtectedRoute>
+                  <PageTitle title="4Inventory | Profile" />
+                  <User />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/user/:page"
+              element={
+                <ProtectedRoute>
+                  <PageTitle title="4Inventory | Profile" />
+                  <User />
                 </ProtectedRoute>
               }
             />
