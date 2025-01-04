@@ -11,7 +11,6 @@ import _inventory._inventory_api.domain.utils.UserValidator;
 import _inventory._inventory_api.repositories.UserRepository;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

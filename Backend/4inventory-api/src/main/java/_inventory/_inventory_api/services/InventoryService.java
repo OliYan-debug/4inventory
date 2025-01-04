@@ -94,20 +94,20 @@ public class InventoryService {
     }
 
     public InventoryItem updateItemQuantity(ItemAndRegistryDTO itemAndRegistryDTO) {
-        Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemAndRegistryDTO.getId());
+        Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemAndRegistryDTO.id());
         if (optionalItem.isPresent()) {
-            if (itemAndRegistryDTO.getQuantity() < 0)
+            if (itemAndRegistryDTO.quantity() < 0)
                 throw new InvalidQuantityException("Item quantity must be greater than 0");
             InventoryItem inventoryItem = optionalItem.get();
-            var label = itemAndRegistryDTO.getQuantity() > inventoryItem.getQuantity() ? RegistryLabel.CHECK_IN : RegistryLabel.CHECK_OUT;
-            inventoryItem.setQuantity(itemAndRegistryDTO.getQuantity());
+            var label = itemAndRegistryDTO.quantity() > inventoryItem.getQuantity() ? RegistryLabel.CHECK_IN : RegistryLabel.CHECK_OUT;
+            inventoryItem.setQuantity(itemAndRegistryDTO.quantity());
             var itemSaved = inventoryRepo.save(inventoryItem);
-            if (itemAndRegistryDTO.getJustification() == null || itemAndRegistryDTO.getJustification().isEmpty())
+            if (itemAndRegistryDTO.justification() == null || itemAndRegistryDTO.justification().isEmpty())
                 throw new JustificationNotFoundException();
-            registryRepository.save(new Registry(itemSaved.getId(), itemSaved.getItem(), label, itemAndRegistryDTO.getJustification(), recoverUsername()));
+            registryRepository.save(new Registry(itemSaved.getId(), itemSaved.getItem(), label, itemAndRegistryDTO.justification(), recoverUsername()));
             return itemSaved;
         }
-        throw new ItemIdNotFoundException(itemAndRegistryDTO.getId());
+        throw new ItemIdNotFoundException(itemAndRegistryDTO.id());
     }
 
     public InventoryItem addItemCategory(ItemAndCategory itemAndCategory) {
