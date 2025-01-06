@@ -44,10 +44,4 @@ public class AuthenticationController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Change the user role")
-    @PostMapping("/change-role")
-    public ResponseEntity<Object> changeRole(@RequestBody ChangeRoleDTO data) {
-        authenticationService.changeUserRole(data);
-        return ResponseEntity.ok().build();
-    }
 }
