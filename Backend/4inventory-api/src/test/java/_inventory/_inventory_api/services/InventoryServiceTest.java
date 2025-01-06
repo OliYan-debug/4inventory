@@ -151,7 +151,7 @@ class InventoryServiceTest {
     @Test
     @DisplayName("Should update an item quantity")
     void updateItemQuantityCase1() {
-        inventoryService.updateItemQuantity(new ItemAndRegistryDTO("New Items left", 20, this.item.getId()));
+        inventoryService.updateItemQuantity(new ItemAndRegistryDTO(this.item.getId(), 20, "New Items left"));
         var itemFound = inventoryService.findById(this.item.getId());
         assertThat(itemFound).isNotNull();
         assertThat(itemFound.getItem()).isEqualTo("testItem");
@@ -162,23 +162,23 @@ class InventoryServiceTest {
     @Test
     @DisplayName("Should throw an exception when trying to update an item quantity with negative quantity")
     void updateItemQuantityCase2() {
-        var thrown = assertThrows(InvalidQuantityException.class, () -> inventoryService.updateItemQuantity(new ItemAndRegistryDTO("New Items left", -20, this.item.getId())));
+        var thrown = assertThrows(InvalidQuantityException.class, () -> inventoryService.updateItemQuantity(new ItemAndRegistryDTO(this.item.getId(), -20, "New Items left" )));
         assertThat(thrown.getMessage()).contains("Item quantity must be greater than 0");
     }
 
     @Test
     @DisplayName("Should throw an exception when trying to update an item without justification or a empty justification")
     void updateItemQuantityCase3() {
-        var thrown = assertThrows(JustificationNotFoundException.class, () -> inventoryService.updateItemQuantity(new ItemAndRegistryDTO("", 1, this.item.getId())));
+        var thrown = assertThrows(JustificationNotFoundException.class, () -> inventoryService.updateItemQuantity(new ItemAndRegistryDTO(this.item.getId(), 1, "")));
         assertThat(thrown.getMessage()).contains("Justification must not be empty");
-        var thrown2 = assertThrows(JustificationNotFoundException.class, () -> inventoryService.updateItemQuantity(new ItemAndRegistryDTO(null, 1, this.item.getId())));
+        var thrown2 = assertThrows(JustificationNotFoundException.class, () -> inventoryService.updateItemQuantity(new ItemAndRegistryDTO(this.item.getId(), 1, null)));
         assertThat(thrown2.getMessage()).contains("Justification must not be empty");
     }
 
     @Test
     @DisplayName("Should throw an exception when trying to update an item quantity with invalid id")
     void updateItemQuantityCase4() {
-        var thrown = assertThrows(ItemIdNotFoundException.class, () -> inventoryService.updateItemQuantity(new ItemAndRegistryDTO("New Items left", 10, 1001L)));
+        var thrown = assertThrows(ItemIdNotFoundException.class, () -> inventoryService.updateItemQuantity(new ItemAndRegistryDTO(1001L, 10, "New Items left")));
         assertThat(thrown.getMessage()).contains("Item with id " + 1001 + " not found!");
     }
 }
