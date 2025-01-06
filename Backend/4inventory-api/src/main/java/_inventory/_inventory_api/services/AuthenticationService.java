@@ -3,10 +3,8 @@ package _inventory._inventory_api.services;
 import _inventory._inventory_api.config.security.TokenService;
 import _inventory._inventory_api.domain.utils.UserValidator;
 import _inventory._inventory_api.domain.dto.AuthenticationDTO;
-import _inventory._inventory_api.domain.dto.ChangeRoleDTO;
 import _inventory._inventory_api.domain.dto.RegisterDTO;
 import _inventory._inventory_api.domain.entities.user.User;
-import _inventory._inventory_api.domain.exceptions.users.UserException;
 import _inventory._inventory_api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,12 +41,5 @@ public class AuthenticationService {
         tokenService.revokeToken(token);
     }
 
-    public void changeUserRole(ChangeRoleDTO data){
-        var userDB = this.userRepository.findByUsername(data.login());
-        if (userDB == null)
-            throw new UserException("Invalid Credentials, please try another user");
-        userDB.setRole(data.role());
-        userRepository.save(userDB);
-    }
 
 }

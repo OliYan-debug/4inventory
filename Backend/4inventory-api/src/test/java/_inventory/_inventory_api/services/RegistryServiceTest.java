@@ -74,7 +74,7 @@ class RegistryServiceTest {
     @Test
     @DisplayName("Should add an item in the registry with label CHECK-IN")
     void registryCase3() {
-        inventoryService.updateItemQuantity(new ItemAndRegistryDTO("New Items arrived", 100, this.item.getId()));
+        inventoryService.updateItemQuantity(new ItemAndRegistryDTO(this.item.getId(),100, "New Items arrived" ));
         var registries = registryService.findAll(0, 10, "id,desc");
         var registry = registries.getContent();
         assertThat(registry).isNotNull();
@@ -86,7 +86,7 @@ class RegistryServiceTest {
     @Test
     @DisplayName("Should add an item in the registry with label CHECK-OUT")
     void registryCase4() {
-        inventoryService.updateItemQuantity(new ItemAndRegistryDTO("New Items left", 10, this.item.getId()));
+        inventoryService.updateItemQuantity(new ItemAndRegistryDTO(this.item.getId(), 10, "New Items left"));
         var registries = registryService.findAll(0, 10, "id,desc");
         var registry = registries.getContent();
         assertThat(registry).isNotNull();

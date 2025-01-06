@@ -11,7 +11,6 @@ import _inventory._inventory_api.domain.utils.UserValidator;
 import _inventory._inventory_api.repositories.UserRepository;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +37,7 @@ public class UserService {
         var userDB = userToken.getUserByToken(authHeader);
         if (userDB == null) throw new JWTVerificationException("Invalid Token");
         if (newName == null || newName.isBlank()) throw new UserException("Name must not be empty or null");
+        if (newName.equals(userDB.getName())) throw new UserException("New name is equal to current name. Try another");
         userDB.setName(newName);
         repository.save(userDB);
     }
@@ -46,6 +46,7 @@ public class UserService {
         if(!authUser.getUsername().equals(data.login())) throw new UserException("You cannot change other user password");
         var user = repository.findByUsername(data.login());
         if(!new BCryptPasswordEncoder().matches(data.password(), user.getPassword())) throw new InvalidAuthException("Login or password incorrect");
+        if(new BCryptPasswordEncoder().matches(data.newPassword(), user.getPassword())) throw new UserException("New password cannot be equal to current password");
         validator.validateUserPassword(data.newPassword());
         var encryptedPassword = new BCryptPasswordEncoder().encode(data.newPassword());
         user.setPassword(encryptedPassword);
