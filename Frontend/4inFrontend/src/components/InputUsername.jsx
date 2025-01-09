@@ -1,4 +1,10 @@
-export function InputUserName({ register, errors, isSubmitting }) {
+export function InputUserName({
+  register,
+  errors,
+  isSubmitting,
+  value,
+  isActive,
+}) {
   return (
     <div>
       <div className="relative flex w-full items-center">
@@ -12,7 +18,7 @@ export function InputUserName({ register, errors, isSubmitting }) {
         </label>
 
         <input
-          defaultValue=""
+          defaultValue={value || ""}
           {...register("username", {
             required: "User name is required",
             maxLength: {
@@ -23,7 +29,7 @@ export function InputUserName({ register, errors, isSubmitting }) {
           aria-invalid={errors.username ? "true" : "false"}
           type="text"
           id="username"
-          disabled={isSubmitting}
+          disabled={isSubmitting || !isActive}
           placeholder="your username"
           className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
             errors.username &&
