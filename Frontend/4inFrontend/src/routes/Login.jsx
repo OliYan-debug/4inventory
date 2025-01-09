@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import useAuth from "../hooks/useAuth";
 import logo from "../assets/logo.svg";
@@ -19,7 +19,14 @@ export default function Login() {
     mode: "onChange",
   });
 
-  const { login, authError, setAuthError } = useAuth();
+  const { login, user, authError, setAuthError } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/products", { replace: true });
+    }
+  }, [navigate, user]);
 
   const onSubmit = async (data) => {
     const newData = {
@@ -66,6 +73,7 @@ export default function Login() {
               register={register}
               errors={errors}
               isSubmitting={isSubmitting}
+              isActive={true}
             />
 
             <InputPassword
