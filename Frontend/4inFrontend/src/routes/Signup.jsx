@@ -26,7 +26,7 @@ export default function Signup() {
     const newData = {
       name: data.name,
       login: data.username,
-      password: data.password,
+      password: data.createPassword,
       role: "USER", //default role
     };
 
@@ -54,6 +54,7 @@ export default function Signup() {
               register={register}
               errors={errors}
               isSubmitting={isSubmitting}
+              isActive={true}
             />
 
             <InputCreateUserName

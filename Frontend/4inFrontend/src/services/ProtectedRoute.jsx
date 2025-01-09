@@ -1,28 +1,33 @@
-import { Navigate, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import useAuth from "../hooks/useAuth";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const ProtectedRoute = ({ children, roles }) => {
   const [cookies] = useCookies(["4inventory.token"]);
   const token = cookies["4inventory.token"];
 
   const { user } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
-      <Navigate to="/login" />;
+    if (user && roles && !roles.includes(user.role)) {
+      toast.warn(
+        <p>
+          You are <span className="font-bold"> not authorized</span> to access
+          this page!
+        </p>,
+      );
     }
-  }, [token]);
+  }, [user, roles]);
 
-  useEffect(() => {
-    if (user) {
-      if (roles && !roles.includes(user.role)) {
-        navigate("/products");
-      }
-    }
-  }, [navigate, roles, user]);
+  if (!user && !token) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (user && roles && !roles.includes(user.role)) {
+    return <Navigate to="/products" />;
+  }
 
   return children;
 };

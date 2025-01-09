@@ -7,7 +7,6 @@ import { Header } from "../components/Header";
 import { Card } from "../components/Card";
 import { History } from "../components/History";
 import { Pagination } from "../components/Pagination";
-import { toast } from "react-toastify";
 import useAuth from "../hooks/useAuth";
 
 export default function Dashboard() {
@@ -29,18 +28,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (user) {
-      if (user.role !== "ADMIN") {
-        toast.warn(
-          <p>
-            <span className="font-bold">Only administrators </span> can access
-            this page!
-          </p>,
-        );
-      }
-
       setIsAdmin(user.role === "ADMIN");
     }
-    console.log(user);
   }, [user]);
 
   useEffect(() => {

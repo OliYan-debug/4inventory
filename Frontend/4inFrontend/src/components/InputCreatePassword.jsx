@@ -17,18 +17,18 @@ export function InputCreatePassword({
     <div>
       <div className="relative flex w-full items-center">
         <label
-          htmlFor="password"
+          htmlFor="createPassword"
           className={`absolute bottom-8 ms-2 bg-neutral-50 px-1 text-sm text-neutral-500 ${
-            errors.password && "text-red-600"
+            errors.createPassword && "text-red-600"
           }`}
         >
-          Password
+          New Password
         </label>
 
         <input
           defaultValue=""
-          {...register("password", {
-            required: "Password is required",
+          {...register("createPassword", {
+            required: "New password is required",
             maxLength: {
               value: 64,
               message: "Maximum 64 characters",
@@ -64,13 +64,13 @@ export function InputCreatePassword({
               },
             },
           })}
-          aria-invalid={errors.password ? "true" : "false"}
+          aria-invalid={errors.createPassword ? "true" : "false"}
           type={showPassword ? "text" : "password"}
-          id="password"
+          id="createPassword"
           disabled={isSubmitting}
           placeholder="your password"
           className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
-            errors.password &&
+            errors.createPassword &&
             "border-red-600 text-red-600 hover:border-red-600 focus-visible:border-red-600"
           }`}
         />
@@ -89,9 +89,9 @@ export function InputCreatePassword({
           )}
         </button>
       </div>
-      {errors.password && (
+      {errors.createPassword && (
         <p role="alert" className="mt-1 text-center text-xs text-red-600">
-          {errors.password?.message}
+          {errors.createPassword?.message}
         </p>
       )}
     </div>
