@@ -39,7 +39,7 @@ const AuthProvider = ({ children }) => {
         if (response.status === 200) {
           toast.success("User created successfully! Log in to continue.");
 
-          navigate("/login");
+          navigate("/login", { replace: true });
         }
       })
       .catch((error) => {
@@ -65,6 +65,7 @@ const AuthProvider = ({ children }) => {
         });
 
         const decoded = jwtDecode(token);
+        setUser(decoded);
 
         api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
@@ -76,7 +77,7 @@ const AuthProvider = ({ children }) => {
         );
 
         setAuthToken(token);
-        navigate("/products");
+        navigate("/products", { replace: true });
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -99,7 +100,7 @@ const AuthProvider = ({ children }) => {
       })
       .catch((error) => {
         if (error.status === 403) {
-          toast.info(
+          return toast.info(
             <p>
               You are
               <span className="font-bold"> logged out.</span>
@@ -111,6 +112,7 @@ const AuthProvider = ({ children }) => {
 
     removeCookie("4inventory.token");
     setAuthToken(undefined);
+    setUser(null);
     api.defaults.headers["Authorization"] = null;
 
     navigate("/");
@@ -120,6 +122,7 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        setAuthToken,
         authError,
         setAuthError,
         authSuccess,
