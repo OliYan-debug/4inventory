@@ -4,12 +4,14 @@ import { InputName } from "./InputName";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { api } from "../services/api";
+import { Link } from "react-router";
 
 export function UpdateName({ user }) {
   const {
     register,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
@@ -20,6 +22,14 @@ export function UpdateName({ user }) {
   }, [setValue, user]);
 
   const onSubmit = async (data) => {
+    if (data.name === user.name) {
+      setError("name", {
+        type: "invalid",
+        message: "Your name cannot be the same as your current name",
+      });
+      return;
+    }
+
     data = {
       newName: data.name,
     };
@@ -31,6 +41,7 @@ export function UpdateName({ user }) {
           render() {
             return <p>User updated!</p>;
           },
+          onClose: () => window.location.reload(),
         },
         error: {
           render({ data }) {
@@ -44,7 +55,6 @@ export function UpdateName({ user }) {
           },
         },
       });
-      window.location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -53,7 +63,7 @@ export function UpdateName({ user }) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-4 flex flex-col gap-8"
+      className="mt-4 flex w-80 flex-col items-center gap-8"
     >
       <h3 className="text-lg font-bold text-neutral-700">
         Update your information
@@ -66,7 +76,7 @@ export function UpdateName({ user }) {
         isActive={true}
       />
 
-      <div className="flex flex-col items-center">
+      <div className="flex w-full flex-col items-center">
         <button
           type="submit"
           className="h-10 w-1/2 rounded-full bg-neutral-800 font-medium text-neutral-50 transition hover:underline hover:opacity-90 disabled:cursor-progress disabled:opacity-80 disabled:hover:no-underline disabled:hover:opacity-80"
@@ -80,6 +90,19 @@ export function UpdateName({ user }) {
             <span>Save</span>
           )}
         </button>
+
+        <div className="relative mt-8 flex w-1/2 flex-col items-center">
+          <span className="w-full border-t border-neutral-400"></span>
+          <p className="absolute -top-3 bg-neutral-50 px-1 text-neutral-500">
+            or
+          </p>
+        </div>
+        <Link
+          to={"/user/password"}
+          className="mt-4 font-bold text-neutral-600 underline hover:text-neutral-700"
+        >
+          Change password
+        </Link>
       </div>
     </form>
   );
