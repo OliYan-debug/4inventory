@@ -38,7 +38,7 @@ export default function User() {
     <div className="flex flex-col gap-4">
       <Header title={"My profile"} subtitle={subtitle()} />
 
-      <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 px-20 py-4 md:mb-0 md:overflow-x-hidden">
+      <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 px-4 py-4 md:mb-0 md:overflow-x-hidden md:px-20">
         <Profile user={user}>
           {changePassword ? (
             <UpdatePassword username={user.username} />
