@@ -14,7 +14,7 @@ export function Logo() {
             <img src={logo} alt="4inventory" />
           </Link>
           <span className="mt-px text-xs font-thin text-neutral-200">
-            1.3.6
+            1.4.0
           </span>
         </div>
       </div>
