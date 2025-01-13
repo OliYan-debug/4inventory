@@ -53,7 +53,7 @@ export function NavBar() {
             />
           </Link>
           <span className="mt-px text-xs font-thin text-neutral-200">
-            1.4.0
+            1.5.0
           </span>
         </div>
 
