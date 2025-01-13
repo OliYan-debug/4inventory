@@ -13,6 +13,7 @@ import {
   PackagePlus,
   PackageSearch,
   PackageX,
+  Settings,
   UserCircle,
   UserPen,
 } from "lucide-react";
@@ -82,6 +83,10 @@ const userLinks = [
   { path: "/logout", label: "Logout", Icon: LogOut, active: true },
 ];
 
+const adminLinks = [
+  { path: "/admin/users", label: "Users", Icon: UserPen, active: true },
+];
+
 export function Menu({ hiddenNav }) {
   let location = useLocation();
 
@@ -132,6 +137,16 @@ export function Menu({ hiddenNav }) {
           hiddenNav={hiddenNav}
           pathname={location.pathname}
         />
+
+        {isAdmin && (
+          <MenuDropdownButton
+            label="Administration"
+            Icon={Settings}
+            links={adminLinks}
+            hiddenNav={hiddenNav}
+            pathname={location.pathname}
+          />
+        )}
       </ul>
     </>
   );

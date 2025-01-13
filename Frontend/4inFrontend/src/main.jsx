@@ -23,7 +23,8 @@ import PageTitle from "./components/PageTitle";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Logout from "./routes/Logout";
-import User from "./routes/User";
+import Users from "./routes/Users";
+import Profile from "./routes/Profile";
 
 export const App = () => (
   <BrowserRouter>
@@ -203,7 +204,7 @@ export const App = () => (
               element={
                 <ProtectedRoute>
                   <PageTitle title="4Inventory | Profile" />
-                  <User />
+                  <Profile />
                 </ProtectedRoute>
               }
             />
@@ -212,7 +213,33 @@ export const App = () => (
               element={
                 <ProtectedRoute>
                   <PageTitle title="4Inventory | Profile" />
-                  <User />
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+
+          {/* Admin routes */}
+          <Route
+            path="/admin/users"
+            element={<Root />}
+            errorElement={<ErrorPage />}
+          >
+            <Route
+              path="/admin/users"
+              element={
+                <ProtectedRoute roles={["ADMIN"]}>
+                  <PageTitle title="4Inventory | Users" />
+                  <Users />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/users/:page"
+              element={
+                <ProtectedRoute roles={["ADMIN"]}>
+                  <PageTitle title="4Inventory | Users" />
+                  <Users />
                 </ProtectedRoute>
               }
             />
