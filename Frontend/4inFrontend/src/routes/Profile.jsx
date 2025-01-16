@@ -9,6 +9,7 @@ import { useParams } from "react-router";
 export default function Profile() {
   let { page } = useParams();
   const [user, setUser] = useState([]);
+  const [update, setUpdate] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
 
   useEffect(() => {
@@ -24,7 +25,11 @@ export default function Profile() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [update]);
+
+  const updateUser = () => {
+    update ? setUpdate(false) : setUpdate(true);
+  };
 
   const subtitle = () => {
     return (
@@ -43,7 +48,7 @@ export default function Profile() {
           {changePassword ? (
             <UpdatePassword username={user.username} />
           ) : (
-            <UpdateName user={user} />
+            <UpdateName user={user} updateUser={updateUser} />
           )}
         </UserDetails>
       </div>
