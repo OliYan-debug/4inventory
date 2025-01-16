@@ -62,6 +62,7 @@ const AuthProvider = ({ children }) => {
 
         setCookie("4inventory.token", token, {
           maxAge: 2 * 60 * 60, //2 hours
+          path: "/",
         });
 
         const decoded = jwtDecode(token);
@@ -100,22 +101,24 @@ const AuthProvider = ({ children }) => {
       })
       .catch((error) => {
         if (error.status === 403) {
-          return toast.info(
+          toast.info(
             <p>
               You are
               <span className="font-bold"> logged out.</span>
             </p>,
           );
+        } else {
+          toast.error(error.message);
         }
-        toast.error(error.message);
+      })
+      .finally(() => {
+        removeCookie("4inventory.token", { path: "/" });
+        setAuthToken(undefined);
+        setUser(null);
+        api.defaults.headers["Authorization"] = null;
+
+        return navigate("/");
       });
-
-    removeCookie("4inventory.token");
-    setAuthToken(undefined);
-    setUser(null);
-    api.defaults.headers["Authorization"] = null;
-
-    navigate("/");
   };
 
   return (
