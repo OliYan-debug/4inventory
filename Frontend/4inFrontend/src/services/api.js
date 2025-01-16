@@ -12,6 +12,7 @@ function getCookie(name) {
 function getAPIClient() {
   const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
+    timeout: 10000,
   });
 
   const token = getCookie("4inventory.token");
