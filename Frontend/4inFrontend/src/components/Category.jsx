@@ -8,7 +8,7 @@ export function Category({
   id,
   name,
   color,
-  updateCategories,
+  updateData,
   count,
   activeButton,
   handleButtonClick,
@@ -77,7 +77,7 @@ export function Category({
           },
         },
       );
-      updateCategories();
+      updateData();
     } catch (error) {
       handleConfirmDelete();
       console.error(error);
@@ -121,7 +121,7 @@ export function Category({
           },
         },
       });
-      updateCategories();
+      updateData();
       handleUpdate();
     } catch (error) {
       console.error(error);

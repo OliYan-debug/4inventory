@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { PlusCircle, Rat } from "lucide-react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { FolderSync, PlusCircle, Rat } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { LoadingSkeleton } from "../components/LoadingSkeleton";
 import { UsersHeader } from "../components/UsersHeader";
 import { User } from "../components/User";
+import { toast } from "react-toastify";
 
 export default function Users() {
   let { page } = useParams();
@@ -15,28 +16,84 @@ export default function Users() {
   const [update, setUpdate] = useState(false);
   let count = 0;
 
-  useEffect(() => {
-    setLoading(true);
-    api
-      .get("/admin/users", {
-        params: {
-          page,
-          size: 10,
-          sort,
-        },
-      })
-      .then((response) => {
-        console.log(response);
-        setUsers(response.data.content);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+  const navigate = useNavigate();
 
-    setLoading(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const response = await toast.promise(
+          api.get("/admin/users", {
+            params: {
+              page,
+              size: 10,
+              sort,
+            },
+          }),
+          {
+            pending: "Finding users",
+            success: {
+              render({ data }) {
+                return (
+                  <p>
+                    Users found:{" "}
+                    <span className="font-semibold">
+                      {data.data.totalElements}
+                    </span>
+                  </p>
+                );
+              },
+            },
+            error: {
+              render({ data }) {
+                if (
+                  data.code === "ECONNABORTED" ||
+                  data.code === "ERR_NETWORK"
+                ) {
+                  return (
+                    <p>
+                      Error when finding, Try again.{" "}
+                      <span className="text-xs opacity-80">
+                        #timeout exceeded/network error.
+                      </span>
+                    </p>
+                  );
+                }
+
+                if (data.code === "ERR_BAD_REQUEST") {
+                  return (
+                    <p>
+                      Invalid Token, please log in again.{" "}
+                      <span className="text-xs opacity-80">
+                        path:/admin/users
+                      </span>
+                    </p>
+                  );
+                }
+
+                return <p>Error when finding. Try again.</p>;
+              },
+            },
+          },
+        );
+
+        setUsers(response.data.content);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+
+        if (error.status === 403) {
+          navigate("/logout");
+        }
+      }
+
+      setLoading(false);
+    };
+
+    fetchData();
   }, [page, sort, update]);
 
-  const updateUsers = () => {
+  const updateData = () => {
     update ? setUpdate(false) : setUpdate(true);
   };
 
@@ -70,6 +127,16 @@ export default function Users() {
                   <p className="font-medium text-neutral-600">
                     No users found...
                   </p>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      updateData();
+                    }}
+                    className="flex items-center gap-1 rounded-lg bg-neutral-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-neutral-500"
+                  >
+                    Try again <FolderSync size={16} />
+                  </button>
                 </div>
               ) : (
                 <>
@@ -85,7 +152,7 @@ export default function Users() {
                         username={user.username}
                         permission={user.permission}
                         count={count}
-                        updateUsers={updateUsers}
+                        updateData={updateData}
                       />
                     );
                   })}

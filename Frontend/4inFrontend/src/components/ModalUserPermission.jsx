@@ -10,7 +10,7 @@ export function ModalUserPermission({
   name,
   permission,
   setCheckPermissionOpen,
-  updateUsers,
+  updateData,
 }) {
   const { user } = useAuth();
 
@@ -58,7 +58,7 @@ export function ModalUserPermission({
       }
 
       setCheckPermissionOpen(false);
-      updateUsers();
+      updateData();
     } catch (error) {
       console.error(error);
     }

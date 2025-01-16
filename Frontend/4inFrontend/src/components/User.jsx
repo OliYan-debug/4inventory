@@ -4,7 +4,7 @@ import { ModalUserDelete } from "./ModalUserDelete";
 import { ModalUserResetPassword } from "./ModalUserResetPassword";
 import { ModalUserPermission } from "./ModalUserPermission";
 
-export function User({ id, name, username, permission, count, updateUsers }) {
+export function User({ id, name, username, permission, count, updateData }) {
   const [checkDeleteOpen, setCheckDeleteOpen] = useState(false);
   const [checkResetOpen, setCheckResetOpen] = useState(false);
   const [checkPermissionOpen, setCheckPermissionOpen] = useState(false);
@@ -74,7 +74,7 @@ export function User({ id, name, username, permission, count, updateUsers }) {
             name={name}
             permission={permission}
             setCheckPermissionOpen={setCheckPermissionOpen}
-            updateUsers={updateUsers}
+            updateData={updateData}
           />
         )}
 
