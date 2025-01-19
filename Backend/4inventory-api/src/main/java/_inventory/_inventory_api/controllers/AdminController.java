@@ -30,7 +30,12 @@ public class AdminController {
                                                @RequestParam(value = "size", defaultValue = "10") int size){
         return ResponseEntity.ok(adminService.getUsers(page, size, sort));
     }
-
+    @Operation(summary = "Delete a user")
+    @DeleteMapping("/users")
+    public ResponseEntity<Object> deleteUser(@RequestBody @Valid ResetPasswordAdminDTO data){
+        adminService.deleteUser(data);
+        return ResponseEntity.ok().build();
+    }
     @Operation(summary = "Users password reset")
     @PostMapping("/reset-password")
     public ResponseEntity<Object> resetPassword(@RequestBody @Valid ResetPasswordAdminDTO data) {
