@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowDownUp, FolderSync, PlusCircle, Rat } from "lucide-react";
+import { FolderSync, PlusCircle, Rat } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { LoadingSkeleton } from "../components/LoadingSkeleton";
 import { Category } from "../components/Category";
 import { toast } from "react-toastify";
+import { TableHeader } from "../components/TableHeader";
 
 export default function Categories() {
   const [categories, setCategories] = useState([]);
@@ -84,6 +85,28 @@ export default function Categories() {
     setActiveButton(id);
   };
 
+  const categoriesColumns = [
+    {
+      label: "ID",
+      isOrderable: false,
+    },
+
+    {
+      label: "Name",
+      isOrderable: false,
+    },
+
+    {
+      label: "Color",
+      isOrderable: false,
+    },
+
+    {
+      label: "Actions",
+      isOrderable: false,
+    },
+  ];
+
   const Subtitle = () => {
     return (
       <p className="mt-1 w-full text-sm text-neutral-500">
@@ -136,26 +159,7 @@ export default function Categories() {
               </div>
             ) : (
               <>
-                <div className="mb-2 grid min-w-[400px] grid-cols-4 grid-rows-1 justify-items-center">
-                  <div className="col-auto flex items-center">
-                    <p className="font-bold text-neutral-600">ID</p>
-                    <ArrowDownUp size={16} color="#525252" className="ms-1" />
-                  </div>
-
-                  <div className="col-auto flex items-center">
-                    <p className="font-bold text-neutral-600">Name</p>
-                    <ArrowDownUp size={16} color="#525252" className="ms-1" />
-                  </div>
-
-                  <div className="col-auto flex items-center">
-                    <p className="font-bold text-neutral-600">Color</p>
-                    <ArrowDownUp size={16} color="#525252" className="ms-1" />
-                  </div>
-
-                  <div className="col-auto flex items-center">
-                    <p className="font-bold text-neutral-600">Action</p>
-                  </div>
-                </div>
+                <TableHeader columnsDefault={categoriesColumns} />
 
                 {categories.map((category) => {
                   count++;
