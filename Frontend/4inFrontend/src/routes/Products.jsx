@@ -5,22 +5,19 @@ import { FolderSync, PlusCircle, Rat } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { Item } from "../components/Item";
-import { ProductsHeader } from "../components/ProductsHeader";
 import { Pagination } from "../components/Pagination";
 import { LoadingSkeleton } from "../components/LoadingSkeleton";
 import { toast } from "react-toastify";
+import { TableHeader } from "../components/TableHeader";
 
 export default function Products() {
   let { page } = useParams();
   const [cookies] = useCookies();
   const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
+  const [response, setResponse] = useState([]);
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState("id,asc");
-  const [items, setItems] = useState([]);
-  const [totalElements, setTotalElements] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [pageNumber, setPageNumber] = useState(0);
-  const [response, setResponse] = useState([]);
   const [update, setUpdate] = useState(false);
   let count = 0;
 
@@ -52,6 +49,7 @@ export default function Products() {
                   </p>
                 );
               },
+              toastId: "getItem",
             },
             error: {
               render({ data }) {
@@ -85,9 +83,6 @@ export default function Products() {
         );
 
         setItems(response.data.content);
-        setTotalElements(response.data.totalElements);
-        setTotalPages(response.data.totalPages);
-        setPageNumber(response.data.pageable.pageNumber);
         setResponse(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -101,13 +96,64 @@ export default function Products() {
     };
 
     fetchData();
-  }, [page, sort, cookies.paginationSize, update]);
+  }, [page, sort, size, cookies.paginationSize, update]);
 
   const updateData = () => {
     update ? setUpdate(false) : setUpdate(true);
   };
 
-  const subtitle = () => {
+  const productsColumns = [
+    {
+      label: "ID",
+      orderBy: "id",
+      sorting: true,
+      order: "asc",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+    {
+      label: "Name",
+      orderBy: "item",
+      sorting: false,
+      order: "asc",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+    {
+      label: "Description",
+      orderBy: "description",
+      sorting: false,
+      order: "asc",
+      isOrderable: true,
+      extendedColumn: true,
+    },
+    {
+      label: "Categories",
+      orderBy: "category",
+      sorting: false,
+      order: "asc",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+    {
+      label: "Quantity",
+      orderBy: "quantity",
+      sorting: false,
+      order: "asc",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+    {
+      label: "Created At",
+      orderBy: "createdAt",
+      sorting: false,
+      order: "asc",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+  ];
+
+  const Subtitle = () => {
     return (
       <p className="text-sm text-neutral-500">
         Found: <span className="font-bold">{items.length}</span>
@@ -116,7 +162,7 @@ export default function Products() {
   };
   return (
     <div className="flex flex-col gap-4">
-      <Header title={"Products"} subtitle={subtitle()}>
+      <Header title={"Products"} subtitle={Subtitle()}>
         <Link
           to={"/products/new"}
           className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
@@ -158,7 +204,10 @@ export default function Products() {
                 </div>
               ) : (
                 <>
-                  <ProductsHeader setSort={setSort} />
+                  <TableHeader
+                    setSort={setSort}
+                    columnsDefault={productsColumns}
+                  />
 
                   {items.map((item) => {
                     count++;
@@ -183,9 +232,9 @@ export default function Products() {
 
         {items.length > 0 && (
           <Pagination
-            totalElements={totalElements}
-            totalPages={totalPages}
-            pageNumber={pageNumber}
+            totalElements={response.totalElements}
+            totalPages={response.totalPages}
+            pageNumber={response.pageable.pageNumber}
             numberOfElements={response.numberOfElements}
             first={response.first}
             last={response.last}
