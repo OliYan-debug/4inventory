@@ -25,6 +25,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Logout from "./routes/Logout";
 import Users from "./routes/Users";
 import Profile from "./routes/Profile";
+import ItemView from "./routes/ItemView";
 
 export const App = () => (
   <BrowserRouter>
@@ -66,7 +67,7 @@ export const App = () => (
             <Route
               path="delete"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute roles={["ADMIN"]}>
                   <PageTitle title="4Inventory | Delete Product" />
                   <DeleteItem />
                 </ProtectedRoute>
@@ -75,7 +76,7 @@ export const App = () => (
             <Route
               path="delete/:itemId"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute roles={["ADMIN"]}>
                   <PageTitle title="4Inventory | Delete Product" />
                   <DeleteItem />
                 </ProtectedRoute>
@@ -141,6 +142,25 @@ export const App = () => (
                 <ProtectedRoute>
                   <PageTitle title="4Inventory | Product CheckOut" />
                   <CheckOut />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="item"
+              element={
+                <ProtectedRoute>
+                  <PageTitle title="4Inventory | Item" />
+                  <ItemView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="item/:itemId"
+              element={
+                <ProtectedRoute>
+                  <PageTitle title="4Inventory | Item" />
+                  <ItemView />
                 </ProtectedRoute>
               }
             />
