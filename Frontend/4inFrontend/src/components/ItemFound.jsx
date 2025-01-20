@@ -4,7 +4,7 @@ import { Box, ChevronRight } from "lucide-react";
 export function ItemFound({ id, item, category, setOpenSearch }) {
   return (
     <Link
-      to={`/products/update/${id}`}
+      to={`/products/item/${id}`}
       onClick={() => {
         setOpenSearch(false);
       }}
