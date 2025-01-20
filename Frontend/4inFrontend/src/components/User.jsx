@@ -4,7 +4,7 @@ import { ModalUserDelete } from "./ModalUserDelete";
 import { ModalUserResetPassword } from "./ModalUserResetPassword";
 import { ModalUserPermission } from "./ModalUserPermission";
 
-export function User({ id, name, username, permission, count, updateData }) {
+export function User({ name, username, permission, count, updateData }) {
   const [checkDeleteOpen, setCheckDeleteOpen] = useState(false);
   const [checkResetOpen, setCheckResetOpen] = useState(false);
   const [checkPermissionOpen, setCheckPermissionOpen] = useState(false);
@@ -61,7 +61,7 @@ export function User({ id, name, username, permission, count, updateData }) {
           <button
             type="button"
             onClick={() => handleConfirmDelete()}
-            disabled={true}
+            disabled={username === "admin"}
             className="transition hover:opacity-80 disabled:cursor-no-drop disabled:opacity-60"
           >
             <Trash size={20} className="text-red-600" />
@@ -88,9 +88,10 @@ export function User({ id, name, username, permission, count, updateData }) {
 
         {checkDeleteOpen && (
           <ModalUserDelete
-            userId={id}
-            userName={name}
+            username={username}
+            name={name}
             setCheckDeleteOpen={setCheckDeleteOpen}
+            updateData={updateData}
           />
         )}
       </div>
