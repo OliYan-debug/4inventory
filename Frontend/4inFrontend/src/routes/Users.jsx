@@ -4,9 +4,9 @@ import { FolderSync, PlusCircle, Rat } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { LoadingSkeleton } from "../components/LoadingSkeleton";
-import { UsersHeader } from "../components/UsersHeader";
 import { User } from "../components/User";
 import { toast } from "react-toastify";
+import { TableHeader } from "../components/TableHeader";
 
 export default function Users() {
   let { page } = useParams();
@@ -44,6 +44,7 @@ export default function Users() {
                   </p>
                 );
               },
+              toastId: 1,
             },
             error: {
               render({ data }) {
@@ -97,6 +98,37 @@ export default function Users() {
     update ? setUpdate(false) : setUpdate(true);
   };
 
+  const usersColumns = [
+    {
+      label: "Name",
+      orderBy: "name",
+      sorting: true,
+      order: "asc",
+      isOrderable: true,
+    },
+    {
+      label: "User",
+      orderBy: "username",
+      sorting: false,
+      order: "desc",
+      isOrderable: true,
+    },
+    {
+      label: "Permission",
+      orderBy: "",
+      sorting: false,
+      order: "desc",
+      isOrderable: false,
+    },
+    {
+      label: "Actions",
+      orderBy: "",
+      sorting: false,
+      order: "desc",
+      isOrderable: false,
+    },
+  ];
+
   const subtitle = () => {
     return (
       <p className="text-sm text-neutral-500">
@@ -140,14 +172,16 @@ export default function Users() {
                 </div>
               ) : (
                 <>
-                  <UsersHeader setSort={setSort} />
+                  <TableHeader
+                    setSort={setSort}
+                    columnsDefault={usersColumns}
+                  />
 
                   {users.map((user) => {
                     count++;
                     return (
                       <User
                         key={user.id}
-                        id={user.id}
                         name={user.name}
                         username={user.username}
                         permission={user.permission}
