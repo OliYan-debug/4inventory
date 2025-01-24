@@ -115,10 +115,10 @@ export default function Users() {
     },
     {
       label: "Permission",
-      orderBy: "",
+      orderBy: "role",
       sorting: false,
       order: "desc",
-      isOrderable: false,
+      isOrderable: true,
     },
     {
       label: "Actions",
