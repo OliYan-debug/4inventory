@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { useCookies } from "react-cookie";
 import { ChevronRight } from "lucide-react";
 import { api } from "../services/api";
@@ -8,21 +8,19 @@ import { Card } from "../components/Card";
 import { History } from "../components/History";
 import { Pagination } from "../components/Pagination";
 import useAuth from "../hooks/useAuth";
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
   let { page } = useParams();
   const [cookies] = useCookies();
   const [registers, setRegisters] = useState([]);
-  const [size, setSize] = useState(10);
-  const [sort, setSort] = useState("id,asc");
-  const [totalElements, setTotalElements] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [pageNumber, setPageNumber] = useState(0);
   const [response, setResponse] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [size, setSize] = useState(10);
+  const [sort, setSort] = useState("createdAt,desc");
   const [totalItems, setTotalItems] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalCategories, setTotalCategories] = useState(0);
-
   const { user } = useAuth();
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -32,28 +30,92 @@ export default function Dashboard() {
     }
   }, [user]);
 
+  const [update, setUpdate] = useState(false);
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (isAdmin) {
-      api
-        .get("/registry/", {
-          params: {
-            page,
-            size: cookies.paginationSize || 10,
-            sort,
-          },
-        })
-        .then((response) => {
+      const fetchData = async () => {
+        setLoading(true);
+
+        try {
+          const response = await toast.promise(
+            api.get("/registry/", {
+              params: {
+                page,
+                size: cookies.paginationSize || 10,
+                sort,
+              },
+            }),
+            {
+              pending: "Finding registers",
+              success: {
+                render({ data }) {
+                  return (
+                    <p>
+                      Registers found:{" "}
+                      <span className="font-semibold">
+                        {data.data.totalElements}
+                      </span>
+                    </p>
+                  );
+                },
+                toastId: "getRegister",
+              },
+              error: {
+                render({ data }) {
+                  if (
+                    data.code === "ECONNABORTED" ||
+                    data.code === "ERR_NETWORK"
+                  ) {
+                    return (
+                      <p>
+                        Error when finding, Try again.{" "}
+                        <span className="text-xs opacity-80">
+                          #timeout exceeded/network error.
+                        </span>
+                      </p>
+                    );
+                  }
+
+                  if (data.code === "ERR_BAD_REQUEST") {
+                    return (
+                      <p>
+                        Invalid Token, please log in again.{" "}
+                        <span className="text-xs opacity-80">
+                          path:/products
+                        </span>
+                      </p>
+                    );
+                  }
+
+                  return <p>Error when finding. Try again.</p>;
+                },
+              },
+            },
+          );
+
           setRegisters(response.data.content);
-          setTotalElements(response.data.totalElements);
-          setTotalPages(response.data.totalPages);
-          setPageNumber(response.data.pageable.pageNumber);
           setResponse(response.data);
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error("Error fetching data:", error);
-        });
+
+          if (error.status === 403) {
+            navigate("/logout");
+          }
+        }
+
+        setLoading(false);
+      };
+
+      fetchData();
     }
-  }, [cookies.paginationSize, isAdmin, page, size, sort]);
+  }, [page, sort, size, isAdmin, cookies.paginationSize, update]);
+
+  const updateData = () => {
+    update ? setUpdate(false) : setUpdate(true);
+  };
 
   useEffect(() => {
     api
@@ -86,7 +148,7 @@ export default function Dashboard() {
       });
   }, []);
 
-  const subtitle = () => {
+  const Subtitle = () => {
     return (
       <p className="flex items-center text-sm text-neutral-500">
         <Link to={`/products`} className="hover:font-semibold">
@@ -102,7 +164,7 @@ export default function Dashboard() {
     <>
       {isAdmin && (
         <div className="flex flex-col gap-4">
-          <Header title={"Dashboard"} subtitle={subtitle()} />
+          <Header title={"Dashboard"} subtitle={Subtitle()} />
 
           <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
             <div className="flex flex-col gap-4">
@@ -112,19 +174,24 @@ export default function Dashboard() {
                 <Card title="Items Quantity" total={totalQuantity} />
               </div>
 
-              <History registers={registers} setSort={setSort} />
+              <History
+                registers={registers}
+                setSort={setSort}
+                loading={loading}
+                updateData={updateData}
+              />
             </div>
 
             {registers.length > 0 && (
               <Pagination
-                totalElements={totalElements}
-                totalPages={totalPages}
-                pageNumber={pageNumber}
+                totalElements={response.totalElements}
+                totalPages={response.totalPages}
+                pageNumber={response.pageable.pageNumber}
                 numberOfElements={response.numberOfElements}
                 first={response.first}
                 last={response.last}
                 setSize={setSize}
-                path={"products/dashboard"}
+                path={"dashboard"}
               />
             )}
           </div>

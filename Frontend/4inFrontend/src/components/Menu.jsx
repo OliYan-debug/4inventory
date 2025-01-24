@@ -13,6 +13,7 @@ import {
   PackagePlus,
   PackageSearch,
   PackageX,
+  Settings,
   UserCircle,
   UserPen,
 } from "lucide-react";
@@ -22,37 +23,54 @@ import useAuth from "../hooks/useAuth";
 import { useEffect, useState } from "react";
 
 const productsLinks = [
-  { path: "/products", label: "See Items", Icon: PackageCheck, active: true },
-  { path: "/products/new", label: "New Item", Icon: PackageIcon, active: true },
+  {
+    path: "/products",
+    label: "See Items",
+    Icon: PackageCheck,
+    active: true,
+    role: "USER",
+  },
+  {
+    path: "/products/new",
+    label: "New Item",
+    Icon: PackageIcon,
+    active: true,
+    role: "USER",
+  },
   {
     path: "/products/update",
     label: "Update Item",
     Icon: PackageOpen,
     active: true,
+    role: "USER",
   },
   {
     path: "/products/delete",
     label: "Delete Item",
     Icon: PackageX,
     active: true,
+    role: "ADMIN",
   },
   {
     path: "/products/search",
     label: "Search Item",
     Icon: PackageSearch,
     active: true,
+    role: "USER",
   },
   {
     path: "/products/checkin",
     label: "Check-in",
     Icon: PackagePlus,
     active: true,
+    role: "USER",
   },
   {
     path: "/products/checkout",
     label: "Check-out",
     Icon: PackageMinus,
     active: true,
+    role: "USER",
   },
 ];
 
@@ -62,24 +80,49 @@ const categoriesLinks = [
     label: "See Categories",
     Icon: FolderOpen,
     active: true,
+    role: "USER",
   },
   {
     path: "/categories/new",
     label: "New Category",
     Icon: FolderInput,
     active: true,
+    role: "USER",
   },
 ];
 
 const userLinks = [
-  { path: "/user/profile", label: "My profile", Icon: UserPen, active: true },
+  {
+    path: "/user/profile",
+    label: "My profile",
+    Icon: UserPen,
+    active: true,
+    role: "USER",
+  },
   {
     path: "/user/password",
     label: "Change password",
     Icon: Lock,
     active: true,
+    role: "USER",
   },
-  { path: "/logout", label: "Logout", Icon: LogOut, active: true },
+  {
+    path: "/logout",
+    label: "Logout",
+    Icon: LogOut,
+    active: true,
+    role: "USER",
+  },
+];
+
+const adminLinks = [
+  {
+    path: "/admin/users",
+    label: "Users",
+    Icon: UserPen,
+    active: true,
+    role: "ADMIN",
+  },
 ];
 
 export function Menu({ hiddenNav }) {
@@ -132,6 +175,16 @@ export function Menu({ hiddenNav }) {
           hiddenNav={hiddenNav}
           pathname={location.pathname}
         />
+
+        {isAdmin && (
+          <MenuDropdownButton
+            label="Administration"
+            Icon={Settings}
+            links={adminLinks}
+            hiddenNav={hiddenNav}
+            pathname={location.pathname}
+          />
+        )}
       </ul>
     </>
   );

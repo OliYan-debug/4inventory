@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
 import { api } from "../services/api";
-import { Profile } from "../components/Profile";
+import { UserDetails } from "../components/UserDetails";
 import { UpdateName } from "../components/UpdateName";
 import { UpdatePassword } from "../components/UpdatePassword";
 import { useParams } from "react-router";
 
-export default function User() {
+export default function Profile() {
   let { page } = useParams();
   const [user, setUser] = useState([]);
+  const [update, setUpdate] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
 
   useEffect(() => {
@@ -24,7 +25,11 @@ export default function User() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []);
+  }, [update]);
+
+  const updateUser = () => {
+    update ? setUpdate(false) : setUpdate(true);
+  };
 
   const subtitle = () => {
     return (
@@ -39,13 +44,13 @@ export default function User() {
       <Header title={"My profile"} subtitle={subtitle()} />
 
       <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 px-4 py-4 md:mb-0 md:overflow-x-hidden md:px-20">
-        <Profile user={user}>
+        <UserDetails user={user}>
           {changePassword ? (
             <UpdatePassword username={user.username} />
           ) : (
-            <UpdateName user={user} />
+            <UpdateName user={user} updateUser={updateUser} />
           )}
-        </Profile>
+        </UserDetails>
       </div>
     </div>
   );

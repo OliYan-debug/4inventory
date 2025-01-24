@@ -23,7 +23,9 @@ import PageTitle from "./components/PageTitle";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Logout from "./routes/Logout";
-import User from "./routes/User";
+import Users from "./routes/Users";
+import Profile from "./routes/Profile";
+import ItemView from "./routes/ItemView";
 
 export const App = () => (
   <BrowserRouter>
@@ -65,7 +67,7 @@ export const App = () => (
             <Route
               path="delete"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute roles={["ADMIN"]}>
                   <PageTitle title="4Inventory | Delete Product" />
                   <DeleteItem />
                 </ProtectedRoute>
@@ -74,7 +76,7 @@ export const App = () => (
             <Route
               path="delete/:itemId"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute roles={["ADMIN"]}>
                   <PageTitle title="4Inventory | Delete Product" />
                   <DeleteItem />
                 </ProtectedRoute>
@@ -143,6 +145,25 @@ export const App = () => (
                 </ProtectedRoute>
               }
             />
+
+            <Route
+              path="item"
+              element={
+                <ProtectedRoute>
+                  <PageTitle title="4Inventory | Item" />
+                  <ItemView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="item/:itemId"
+              element={
+                <ProtectedRoute>
+                  <PageTitle title="4Inventory | Item" />
+                  <ItemView />
+                </ProtectedRoute>
+              }
+            />
           </Route>
 
           <Route
@@ -203,7 +224,7 @@ export const App = () => (
               element={
                 <ProtectedRoute>
                   <PageTitle title="4Inventory | Profile" />
-                  <User />
+                  <Profile />
                 </ProtectedRoute>
               }
             />
@@ -212,7 +233,33 @@ export const App = () => (
               element={
                 <ProtectedRoute>
                   <PageTitle title="4Inventory | Profile" />
-                  <User />
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
+
+          {/* Admin routes */}
+          <Route
+            path="/admin/users"
+            element={<Root />}
+            errorElement={<ErrorPage />}
+          >
+            <Route
+              path="/admin/users"
+              element={
+                <ProtectedRoute roles={["ADMIN"]}>
+                  <PageTitle title="4Inventory | Users" />
+                  <Users />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/users/:page"
+              element={
+                <ProtectedRoute roles={["ADMIN"]}>
+                  <PageTitle title="4Inventory | Users" />
+                  <Users />
                 </ProtectedRoute>
               }
             />

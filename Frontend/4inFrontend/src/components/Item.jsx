@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 import {
   Ellipsis,
   PackageMinus,
+  PackageOpen,
   PackagePlus,
   PackageX,
   Pencil,
+  SquareArrowOutUpRight,
 } from "lucide-react";
+import useAuth from "../hooks/useAuth";
 
 export function Item({
   id,
@@ -19,6 +22,15 @@ export function Item({
 }) {
   const [itemMenuOpen, setItemMenuOpen] = useState(false);
   const ref = useRef(null);
+
+  const { user } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setIsAdmin(user.role === "ADMIN");
+    }
+  }, [user]);
 
   const handleClickOutside = (event) => {
     if (ref.current && !ref.current.contains(event.target)) {
@@ -44,13 +56,20 @@ export function Item({
         className="absolute left-1 top-5 z-10 animate-fadeIn rounded-lg bg-neutral-50 py-2 shadow-lg"
       >
         <ul className="flex w-36 flex-col gap-1 text-neutral-600">
-          <Link
-            to={`update/${id}`}
-            className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium"
-          >
-            <Pencil size={19} className="me-1" />
-            Edit Item
-          </Link>
+          <li className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium">
+            <Link to={`item/${id}`} className="flex w-full items-center">
+              <PackageOpen size={19} className="me-1" />
+              See Item
+            </Link>
+          </li>
+
+          <li className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium">
+            <Link to={`update/${id}`} className="flex w-full items-center">
+              <Pencil size={19} className="me-1" />
+              Edit Item
+            </Link>
+          </li>
+
           <li className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium">
             <Link to={`checkin/${id}`} className="flex w-full items-center">
               <PackagePlus size={19} className="me-1" />
@@ -63,12 +82,14 @@ export function Item({
               Check-out
             </Link>
           </li>
-          <li className="flex h-7 w-full cursor-pointer items-center border-t px-4 py-2 text-red-500 transition hover:bg-red-300 hover:font-medium">
-            <Link to={`delete/${id}`} className="flex w-full items-center">
-              <PackageX size={19} className="me-1" />
-              Delete Item
-            </Link>
-          </li>
+          {isAdmin && (
+            <li className="flex h-7 w-full cursor-pointer items-center border-t px-4 py-2 text-red-500 transition hover:bg-red-300 hover:font-medium">
+              <Link to={`delete/${id}`} className="flex w-full items-center">
+                <PackageX size={19} className="me-1" />
+                Delete Item
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     );
@@ -98,7 +119,15 @@ export function Item({
       </div>
 
       <div className="col-auto flex items-center py-2">
-        <p className="text-neutral-500">{item}</p>
+        <Link to={`item/${id}`}>
+          <p className="group flex items-center gap-1 text-neutral-500 underline transition hover:font-semibold">
+            {item}
+            <SquareArrowOutUpRight
+              size={12}
+              className="-translate-x-4 opacity-0 transition group-hover:translate-x-0 group-hover:opacity-100"
+            />
+          </p>
+        </Link>
       </div>
 
       <div className="group/description relative col-span-2 flex items-center justify-center py-2">

@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import { FolderSync, PlusCircle, Rat } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
-import { Item } from "../components/Item";
-import { Pagination } from "../components/Pagination";
 import { LoadingSkeleton } from "../components/LoadingSkeleton";
+import { User } from "../components/User";
 import { toast } from "react-toastify";
 import { TableHeader } from "../components/TableHeader";
 
-export default function Products() {
+export default function Users() {
   let { page } = useParams();
-  const [cookies] = useCookies();
   const [loading, setLoading] = useState(false);
-  const [items, setItems] = useState([]);
-  const [response, setResponse] = useState([]);
-  const [size, setSize] = useState(10);
   const [sort, setSort] = useState("id,asc");
+  const [users, setUsers] = useState([]);
   const [update, setUpdate] = useState(false);
   let count = 0;
 
@@ -29,27 +24,27 @@ export default function Products() {
 
       try {
         const response = await toast.promise(
-          api.get("/inventory/", {
+          api.get("/admin/users", {
             params: {
               page,
-              size: cookies.paginationSize || 10,
+              size: 10,
               sort,
             },
           }),
           {
-            pending: "Finding items",
+            pending: "Finding users",
             success: {
               render({ data }) {
                 return (
                   <p>
-                    Items found:{" "}
+                    Users found:{" "}
                     <span className="font-semibold">
                       {data.data.totalElements}
                     </span>
                   </p>
                 );
               },
-              toastId: "getItem",
+              toastId: 1,
             },
             error: {
               render({ data }) {
@@ -71,7 +66,9 @@ export default function Products() {
                   return (
                     <p>
                       Invalid Token, please log in again.{" "}
-                      <span className="text-xs opacity-80">path:/products</span>
+                      <span className="text-xs opacity-80">
+                        path:/admin/users
+                      </span>
                     </p>
                   );
                 }
@@ -82,8 +79,7 @@ export default function Products() {
           },
         );
 
-        setItems(response.data.content);
-        setResponse(response.data);
+        setUsers(response.data.content);
       } catch (error) {
         console.error("Error fetching data:", error);
 
@@ -96,73 +92,53 @@ export default function Products() {
     };
 
     fetchData();
-  }, [page, sort, size, cookies.paginationSize, update]);
+  }, [page, sort, update]);
 
   const updateData = () => {
     update ? setUpdate(false) : setUpdate(true);
   };
 
-  const productsColumns = [
+  const usersColumns = [
     {
-      label: "ID",
-      orderBy: "id",
+      label: "Name",
+      orderBy: "name",
       sorting: true,
       order: "asc",
       isOrderable: true,
-      extendedColumn: false,
     },
     {
-      label: "Name",
-      orderBy: "item",
+      label: "User",
+      orderBy: "username",
       sorting: false,
-      order: "asc",
+      order: "desc",
       isOrderable: true,
-      extendedColumn: false,
     },
     {
-      label: "Description",
-      orderBy: "description",
+      label: "Permission",
+      orderBy: "role",
       sorting: false,
-      order: "asc",
+      order: "desc",
       isOrderable: true,
-      extendedColumn: true,
     },
     {
-      label: "Categories",
-      orderBy: "category",
+      label: "Actions",
+      orderBy: "",
       sorting: false,
-      order: "asc",
-      isOrderable: true,
-      extendedColumn: false,
-    },
-    {
-      label: "Quantity",
-      orderBy: "quantity",
-      sorting: false,
-      order: "asc",
-      isOrderable: true,
-      extendedColumn: false,
-    },
-    {
-      label: "Created At",
-      orderBy: "createdAt",
-      sorting: false,
-      order: "asc",
-      isOrderable: true,
-      extendedColumn: false,
+      order: "desc",
+      isOrderable: false,
     },
   ];
 
-  const Subtitle = () => {
+  const subtitle = () => {
     return (
       <p className="text-sm text-neutral-500">
-        Found: <span className="font-bold">{items.length}</span>
+        Found: <span className="font-bold">{users.length}</span>
       </p>
     );
   };
   return (
     <div className="flex flex-col gap-4">
-      <Header title={"Products"} subtitle={Subtitle()}>
+      <Header title={"Products"} subtitle={subtitle()}>
         <Link
           to={"/products/new"}
           className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
@@ -177,20 +153,12 @@ export default function Products() {
             <LoadingSkeleton />
           ) : (
             <>
-              {items.length <= 0 ? (
+              {users.length <= 0 ? (
                 <div className="mt-10 flex animate-fadeIn flex-col items-center gap-2">
                   <Rat size={100} className="text-neutral-700" />
                   <p className="font-medium text-neutral-600">
-                    No items found...
+                    No users found...
                   </p>
-                  <Link
-                    to={"/products/new"}
-                    className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
-                  >
-                    Try adding some <PlusCircle size={16} />
-                  </Link>
-
-                  <p className="text-neutral-600">or</p>
 
                   <button
                     type="button"
@@ -206,21 +174,19 @@ export default function Products() {
                 <>
                   <TableHeader
                     setSort={setSort}
-                    columnsDefault={productsColumns}
+                    columnsDefault={usersColumns}
                   />
 
-                  {items.map((item) => {
+                  {users.map((user) => {
                     count++;
                     return (
-                      <Item
-                        key={item.id}
-                        id={item.id}
-                        item={item.item}
-                        description={item.description}
-                        categories={item.category}
-                        quantity={item.quantity}
-                        createdAt={item.createdAt}
+                      <User
+                        key={user.id}
+                        name={user.name}
+                        username={user.username}
+                        permission={user.permission}
                         count={count}
+                        updateData={updateData}
                       />
                     );
                   })}
@@ -229,19 +195,6 @@ export default function Products() {
             </>
           )}
         </div>
-
-        {items.length > 0 && (
-          <Pagination
-            totalElements={response.totalElements}
-            totalPages={response.totalPages}
-            pageNumber={response.pageable.pageNumber}
-            numberOfElements={response.numberOfElements}
-            first={response.first}
-            last={response.last}
-            setSize={setSize}
-            path={"products"}
-          />
-        )}
       </div>
     </div>
   );
