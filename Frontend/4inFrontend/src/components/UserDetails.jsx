@@ -1,6 +1,6 @@
 import { IdCard, User2Icon } from "lucide-react";
 
-export function Profile({ user, children }) {
+export function UserDetails({ user, children }) {
   return (
     <div className="justify-top relative flex h-screen w-full flex-col items-center rounded-tl-[62px] bg-neutral-100/40">
       <div className="absolute top-16 mt-1 flex size-20 items-center justify-center rounded-full border border-neutral-700 bg-neutral-100 font-medium">

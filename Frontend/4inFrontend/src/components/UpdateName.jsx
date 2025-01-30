@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { api } from "../services/api";
 import { Link } from "react-router";
 
-export function UpdateName({ user }) {
+export function UpdateName({ user, updateUser }) {
   const {
     register,
     handleSubmit,
@@ -41,10 +41,18 @@ export function UpdateName({ user }) {
           render() {
             return <p>User updated!</p>;
           },
-          onClose: () => window.location.reload(),
         },
         error: {
           render({ data }) {
+            if (data.code === "ECONNABORTED" || data.code === "ERR_NETWORK") {
+              return (
+                <p>
+                  Error when updating, Try again. #timeout exceeded/network
+                  error.
+                </p>
+              );
+            }
+
             return (
               <p>
                 Error when updating:
@@ -55,6 +63,8 @@ export function UpdateName({ user }) {
           },
         },
       });
+
+      updateUser();
     } catch (error) {
       console.error(error);
     }

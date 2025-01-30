@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, ChevronUp, X } from "lucide-react";
+import useAuth from "../hooks/useAuth";
 
 export function MenuDropdownButton({
   label,
@@ -12,6 +13,8 @@ export function MenuDropdownButton({
   const [open, setOpen] = useState(false);
   const [activeLink, setActiveLink] = useState(false);
   const ref = useRef(null);
+
+  const { user } = useAuth();
 
   const handleOpenDropdown = () => {
     open ? setOpen(false) : setOpen(true);
@@ -40,6 +43,13 @@ export function MenuDropdownButton({
       setActiveLink(false);
     }
   }, [label, pathname]);
+
+  const filteredLinks = links.filter((link) => {
+    if (user?.role === "ADMIN") {
+      return true;
+    }
+    return link.role !== "ADMIN";
+  });
 
   return (
     <>
@@ -83,7 +93,7 @@ export function MenuDropdownButton({
           className={`absolute bottom-14 z-20 hidden rounded-lg bg-neutral-500 shadow-lg transition-all duration-150 ease-in md:-right-48 md:bottom-auto md:top-3 md:flex md:min-h-16 md:w-48 md:-translate-y-3 md:rounded-none md:rounded-bl-lg md:rounded-br-lg md:rounded-tr-lg md:group-hover/item:translate-x-0 ${open ? "visible opacity-100" : "invisible opacity-0"}`}
         >
           <ul className="w-full">
-            {links.map((link, index) => (
+            {filteredLinks.map((link, index) => (
               <li
                 key={index}
                 onClick={() => {
@@ -117,7 +127,7 @@ export function MenuDropdownButton({
           <X size={22} className="text-neutral-50 hover:opacity-90" />
         </button>
         <ul>
-          {links.map((link, index) => (
+          {filteredLinks.map((link, index) => (
             <li
               key={index}
               onClick={() => {

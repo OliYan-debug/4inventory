@@ -68,8 +68,11 @@ export function Registry({
       </div>
 
       <div className="col-auto flex items-center py-2">
-        <p className="text-neutral-500">
-          {created[0]}-{created[1]}-{created[2]}
+        <p className="text-xs text-neutral-500">
+          {created[0]}/{created[1]}/{created[2]}{" "}
+          <span className="font-medium">
+            {created[3]}:{created[4]}:{created[5]}
+          </span>
         </p>
       </div>
     </div>
