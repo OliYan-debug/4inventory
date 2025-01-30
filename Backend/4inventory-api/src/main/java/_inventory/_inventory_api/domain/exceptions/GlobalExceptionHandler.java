@@ -5,6 +5,7 @@ import _inventory._inventory_api.domain.exceptions.security.RegisterException;
 import _inventory._inventory_api.domain.exceptions.users.UserException;
 import _inventory._inventory_api.domain.utils.ResponseErrorHandler;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +47,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidAuthException.class)
     public ResponseEntity<Object> handleInvalidAuthException(InvalidAuthException e) {
         return responseErrorHandler.generate(HttpStatus.FORBIDDEN, e.getMessage());
+    }
+
+    @ExceptionHandler(PropertyValueException.class)
+    public ResponseEntity<Object> handlePropertyValueException(PropertyValueException e) {
+        return responseErrorHandler.generate(HttpStatus.FORBIDDEN, "Null values are not valid, please review your request");
     }
 }

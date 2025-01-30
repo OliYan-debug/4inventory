@@ -16,21 +16,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Operation(summary = "View user profile information")
-    @GetMapping("/profile")
+    @Operation(summary = "View user information")
+    @GetMapping("")
     public ResponseEntity<Object> viewProfile(@RequestHeader(value = "authorization") String authHeader) {
         return ResponseEntity.ok(userService.getProfile(authHeader));
     }
 
-    @Operation(summary = "Update user profile")
-    @PutMapping("/update")
+    @Operation(summary = "Update user information")
+    @PutMapping("")
     public ResponseEntity<Object> updateProfile(@RequestHeader(value = "authorization") String authHeader, @RequestBody UserUpdateDTO userUpdateDTO) {
             userService.updateProfile(authHeader, userUpdateDTO);
             return ResponseEntity.accepted().build();
     }
 
-    @Operation(summary = "User password reset")
-    @PostMapping("/reset-password")
+    @Operation(summary = "Password reset")
+    @PostMapping("/password")
     public ResponseEntity<Object> resetPassword(@RequestHeader(value = "authorization") String authHeader, @RequestBody @Valid ResetPasswordDTO data) {
         userService.resetPassword(authHeader, data);
         return ResponseEntity.ok().build();

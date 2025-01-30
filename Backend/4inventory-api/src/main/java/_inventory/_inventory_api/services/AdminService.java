@@ -2,7 +2,6 @@ package _inventory._inventory_api.services;
 
 import _inventory._inventory_api.domain.dto.ChangeRoleDTO;
 import _inventory._inventory_api.domain.dto.ProfileDTO;
-import _inventory._inventory_api.domain.dto.ResetPasswordAdminDTO;
 import _inventory._inventory_api.domain.dto.UserDTO;
 import _inventory._inventory_api.domain.entities.user.User;
 import _inventory._inventory_api.domain.exceptions.security.InvalidAuthException;
@@ -37,28 +36,30 @@ public class AdminService {
         return users.map(user -> new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getRole().getRole()));
     }
 
-    public void resetPassword(ResetPasswordAdminDTO data) {
-        var user = checkUsername(data.username());
-        var encryptedPassword = new BCryptPasswordEncoder().encode(data.username().toUpperCase());
+    public void resetPassword(String uuid) {
+        var user = checkUsername(uuid);
+        var encryptedPassword = new BCryptPasswordEncoder().encode(user.getUsername().toUpperCase());
         user.setPassword(encryptedPassword);
         repository.save(user);
     }
 
-    public void deleteUser(ResetPasswordAdminDTO data){
-        var user = checkUsername(data.username());
+    public void deleteUser(String uuid){
+        var userDB = repository.findById(uuid);
+        if (userDB == null) throw new UserException("User with Id " + uuid + " not found in database");
+        var user = checkUsername(userDB.getUsername());
         repository.deleteById(user.getId());
     }
 
-    public void changeUserRole(ChangeRoleDTO data){
-        var userDB = checkUsername(data.login());
-        if(userDB.getRole().equals(data.role())) throw new UserException("User already have this role");
-        userDB.setRole(data.role());
-        repository.save(userDB);
+    public void changeUserRole(String uuid, ChangeRoleDTO data){
+        var user = checkUsername(uuid);
+        if(user.getRole().equals(data.role())) throw new UserException("User already have this role");
+        user.setRole(data.role());
+        repository.save(user);
     }
 
-    private User checkUsername(String username){
-        var user = repository.findByUsername(username);
-        if (user == null) throw new UserException("Invalid Credentials, please try another user");
+    private User checkUsername(String uuid){
+        var user = repository.findById(uuid);
+        if (user == null) throw new UserException("User with Id " + uuid + " not found in database");
         if (user.getUsername().equals("admin")) throw new InvalidAuthException("You can't change the default admin account");
         if(user.getName() == null) {
             user.setName("4inventory");

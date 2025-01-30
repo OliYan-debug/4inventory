@@ -10,4 +10,6 @@ public interface UserRepository extends PagingAndSortingRepository<User, String>
     void save(User user);
 
     void deleteById(String user);
+
+    User findById(String id);
 }
