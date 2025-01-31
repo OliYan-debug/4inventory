@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Loader2, LogOut } from "lucide-react";
 import useAuth from "../hooks/useAuth";
@@ -6,6 +6,7 @@ import useAuth from "../hooks/useAuth";
 export function Avatar({ hiddenNav = false }) {
   const { user, logout, authError, setAuthError, authSuccess, setAuthSuccess } =
     useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (authSuccess) {
@@ -50,10 +51,20 @@ export function Avatar({ hiddenNav = false }) {
 
       <button
         type="button"
+        disabled={isLoading}
         onClick={() => {
+          setIsLoading(true);
           logout();
         }}
       >
+        {isLoading && (
+          <div className="fixed left-0 top-0 flex h-screen w-screen flex-col items-center justify-center bg-white/80">
+            <span className="flex items-center justify-center">
+              <Loader2 className="animate-spin text-neutral-800" size={32} />
+            </span>
+            <p className="text-neutral-700">You are being disconnected...</p>
+          </div>
+        )}
         <LogOut size={20} className="transition hover:opacity-70" />
       </button>
     </div>
