@@ -26,7 +26,7 @@ public class InventoryController {
 
 
     @Operation(summary = "List all items in the inventory")
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<Page<InventoryItem>> listInventory(@RequestParam(value = "sort", defaultValue = "id,desc") String sort,
                                                              @RequestParam(value = "page", defaultValue = "0") int page,
                                                              @RequestParam(value = "size", defaultValue = "10") int size) {
@@ -34,7 +34,7 @@ public class InventoryController {
     }
 
     @Operation(summary = "Add a item in the inventory")
-    @PostMapping("/add")
+    @PostMapping()
     public ResponseEntity<?> addItem(@RequestBody InventoryItem inventoryItem) {
         try {
             return ResponseEntity.ok(inventoryService.saveItem(inventoryItem));
@@ -44,7 +44,7 @@ public class InventoryController {
     }
 
     @Operation(summary = "Remove a item from the inventory")
-    @DeleteMapping("/remove")
+    @DeleteMapping()
     public ResponseEntity<?> removeItem(@RequestBody ItemDelete inventoryItem) {
         try {
             return ResponseEntity.accepted().body(new MessageHandler(HttpStatus.ACCEPTED.value(), inventoryService.removeItem(inventoryItem)));
@@ -54,7 +54,7 @@ public class InventoryController {
     }
 
     @Operation(summary = "Update a item from the inventory")
-    @PutMapping("/update")
+    @PutMapping()
     public ResponseEntity<?> updateItem(@RequestBody InventoryItem itemUpdate) {
         try {
             return ResponseEntity.accepted().body(inventoryService.updateItem(itemUpdate));
@@ -63,7 +63,7 @@ public class InventoryController {
         }
     }
 
-    @GetMapping(value = "/item/{id}")
+    @GetMapping(value = "/{id}")
     @Operation(summary = "Find a item by id")
     public ResponseEntity<?> findItemById(@PathVariable Long id) {
         try {
@@ -74,7 +74,7 @@ public class InventoryController {
     }
 
     @Operation(summary = "Update the quantity of a item")
-    @PutMapping("/update/quantity")
+    @PatchMapping()
     public ResponseEntity<?> updateItemQuantity(@RequestBody ItemAndRegistryDTO itemAndRegistryDTO) {
         try {
             return ResponseEntity.accepted().body(inventoryService.updateItemQuantity(itemAndRegistryDTO));
@@ -85,7 +85,7 @@ public class InventoryController {
 
 
     @Operation(summary = "Add a category to a item")
-    @PostMapping("/add/category")
+    @PostMapping("/category")
     public ResponseEntity<?> addCategory(@RequestBody ItemAndCategory categoryRequest) {
         try {
             return ResponseEntity.accepted().body(inventoryService.addItemCategory(categoryRequest));
@@ -95,7 +95,7 @@ public class InventoryController {
     }
 
     @Operation(summary = "Remove a category from a item")
-    @DeleteMapping("/remove/category")
+    @DeleteMapping("/category")
     public ResponseEntity<?> removeCategory(@RequestBody ItemAndCategory categoryRequest) {
         try {
             return ResponseEntity.accepted().body(inventoryService.removeItemCategory(categoryRequest));

@@ -20,7 +20,7 @@ public class RegistryController {
     RegistryService registryService;
 
     @Operation(summary = "Get all registries")
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<Page<Registry>> findAll(@RequestParam(value = "sort", defaultValue = "id,desc") String sort,
                                                   @RequestParam(value = "page", defaultValue = "0") int page,
                                                   @RequestParam(value = "size", defaultValue = "10") int size){
