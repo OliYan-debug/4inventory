@@ -31,6 +31,7 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("4Inventory-api")
                     .withSubject(user.getUsername())
+                    .withClaim("name", user.getName())
                     .withClaim("role", user.getRole().name())
                     .withExpiresAt(this.genExpirationDate())
                     .sign(algorithm);
