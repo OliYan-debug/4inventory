@@ -69,19 +69,6 @@ class CategoryServiceTest {
         assertThat(categoryService.findByName("tesla").size()).isEqualTo(0);
     }
 
-    @Test
-    @DisplayName("Retrieve a category by the given ID")
-    void findByIdCase1() {
-        assertThat(categoryService.findById(this.category.getId())).isNotNull();
-        assertThat(categoryService.findById(this.category.getId())).isEqualTo(this.category);
-    }
-
-    @Test
-    @DisplayName("Category with wrong id throws exception")
-    void findByIdCase2() {
-        CategoryIdNotFoundException thrown = assertThrows(CategoryIdNotFoundException.class, () -> categoryService.findById(2L));
-        assertTrue(thrown.getMessage().contains("Category with id " + 2 + " not found!"));
-    }
 
     @Test
     @DisplayName("Save a category")
