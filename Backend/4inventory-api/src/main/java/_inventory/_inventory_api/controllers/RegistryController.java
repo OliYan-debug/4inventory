@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/registry")
@@ -27,4 +26,9 @@ public class RegistryController {
         return new ResponseEntity<>(registryService.findAll(page, size, sort), HttpStatus.OK);
     }
 
+    @Operation(summary = "Get registries by item")
+    @GetMapping("/filter")
+    public ResponseEntity<List<Registry>> getById(@RequestParam(value = "itemId") Integer itemId, @RequestParam(value = "label", defaultValue = "null") String label){
+        return new ResponseEntity<>(registryService.filterById(itemId, label), HttpStatus.OK);
+    }
 }

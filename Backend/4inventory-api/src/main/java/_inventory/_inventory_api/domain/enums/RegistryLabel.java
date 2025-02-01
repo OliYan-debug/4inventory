@@ -13,5 +13,10 @@ public enum RegistryLabel {
     RegistryLabel(String label) {
         this.label = label;
     }
-
+    public static boolean contains(String s){
+        for(RegistryLabel registryLabel:values()){
+            if(registryLabel.name().equals(s)) return true;
+        }
+        return false;
+    }
 }
