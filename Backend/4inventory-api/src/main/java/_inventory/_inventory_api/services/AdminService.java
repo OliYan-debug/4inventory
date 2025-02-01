@@ -45,8 +45,8 @@ public class AdminService {
 
     public void deleteUser(String uuid){
         var userDB = repository.findById(uuid);
-        if (userDB == null) throw new UserException("User with Id " + uuid + " not found in database");
-        var user = checkUsername(userDB.getUsername());
+        if (userDB.isEmpty()) throw new UserException("User with Id " + uuid + " not found in database");
+        var user = checkUsername(userDB.get().getId());
         repository.deleteById(user.getId());
     }
 
@@ -59,13 +59,14 @@ public class AdminService {
 
     private User checkUsername(String uuid){
         var user = repository.findById(uuid);
-        if (user == null) throw new UserException("User with Id " + uuid + " not found in database");
-        if (user.getUsername().equals("admin")) throw new InvalidAuthException("You can't change the default admin account");
-        if(user.getName() == null) {
-            user.setName("4inventory");
-            repository.save(user);
+        if (user.isEmpty()) throw new UserException("User with Id " + uuid + " not found in database");
+        var userDB = user.get();
+        if (userDB.getUsername().equals("admin")) throw new InvalidAuthException("You can't change the default admin account");
+        if(userDB.getName() == null) {
+            userDB.setName("4inventory");
+            repository.save(userDB);
         };
-        return user;
+        return userDB;
     }
 
 }
