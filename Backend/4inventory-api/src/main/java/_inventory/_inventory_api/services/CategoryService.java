@@ -24,14 +24,6 @@ public class CategoryService {
         return categoryRepository.findByNameIgnoreCase(text);
     }
 
-    public Category findById(Long id) {
-        Optional<Category> categoryOptional = categoryRepository.findById(id);
-        if (categoryOptional.isPresent()) {
-            return categoryOptional.get();
-        }
-        throw new CategoryIdNotFoundException(id);
-    }
-
     public Category saveCategory(Category category) {
         var categoryDB = findByName(category.getName());
         if (category.getName() == null || category.getColor() == null) {

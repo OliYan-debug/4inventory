@@ -59,14 +59,5 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), "Category still been used in some items and you cannot delete it until remove from all of them"));
         }
     }
-    @GetMapping(value = "/{id}")
-    @Operation(summary = "Search a category by id")
-    public ResponseEntity<?> search(@PathVariable Long id) {
-        try{
-            return ResponseEntity.ok(categoryService.findById(id));
-        }catch(CategoryIdNotFoundException e){
-            return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
-        }
-    }
 }
 

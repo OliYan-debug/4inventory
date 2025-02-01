@@ -7,7 +7,6 @@ import _inventory._inventory_api.domain.exceptions.JustificationNotFoundExceptio
 import _inventory._inventory_api.domain.exceptions.items.ItemIdNotFoundException;
 import _inventory._inventory_api.domain.exceptions.items.InvalidItemNameException;
 import _inventory._inventory_api.domain.exceptions.items.InvalidQuantityException;
-import _inventory._inventory_api.domain.records.ItemAndCategory;
 import _inventory._inventory_api.domain.dto.ItemAndRegistryDTO;
 import _inventory._inventory_api.domain.records.ItemDelete;
 import _inventory._inventory_api.repositories.InventoryRepository;
@@ -108,14 +107,6 @@ public class InventoryService {
             return itemSaved;
         }
         throw new ItemIdNotFoundException(itemAndRegistryDTO.id());
-    }
-
-    public InventoryItem addItemCategory(ItemAndCategory itemAndCategory) {
-        return inventoryCategoryService.addCategory(itemAndCategory);
-    }
-
-    public InventoryItem removeItemCategory(ItemAndCategory itemAndCategory) {
-        return inventoryCategoryService.removeCategory(itemAndCategory);
     }
 
     private String recoverUsername() {

@@ -2,11 +2,9 @@ package _inventory._inventory_api.controllers;
 
 import _inventory._inventory_api.domain.entities.InventoryItem;
 import _inventory._inventory_api.domain.exceptions.JustificationNotFoundException;
-import _inventory._inventory_api.domain.exceptions.categories.CategoryIdNotFoundException;
 import _inventory._inventory_api.domain.exceptions.items.ItemIdNotFoundException;
 import _inventory._inventory_api.domain.exceptions.items.InvalidItemNameException;
 import _inventory._inventory_api.domain.exceptions.items.InvalidQuantityException;
-import _inventory._inventory_api.domain.records.ItemAndCategory;
 import _inventory._inventory_api.domain.dto.ItemAndRegistryDTO;
 import _inventory._inventory_api.domain.records.ItemDelete;
 import _inventory._inventory_api.domain.records.MessageHandler;
@@ -79,27 +77,6 @@ public class InventoryController {
         try {
             return ResponseEntity.accepted().body(inventoryService.updateItemQuantity(itemAndRegistryDTO));
         } catch (ItemIdNotFoundException | InvalidQuantityException | JustificationNotFoundException e) {
-            return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
-        }
-    }
-
-
-    @Operation(summary = "Add a category to a item")
-    @PostMapping("/category")
-    public ResponseEntity<?> addCategory(@RequestBody ItemAndCategory categoryRequest) {
-        try {
-            return ResponseEntity.accepted().body(inventoryService.addItemCategory(categoryRequest));
-        } catch (CategoryIdNotFoundException | ItemIdNotFoundException e) {
-            return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
-        }
-    }
-
-    @Operation(summary = "Remove a category from a item")
-    @DeleteMapping("/category")
-    public ResponseEntity<?> removeCategory(@RequestBody ItemAndCategory categoryRequest) {
-        try {
-            return ResponseEntity.accepted().body(inventoryService.removeItemCategory(categoryRequest));
-        } catch (CategoryIdNotFoundException | ItemIdNotFoundException e) {
             return ResponseEntity.badRequest().body(new MessageHandler(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
         }
     }
