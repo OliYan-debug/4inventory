@@ -13,21 +13,56 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [authError, setAuthError] = useState(null);
   const [authSuccess, setAuthSuccess] = useState(null);
+  const [tokenChecked, setTokenChecked] = useState(false);
 
   const token = cookies["4inventory.token"];
-  const [authToken, setAuthToken] = useState(token);
 
   useEffect(() => {
-    if (token !== authToken) {
-      toast.error("Invalid Token, please log in again. #1");
+    if (token) {
+      setTokenChecked(true);
 
-      logout();
+      api.defaults.headers["Authorization"] = `Bearer ${token}`;
+
+      const fetchData = async () => {
+        try {
+          const response = await api.get("/user/profile");
+
+          if (response.status === 200) {
+            const decoded = jwtDecode(token);
+            setUser(decoded);
+          }
+        } catch (error) {
+          console.error("Error checking token:", error);
+
+          toast.error(() => {
+            if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
+              return (
+                <p>
+                  Error when checking token, Try again.{" "}
+                  <span className="text-xs opacity-80">
+                    #timeout exceeded/network error.
+                  </span>
+                </p>
+              );
+            }
+
+            if (error.code === "ERR_BAD_REQUEST") {
+              return <p>Error when checking token, please log in again.</p>;
+            }
+
+            return <p> Error when checking token. Try again.</p>;
+          });
+
+          if (error.status === 403) {
+            navigate("/logout");
+          }
+        }
+      };
+
+      fetchData();
     } else {
-      if (token) {
-        let user = jwtDecode(token);
-        setUser(user);
-
-        api.defaults.headers["Authorization"] = `Bearer ${token}`;
+      if (tokenChecked) {
+        logout();
       }
     }
   }, [token]);
@@ -43,8 +78,18 @@ const AuthProvider = ({ children }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
-        toast.error(error.response.data.message);
+        if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
+          toast.error(
+            <p>
+              The information could not be validated, try again. <br />
+              <span className="text-xs opacity-80">
+                #timeout exceeded/network error.
+              </span>
+            </p>,
+          );
+        } else {
+          toast.error(error.response.data.message);
+        }
       });
   };
 
@@ -67,6 +112,7 @@ const AuthProvider = ({ children }) => {
 
         const decoded = jwtDecode(token);
         setUser(decoded);
+        setTokenChecked(true);
 
         api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
@@ -77,12 +123,22 @@ const AuthProvider = ({ children }) => {
           </p>,
         );
 
-        setAuthToken(token);
         navigate("/products", { replace: true });
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
-        setAuthError(true);
+        if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
+          toast.error(
+            <p>
+              The information could not be validated, try again. <br />
+              <span className="text-xs opacity-80">
+                #timeout exceeded/network error.
+              </span>
+            </p>,
+          );
+        } else {
+          toast.error(error.response.data.message);
+          setAuthError(true);
+        }
       });
   };
 
@@ -100,24 +156,22 @@ const AuthProvider = ({ children }) => {
         }
       })
       .catch((error) => {
-        if (error.status === 403) {
-          toast.info(
+        if (error.status !== 403) {
+          toast.error(
             <p>
               You are
-              <span className="font-bold"> logged out.</span>
+              <span className="font-bold"> logged out.</span> <br />
+              <span className="text-xs opacity-80">{error.message}</span>
             </p>,
           );
-        } else {
-          toast.error(error.message);
         }
       })
       .finally(() => {
         removeCookie("4inventory.token", { path: "/" });
-        setAuthToken(undefined);
         setUser(null);
         api.defaults.headers["Authorization"] = null;
 
-        return navigate("/");
+        navigate("/");
       });
   };
 
@@ -125,7 +179,6 @@ const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        setAuthToken,
         authError,
         setAuthError,
         authSuccess,

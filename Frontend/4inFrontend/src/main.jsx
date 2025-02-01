@@ -265,7 +265,16 @@ export const App = () => (
             />
           </Route>
 
-          <Route path="/" element={<Login />} errorElement={<ErrorPage />} />
+          <Route
+            path="/"
+            element={
+              <>
+                <PageTitle title="4Inventory" />
+                <Login />
+              </>
+            }
+            errorElement={<ErrorPage />}
+          />
 
           <Route
             path="/login"
