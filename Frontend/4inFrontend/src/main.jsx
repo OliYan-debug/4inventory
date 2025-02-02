@@ -174,7 +174,7 @@ export const App = () => (
             <Route
               path="/dashboard"
               element={
-                <ProtectedRoute roles={["ADMIN"]}>
+                <ProtectedRoute>
                   <PageTitle title="4Inventory | Dashboard" />
                   <Dashboard />
                 </ProtectedRoute>
@@ -183,7 +183,7 @@ export const App = () => (
             <Route
               path="/dashboard/:page"
               element={
-                <ProtectedRoute roles={["ADMIN"]}>
+                <ProtectedRoute>
                   <PageTitle title="4Inventory | Dashboard" />
                   <Dashboard />
                 </ProtectedRoute>
