@@ -13,7 +13,7 @@ import {
   PackagePlus,
   PackageSearch,
   PackageX,
-  Settings,
+  Shield,
   UserCircle,
   UserPen,
 } from "lucide-react";
@@ -142,15 +142,13 @@ export function Menu({ hiddenNav }) {
       <ul
         className={`flex h-14 w-full justify-evenly sm:mt-2 md:mt-4 md:h-auto md:flex-col md:justify-normal md:py-4 ${hiddenNav ? "md:gap-1" : "md:gap-0"}`}
       >
-        {isAdmin && (
-          <MenuButton
-            label={"DashBoard"}
-            path={"/dashboard"}
-            Icon={ChartColumnBig}
-            hiddenNav={hiddenNav}
-            active={location.pathname === "/dashboard"}
-          />
-        )}
+        <MenuButton
+          label={"DashBoard"}
+          path={"/dashboard"}
+          Icon={ChartColumnBig}
+          hiddenNav={hiddenNav}
+          active={location.pathname === "/dashboard"}
+        />
 
         <MenuDropdownButton
           label="Products"
@@ -168,6 +166,16 @@ export function Menu({ hiddenNav }) {
           pathname={location.pathname}
         />
 
+        {isAdmin && (
+          <MenuDropdownButton
+            label="Administration"
+            Icon={Shield}
+            links={adminLinks}
+            hiddenNav={hiddenNav}
+            pathname={location.pathname}
+          />
+        )}
+
         <MenuDropdownButton
           label="User"
           Icon={UserCircle}
@@ -175,16 +183,6 @@ export function Menu({ hiddenNav }) {
           hiddenNav={hiddenNav}
           pathname={location.pathname}
         />
-
-        {isAdmin && (
-          <MenuDropdownButton
-            label="Administration"
-            Icon={Settings}
-            links={adminLinks}
-            hiddenNav={hiddenNav}
-            pathname={location.pathname}
-          />
-        )}
       </ul>
     </>
   );
