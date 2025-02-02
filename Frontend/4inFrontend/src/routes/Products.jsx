@@ -12,12 +12,13 @@ import { TableHeader } from "../components/TableHeader";
 
 export default function Products() {
   let { page } = useParams();
+  const defaultSort = "id,asc";
+  const [sort, setSort] = useState(defaultSort);
   const [cookies] = useCookies();
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [response, setResponse] = useState([]);
   const [size, setSize] = useState(10);
-  const [sort, setSort] = useState("id,asc");
   const [update, setUpdate] = useState(false);
   let count = 0;
 
@@ -29,7 +30,7 @@ export default function Products() {
 
       try {
         const response = await toast.promise(
-          api.get("/inventory/", {
+          api.get("/inventory", {
             params: {
               page,
               size: cookies.paginationSize || 10,
@@ -115,7 +116,7 @@ export default function Products() {
       label: "Name",
       orderBy: "item",
       sorting: false,
-      order: "asc",
+      order: "neutral",
       isOrderable: true,
       extendedColumn: false,
     },
@@ -123,7 +124,7 @@ export default function Products() {
       label: "Description",
       orderBy: "description",
       sorting: false,
-      order: "asc",
+      order: "neutral",
       isOrderable: true,
       extendedColumn: true,
     },
@@ -131,7 +132,7 @@ export default function Products() {
       label: "Categories",
       orderBy: "category",
       sorting: false,
-      order: "asc",
+      order: "neutral",
       isOrderable: true,
       extendedColumn: false,
     },
@@ -139,7 +140,7 @@ export default function Products() {
       label: "Quantity",
       orderBy: "quantity",
       sorting: false,
-      order: "asc",
+      order: "neutral",
       isOrderable: true,
       extendedColumn: false,
     },
@@ -147,7 +148,7 @@ export default function Products() {
       label: "Created At",
       orderBy: "createdAt",
       sorting: false,
-      order: "asc",
+      order: "neutral",
       isOrderable: true,
       extendedColumn: false,
     },
@@ -160,6 +161,7 @@ export default function Products() {
       </p>
     );
   };
+
   return (
     <div className="flex flex-col gap-4">
       <Header title={"Products"} subtitle={Subtitle()}>
@@ -173,6 +175,8 @@ export default function Products() {
 
       <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div>
+          <TableHeader setSort={setSort} columnsDefault={productsColumns} />
+
           {loading ? (
             <LoadingSkeleton />
           ) : (
@@ -204,11 +208,6 @@ export default function Products() {
                 </div>
               ) : (
                 <>
-                  <TableHeader
-                    setSort={setSort}
-                    columnsDefault={productsColumns}
-                  />
-
                   {items.map((item) => {
                     count++;
                     return (

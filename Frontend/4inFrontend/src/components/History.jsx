@@ -1,4 +1,4 @@
-import { FolderSync, HistoryIcon, Link, Rat, Undo2 } from "lucide-react";
+import { FolderSync, HistoryIcon, Rat } from "lucide-react";
 import { Registry } from "./Registry";
 import { TableHeader } from "./TableHeader";
 import { LoadingSkeleton } from "./LoadingSkeleton";
@@ -9,7 +9,7 @@ export function History({ registers, setSort, loading, updateData }) {
       label: "ID",
       orderBy: "id",
       sorting: false,
-      order: "asc",
+      order: "neutral",
       isOrderable: true,
       extendedColumn: false,
     },
@@ -17,7 +17,7 @@ export function History({ registers, setSort, loading, updateData }) {
       label: "Name",
       orderBy: "item",
       sorting: false,
-      order: "asc",
+      order: "neutral",
       isOrderable: true,
       extendedColumn: false,
     },
@@ -25,7 +25,7 @@ export function History({ registers, setSort, loading, updateData }) {
       label: "Type",
       orderBy: "label",
       sorting: false,
-      order: "asc",
+      order: "neutral",
       isOrderable: true,
       extendedColumn: false,
     },
@@ -33,7 +33,7 @@ export function History({ registers, setSort, loading, updateData }) {
       label: "Justification",
       orderBy: "justification",
       sorting: false,
-      order: "asc",
+      order: "neutral",
       isOrderable: true,
       extendedColumn: true,
     },
@@ -41,7 +41,7 @@ export function History({ registers, setSort, loading, updateData }) {
       label: "Author",
       orderBy: "quantity",
       sorting: false,
-      order: "asc",
+      order: "neutral",
       isOrderable: true,
       extendedColumn: false,
     },
@@ -56,6 +56,7 @@ export function History({ registers, setSort, loading, updateData }) {
   ];
 
   let count = 0;
+
   return (
     <div>
       <div className="flex w-full items-center justify-center gap-1 border-b border-dashed border-neutral-300 pb-2">
@@ -66,6 +67,8 @@ export function History({ registers, setSort, loading, updateData }) {
       </div>
 
       <div>
+        <TableHeader setSort={setSort} columnsDefault={registersColumns} />
+
         {loading ? (
           <LoadingSkeleton />
         ) : (
@@ -76,14 +79,6 @@ export function History({ registers, setSort, loading, updateData }) {
                 <p className="font-medium text-neutral-600">
                   No items found...
                 </p>
-                <Link
-                  to={"/products"}
-                  className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
-                >
-                  Back to products <Undo2 size={16} />
-                </Link>
-
-                <p className="text-neutral-600">or</p>
 
                 <button
                   type="button"
@@ -97,11 +92,6 @@ export function History({ registers, setSort, loading, updateData }) {
               </div>
             ) : (
               <>
-                <TableHeader
-                  setSort={setSort}
-                  columnsDefault={registersColumns}
-                />
-
                 {registers.map((registry) => {
                   count++;
                   return (

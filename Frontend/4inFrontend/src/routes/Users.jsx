@@ -11,7 +11,8 @@ import { TableHeader } from "../components/TableHeader";
 export default function Users() {
   let { page } = useParams();
   const [loading, setLoading] = useState(false);
-  const [sort, setSort] = useState("id,asc");
+  const defaultSort = "id,asc";
+  const [sort, setSort] = useState(defaultSort);
   const [users, setUsers] = useState([]);
   const [update, setUpdate] = useState(false);
   let count = 0;
@@ -110,21 +111,21 @@ export default function Users() {
       label: "User",
       orderBy: "username",
       sorting: false,
-      order: "desc",
+      order: "neutral",
       isOrderable: true,
     },
     {
       label: "Permission",
       orderBy: "role",
       sorting: false,
-      order: "desc",
+      order: "neutral",
       isOrderable: true,
     },
     {
       label: "Actions",
       orderBy: "",
       sorting: false,
-      order: "desc",
+      order: "",
       isOrderable: false,
     },
   ];
@@ -149,6 +150,8 @@ export default function Users() {
 
       <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div>
+          <TableHeader setSort={setSort} columnsDefault={usersColumns} />
+
           {loading ? (
             <LoadingSkeleton />
           ) : (
@@ -172,16 +175,12 @@ export default function Users() {
                 </div>
               ) : (
                 <>
-                  <TableHeader
-                    setSort={setSort}
-                    columnsDefault={usersColumns}
-                  />
-
                   {users.map((user) => {
                     count++;
                     return (
                       <User
                         key={user.id}
+                        id={user.id}
                         name={user.name}
                         username={user.username}
                         permission={user.permission}

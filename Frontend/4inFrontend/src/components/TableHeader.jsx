@@ -1,32 +1,53 @@
-import {
-  ArrowDownNarrowWide,
-  ArrowDownUp,
-  ArrowUpNarrowWide,
-} from "lucide-react";
-import { useState } from "react";
+import { ArrowDownNarrowWide, ArrowUpNarrowWide } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export function TableHeader({ setSort, columnsDefault }) {
   const [columns, setColumns] = useState(columnsDefault);
+  const [newSort, setNewSort] = useState(null);
 
   const handleSort = (selectedIndex) => {
-    const newColumns = [...columns];
+    setColumns((prevColumns) => {
+      return prevColumns.map((column, index) => {
+        if (index === selectedIndex) {
+          let newOrder;
 
-    newColumns.forEach((element, index) => {
-      if (index === selectedIndex) {
-        newColumns[index].sorting = element.sorting ? "false" : "true";
-        newColumns[index].order = element.order === "asc" ? "desc" : "asc";
-      } else {
-        newColumns[index].sorting = false;
-        newColumns[index].order = "desc";
-      }
+          newOrder = column.order === "asc" ? "desc" : "asc";
+
+          let newSort = `${column.orderBy},${newOrder}`;
+
+          setNewSort(newSort);
+
+          return {
+            ...column,
+            order: newOrder,
+            sorting: newOrder !== "neutral",
+          };
+        } else {
+          return {
+            ...column,
+            order: "neutral",
+            sorting: false,
+          };
+        }
+      });
     });
+  };
 
-    setColumns(newColumns);
+  useEffect(() => {
+    if (newSort) {
+      setSort(newSort);
+    }
+  }, [newSort]);
 
-    let { orderBy, order } = newColumns[selectedIndex];
-    let sort = `${orderBy},${order}`;
-
-    setSort(sort);
+  const getSortIcon = (order) => {
+    switch (order) {
+      case "asc":
+        return <ArrowDownNarrowWide size={16} className="ms-1" />;
+      case "desc":
+        return <ArrowUpNarrowWide size={16} className="ms-1" />;
+      default:
+        return "";
+    }
   };
 
   const numberOfColumns = columnsDefault.reduce((accumulator, column) => {
@@ -52,21 +73,7 @@ export function TableHeader({ setSort, columnsDefault }) {
           <p className={`${column.sorting ? "font-bold" : "font-semibold"}`}>
             {column.label}
           </p>
-          {column.isOrderable && (
-            <>
-              {column.sorting ? (
-                <>
-                  {column.order === "asc" ? (
-                    <ArrowDownNarrowWide size={16} className="ms-1" />
-                  ) : (
-                    <ArrowUpNarrowWide size={16} className="ms-1" />
-                  )}
-                </>
-              ) : (
-                <ArrowDownUp size={16} className="ms-1" />
-              )}
-            </>
-          )}
+          {column.isOrderable && getSortIcon(column.order)}
         </li>
       ))}
     </ul>
