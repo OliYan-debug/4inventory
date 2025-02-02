@@ -18,10 +18,19 @@ export function ItemFound({ id, item, category, setOpenSearch }) {
         </span>
 
         <div className="flex flex-col items-start">
-          <div className="rounded-md bg-neutral-400 px-1 py-px group-hover:bg-neutral-50">
-            <p className="text-xs text-neutral-50 drop-shadow-sm group-hover:text-neutral-500">
-              {category}
-            </p>
+          <div className="flex gap-1">
+            {category.map((category) => {
+              return (
+                <div
+                  key={category.id}
+                  className="rounded-md bg-neutral-400 px-1 py-px group-hover:bg-neutral-50"
+                >
+                  <p className="text-xs text-neutral-50 drop-shadow-sm group-hover:text-neutral-500">
+                    {category.name}
+                  </p>
+                </div>
+              );
+            })}
           </div>
           <p className="font-medium text-neutral-700 group-hover:text-neutral-50">
             {item}
