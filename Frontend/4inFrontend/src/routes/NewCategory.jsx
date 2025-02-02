@@ -37,7 +37,7 @@ export default function NewCategory() {
 
   const onSubmit = async (data) => {
     try {
-      await toast.promise(api.post("/category/add", data), {
+      await toast.promise(api.post("/category", data), {
         pending: "Adding category",
         success: {
           render() {

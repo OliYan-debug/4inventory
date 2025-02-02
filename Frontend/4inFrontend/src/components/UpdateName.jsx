@@ -35,7 +35,7 @@ export function UpdateName({ user, updateUser }) {
     };
 
     try {
-      await toast.promise(api.put("/user/update", data), {
+      await toast.promise(api.put("/user", data), {
         pending: "Updating user",
         success: {
           render() {

@@ -26,7 +26,7 @@ export default function SearchItem() {
     }
 
     api
-      .get(`/search/${data}`)
+      .get(`/search?s=${data}`)
       .then((response) => {
         response.data.length > 0 ? setItems(response.data) : setItems([]);
       })
@@ -115,7 +115,7 @@ export default function SearchItem() {
                         key={item.id}
                         id={item.id}
                         item={item.item}
-                        category={item.category[0].name}
+                        category={item.category}
                       />
                     );
                   })}

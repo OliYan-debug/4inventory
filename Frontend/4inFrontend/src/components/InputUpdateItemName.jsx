@@ -41,7 +41,7 @@ export function InputUpdateItemName({
     let search = event.target.value;
 
     try {
-      const response = await api.get(`/search/${search}`);
+      const response = await api.get(`/search?s=${search}`);
       setItems(response.data);
     } catch (error) {
       console.error(error);
@@ -62,7 +62,7 @@ export function InputUpdateItemName({
 
   async function handleSearch() {
     await api
-      .get("/inventory/")
+      .get("/inventory")
       .then((response) => {
         setItems(response.data);
       })

@@ -18,7 +18,7 @@ export default function Profile() {
 
   useEffect(() => {
     api
-      .get("/user/profile")
+      .get("/user")
       .then((response) => {
         setUser(response.data);
       })

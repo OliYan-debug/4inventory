@@ -43,54 +43,49 @@ export function UpdatePassword({ username }) {
     };
 
     try {
-      const result = await toast.promise(
-        api.post("/user/reset-password", data),
-        {
-          pending: "Updating password",
-          success: {
-            render() {
-              return <p>Password updated! Please, Log in to continue.</p>;
-            },
+      const result = await toast.promise(api.post("/user/password", data), {
+        pending: "Updating password",
+        success: {
+          render() {
+            return <p>Password updated! Please, Log in to continue.</p>;
           },
-          error: {
-            render({ data }) {
-              if (data.code === "ECONNABORTED" || data.code === "ERR_NETWORK") {
-                return (
-                  <p>
-                    Error when updating, Try again. #timeout exceeded/network
-                    error.
-                  </p>
-                );
-              }
+        },
+        error: {
+          render({ data }) {
+            if (data.code === "ECONNABORTED" || data.code === "ERR_NETWORK") {
+              return (
+                <p>
+                  Error when updating, Try again. #timeout exceeded/network
+                  error.
+                </p>
+              );
+            }
 
-              if (data.status === 403) {
-                resetField("password");
-                setError("password", {
-                  type: "invalid",
-                  message: "Invalid password, try again.",
-                });
+            if (data.status === 403) {
+              resetField("password");
+              setError("password", {
+                type: "invalid",
+                message: "Invalid password, try again.",
+              });
 
-                return (
-                  <p>
-                    Error when updating:
-                    <span className="font-bold">Invalid password</span>. Try
-                    again.
-                  </p>
-                );
-              }
               return (
                 <p>
                   Error when updating:
-                  <span className="font-bold">
-                    {data.response.data.message}
-                  </span>
-                  . Try again.
+                  <span className="font-bold">Invalid password</span>. Try
+                  again.
                 </p>
               );
-            },
+            }
+            return (
+              <p>
+                Error when updating:
+                <span className="font-bold">{data.response.data.message}</span>.
+                Try again.
+              </p>
+            );
           },
         },
-      );
+      });
 
       if (result.status === 200) {
         navigate("/logout");

@@ -4,7 +4,7 @@ import { ModalUserDelete } from "./ModalUserDelete";
 import { ModalUserResetPassword } from "./ModalUserResetPassword";
 import { ModalUserPermission } from "./ModalUserPermission";
 
-export function User({ name, username, permission, count, updateData }) {
+export function User({ id, name, username, permission, count, updateData }) {
   const [checkDeleteOpen, setCheckDeleteOpen] = useState(false);
   const [checkResetOpen, setCheckResetOpen] = useState(false);
   const [checkPermissionOpen, setCheckPermissionOpen] = useState(false);
@@ -70,6 +70,7 @@ export function User({ name, username, permission, count, updateData }) {
 
         {checkPermissionOpen && (
           <ModalUserPermission
+            id={id}
             username={username}
             name={name}
             permission={permission}
@@ -80,6 +81,7 @@ export function User({ name, username, permission, count, updateData }) {
 
         {checkResetOpen && (
           <ModalUserResetPassword
+            id={id}
             username={username}
             name={name}
             setCheckResetOpen={setCheckResetOpen}
@@ -88,6 +90,7 @@ export function User({ name, username, permission, count, updateData }) {
 
         {checkDeleteOpen && (
           <ModalUserDelete
+            id={id}
             username={username}
             name={name}
             setCheckDeleteOpen={setCheckDeleteOpen}

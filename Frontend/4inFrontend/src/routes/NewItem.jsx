@@ -28,7 +28,7 @@ export default function NewItem() {
 
   useEffect(() => {
     api
-      .get("/category/")
+      .get("/category")
       .then((response) => {
         setCategories(response.data);
       })
@@ -55,7 +55,7 @@ export default function NewItem() {
     };
 
     try {
-      await toast.promise(api.post("/inventory/add", data), {
+      await toast.promise(api.post("/inventory", data), {
         pending: "Adding item",
         success: {
           render() {

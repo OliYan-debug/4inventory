@@ -28,7 +28,7 @@ export default function DeleteItem() {
   useEffect(() => {
     if (itemId) {
       api
-        .get(`/inventory/item/${itemId}`)
+        .get(`/inventory/${itemId}`)
         .then((response) => {
           setSelectedItem(response.data);
           setValue("item", selectedItem.item);
@@ -48,7 +48,6 @@ export default function DeleteItem() {
           navigate("/products/delete");
         });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemId, navigate, selectedItem.item]);
 
   const handleClickOutside = (event) => {
@@ -70,7 +69,7 @@ export default function DeleteItem() {
 
     try {
       await toast.promise(
-        api.delete("/inventory/remove", {
+        api.delete("/inventory", {
           data,
         }),
         {
@@ -112,7 +111,7 @@ export default function DeleteItem() {
     let search = event.target.value;
 
     try {
-      const response = await api.get(`/search/${search}`);
+      const response = await api.get(`/search?s=${search}`);
       setItems(response.data);
     } catch (error) {
       console.error(error);
@@ -132,7 +131,7 @@ export default function DeleteItem() {
 
   async function handleSearch() {
     await api
-      .get("/inventory/")
+      .get("/inventory")
       .then((response) => {
         setItems(response.data);
       })

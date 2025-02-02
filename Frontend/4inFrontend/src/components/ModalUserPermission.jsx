@@ -6,6 +6,7 @@ import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router";
 
 export function ModalUserPermission({
+  id,
   username,
   name,
   permission,
@@ -33,25 +34,30 @@ export function ModalUserPermission({
     };
 
     try {
-      const result = await toast.promise(api.post("/admin/change-role", data), {
-        pending: "Updating user",
-        success: {
-          render() {
-            return <p>User updated!</p>;
+      const result = await toast.promise(
+        api.patch(`/admin/users/${id}/role`, data),
+        {
+          pending: "Updating user",
+          success: {
+            render() {
+              return <p>User updated!</p>;
+            },
+          },
+          error: {
+            render({ data }) {
+              return (
+                <p>
+                  Error when updating:
+                  <span className="font-bold">
+                    {data.response.data.message}
+                  </span>
+                  . Try again.
+                </p>
+              );
+            },
           },
         },
-        error: {
-          render({ data }) {
-            return (
-              <p>
-                Error when updating:
-                <span className="font-bold">{data.response.data.message}</span>.
-                Try again.
-              </p>
-            );
-          },
-        },
-      });
+      );
 
       if (result.status === 200 && user.sub === username) {
         return navigate("/logout");

@@ -22,7 +22,7 @@ export default function Categories() {
       setLoading(true);
 
       try {
-        const response = await toast.promise(api.get("/category/"), {
+        const response = await toast.promise(api.get("/category"), {
           pending: "Finding categories",
           success: {
             render({ data }) {

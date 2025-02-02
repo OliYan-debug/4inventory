@@ -27,7 +27,7 @@ export default function CheckIn() {
   useEffect(() => {
     if (itemId) {
       api
-        .get(`/inventory/item/${itemId}`)
+        .get(`/inventory/${itemId}`)
         .then((response) => {
           setSelectedItem(response.data);
           setValue("item", selectedItem.item);
@@ -47,7 +47,6 @@ export default function CheckIn() {
           navigate("/products/checkin");
         });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemId, navigate, selectedItem.item]);
 
   const handleClickOutside = (event) => {
@@ -64,7 +63,6 @@ export default function CheckIn() {
   }, []);
 
   const onSubmit = async (data) => {
-    console.log(selectedItem);
     if (Number.isNaN(data.quantity)) {
       toast.error("Quantity is invalid");
       return;
@@ -76,7 +74,7 @@ export default function CheckIn() {
     data.quantity += selectedItem.quantity;
 
     try {
-      await toast.promise(api.put("/inventory/update/quantity", data), {
+      await toast.promise(api.patch("/inventory", data), {
         pending: "Updating quantity...",
         success: {
           render() {
@@ -115,7 +113,7 @@ export default function CheckIn() {
     let search = event.target.value;
 
     try {
-      const response = await api.get(`/search/${search}`);
+      const response = await api.get(`/search?s=${search}`);
       setItems(response.data);
     } catch (error) {
       console.error(error);
@@ -135,7 +133,7 @@ export default function CheckIn() {
 
   async function handleSearch() {
     await api
-      .get("/inventory/")
+      .get("/inventory")
       .then((response) => {
         setItems(response.data);
       })

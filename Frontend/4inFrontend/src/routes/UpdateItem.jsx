@@ -34,7 +34,7 @@ export default function UpdateItem() {
   useEffect(() => {
     if (itemId) {
       api
-        .get(`/inventory/item/${itemId}`)
+        .get(`/inventory/${itemId}`)
         .then((response) => {
           setSelectedItem(response.data);
           setValue("item", selectedItem.item);
@@ -56,12 +56,11 @@ export default function UpdateItem() {
           navigate("/products/update");
         });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemId, navigate, selectedItem.item]);
 
   useEffect(() => {
     api
-      .get("/category/")
+      .get("/category")
       .then((response) => {
         setCategories(response.data);
       })
@@ -90,7 +89,7 @@ export default function UpdateItem() {
     };
 
     try {
-      await toast.promise(api.put("/inventory/update", data), {
+      await toast.promise(api.put("/inventory", data), {
         pending: "Updating item",
         success: {
           render() {

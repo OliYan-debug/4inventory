@@ -27,7 +27,7 @@ export default function CheckOut() {
   useEffect(() => {
     if (itemId) {
       api
-        .get(`/inventory/item/${itemId}`)
+        .get(`/inventory/${itemId}`)
         .then((response) => {
           setSelectedItem(response.data);
           setValue("item", selectedItem.item);
@@ -47,7 +47,6 @@ export default function CheckOut() {
           navigate("/products/checkout");
         });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemId, navigate, selectedItem.item]);
 
   const handleClickOutside = (event) => {
@@ -80,7 +79,7 @@ export default function CheckOut() {
     delete data.item;
 
     try {
-      await toast.promise(api.put("/inventory/update/quantity", data), {
+      await toast.promise(api.patch("/inventory", data), {
         pending: "Updating quantity...",
         success: {
           render() {
@@ -119,7 +118,7 @@ export default function CheckOut() {
     let search = event.target.value;
 
     try {
-      const response = await api.get(`/search/${search}`);
+      const response = await api.get(`/search?s=${search}`);
       setItems(response.data);
     } catch (error) {
       console.error(error);
@@ -139,7 +138,7 @@ export default function CheckOut() {
 
   async function handleSearch() {
     await api
-      .get("/inventory/")
+      .get("/inventory")
       .then((response) => {
         setItems(response.data);
       })

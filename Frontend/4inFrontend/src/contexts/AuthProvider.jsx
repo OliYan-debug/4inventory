@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
 
       const fetchData = async () => {
         try {
-          const response = await api.get("/user/profile");
+          const response = await api.get("/user");
 
           if (response.status === 200) {
             const decoded = jwtDecode(token);

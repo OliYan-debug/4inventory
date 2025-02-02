@@ -50,7 +50,7 @@ export function Category({
   async function handleDelete() {
     try {
       await toast.promise(
-        api.delete("/category/remove", { data: { id, name, color } }),
+        api.delete("/category", { data: { id, name, color } }),
         {
           pending: "Updating category",
           success: {
@@ -98,7 +98,7 @@ export function Category({
 
     try {
       data.id = id;
-      await toast.promise(api.put("/category/update", data), {
+      await toast.promise(api.put("/category", data), {
         pending: "Updating category",
         success: {
           render() {

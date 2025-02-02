@@ -48,7 +48,7 @@ export function Search({ setOpenSearch }) {
     }
 
     api
-      .get(`/search/${data}`)
+      .get(`/search?s=${data}`)
       .then((response) => {
         response.data.length > 0 ? setItems(response.data) : setItems([]);
       })
@@ -125,7 +125,7 @@ export function Search({ setOpenSearch }) {
                       key={item.id}
                       id={item.id}
                       item={item.item}
-                      category={item.category[0].name}
+                      category={item.category}
                       setOpenSearch={setOpenSearch}
                     />
                   );

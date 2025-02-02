@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { api } from "../services/api";
 
 export function ModalUserDelete({
+  id,
   username,
   name,
   setCheckDeleteOpen,
@@ -15,12 +16,8 @@ export function ModalUserDelete({
   const navigate = useNavigate();
 
   const handleDeleteUser = async () => {
-    const data = {
-      username,
-    };
-
     try {
-      const result = await toast.promise(api.delete("/admin/users", { data }), {
+      const result = await toast.promise(api.delete(`/admin/users/${id}`), {
         pending: "Deleting user",
         success: {
           render() {

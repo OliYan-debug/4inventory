@@ -4,7 +4,12 @@ import { api } from "../services/api";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router";
 
-export function ModalUserResetPassword({ username, name, setCheckResetOpen }) {
+export function ModalUserResetPassword({
+  id,
+  username,
+  name,
+  setCheckResetOpen,
+}) {
   const { user } = useAuth();
 
   const navigate = useNavigate();
@@ -16,7 +21,7 @@ export function ModalUserResetPassword({ username, name, setCheckResetOpen }) {
 
     try {
       const result = await toast.promise(
-        api.post("/admin/reset-password", data),
+        api.post(`/admin/users/${id}/password`, data),
         {
           pending: "Updating user",
           success: {
