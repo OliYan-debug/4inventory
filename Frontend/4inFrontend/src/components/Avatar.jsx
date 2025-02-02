@@ -38,19 +38,32 @@ export function Avatar({ hiddenNav = false }) {
         )}
       </div>
       {!hiddenNav && (
-        <div className="hidden font-thin md:flex">
-          {!user ? (
-            <>
-              <div className="flex h-4 w-16 animate-pulse rounded-lg bg-neutral-300"></div>
-            </>
-          ) : (
-            <span>{user.sub}</span>
-          )}
+        <div className="flex flex-col">
+          <div className="hidden md:flex">
+            {!user ? (
+              <>
+                <div className="mb-1 flex h-4 w-20 animate-pulse rounded-lg bg-neutral-300"></div>
+              </>
+            ) : (
+              <span className="font-medium">{user.name}</span>
+            )}
+          </div>
+
+          <div className="hidden md:flex">
+            {!user ? (
+              <>
+                <div className="flex h-3 w-14 animate-pulse rounded-lg bg-neutral-300"></div>
+              </>
+            ) : (
+              <span className="under text-xs font-thin">{user.sub}</span>
+            )}
+          </div>
         </div>
       )}
 
       <button
         type="button"
+        className="ms-2"
         disabled={isLoading}
         onClick={() => {
           setIsLoading(true);
