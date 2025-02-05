@@ -24,7 +24,7 @@ export default function NewCategory() {
   useEffect(() => {
     setUpdate(false);
     api
-      .get("/category/")
+      .get("/category")
       .then((response) => {
         setCategories(response.data);
       })
