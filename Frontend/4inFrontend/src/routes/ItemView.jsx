@@ -136,8 +136,8 @@ export default function ItemView() {
                 </div>
               ) : (
                 <>
-                  <div className="relative mb-6 flex items-center justify-center gap-1">
-                    <div className="flex items-center justify-center">
+                  <div className="relative mb-6 flex flex-col items-center justify-center gap-1 md:flex-row">
+                    <div className="flex items-center justify-center px-2">
                       <div className="flex w-80 flex-col gap-4 rounded-lg border border-neutral-200 bg-neutral-100 px-8 py-4 text-neutral-800">
                         <div className="relative">
                           <div className="">
@@ -149,7 +149,9 @@ export default function ItemView() {
                           <span className="flex justify-end text-sm">
                             #{item.id}
                           </span>
-                          <h1 className="text-center text-3xl font-semibold">
+                          <h1
+                            className={`text-center font-semibold ${item.item.length >= 20 ? "text-2xl" : "text-3xl"}`}
+                          >
                             {item.item}
                           </h1>
                         </div>
@@ -254,40 +256,40 @@ export default function ItemView() {
                     </div>
 
                     <div className="right-48 top-0 rounded-lg">
-                      <ul className="flex w-36 flex-col gap-1 text-neutral-600">
-                        <li className="flex h-16 w-full cursor-pointer items-center rounded-lg bg-neutral-200 px-4 transition hover:bg-neutral-300 hover:font-medium">
+                      <ul className="flex w-full flex-row gap-1 text-neutral-600 md:w-36 md:flex-col">
+                        <li className="flex h-16 w-20 cursor-pointer items-center rounded-lg bg-neutral-200 transition hover:bg-neutral-300 hover:font-medium md:w-full md:px-4">
                           <Link
                             to={`/products/update/${item.id}`}
-                            className="flex w-full items-center"
+                            className="flex w-full flex-col items-center text-xs md:flex-row md:text-base"
                           >
                             <PencilIcon size={19} className="me-1" />
                             Edit Item
                           </Link>
                         </li>
 
-                        <li className="flex h-16 w-full cursor-pointer items-center rounded-lg bg-neutral-200 px-4 transition hover:bg-neutral-300 hover:font-medium">
+                        <li className="flex h-16 w-20 cursor-pointer items-center rounded-lg bg-neutral-200 transition hover:bg-neutral-300 hover:font-medium md:w-full md:px-4">
                           <Link
                             to={`/products/checkin/${item.id}`}
-                            className="flex w-full items-center"
+                            className="flex w-full flex-col items-center text-xs md:flex-row md:text-base"
                           >
                             <PackagePlus size={19} className="me-1" />
                             Check-in
                           </Link>
                         </li>
-                        <li className="flex h-16 w-full cursor-pointer items-center rounded-lg bg-neutral-200 px-4 transition hover:bg-neutral-300 hover:font-medium">
+                        <li className="flex h-16 w-20 cursor-pointer items-center rounded-lg bg-neutral-200 transition hover:bg-neutral-300 hover:font-medium md:w-full md:px-4">
                           <Link
                             to={`/products/checkout/${item.id}`}
-                            className="flex w-full items-center"
+                            className="flex w-full flex-col items-center text-xs md:flex-row md:text-base"
                           >
                             <PackageMinus size={19} className="me-1" />
                             Check-out
                           </Link>
                         </li>
                         {isAdmin && (
-                          <li className="flex h-16 w-full cursor-pointer items-center rounded-lg bg-red-200 px-4 text-red-600 transition hover:bg-red-300 hover:font-medium">
+                          <li className="flex h-16 w-20 cursor-pointer items-center rounded-lg bg-red-200 text-red-600 transition hover:bg-red-300 hover:font-medium md:w-full md:px-4">
                             <Link
                               to={`/products/delete/${item.id}`}
-                              className="flex w-full items-center"
+                              className="flex w-full flex-col items-center text-xs md:flex-row md:text-base"
                             >
                               <PackageX size={19} className="me-1" />
                               Delete Item
