@@ -26,6 +26,7 @@ export default function UpdateItem() {
     setValue,
     setError,
     clearErrors,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
@@ -177,6 +178,7 @@ export default function UpdateItem() {
             <InputDescription
               register={register}
               errors={errors}
+              watch={watch}
               itemId={itemId}
               selectedItem={selectedItem}
             />

@@ -21,6 +21,7 @@ export default function NewItem() {
     reset,
     resetField,
     setError,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
@@ -131,7 +132,11 @@ export default function NewItem() {
               setSelectedCategories={setSelectedCategories}
             />
 
-            <InputDescription register={register} errors={errors} />
+            <InputDescription
+              register={register}
+              errors={errors}
+              watch={watch}
+            />
 
             <div className="w-full">
               <label htmlFor="quantity" className="text-sm text-neutral-500">
