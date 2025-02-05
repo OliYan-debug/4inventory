@@ -26,7 +26,7 @@ export function Avatar({ hiddenNav = false }) {
     <div
       className={`mt-4 hidden w-3/4 items-center justify-center gap-2 border-t pt-2 md:flex ${hiddenNav ? "flex-col" : "flex-row"}`}
     >
-      <div className="flex size-12 items-center justify-center rounded-full border border-neutral-50 bg-neutral-500 font-medium">
+      <div className="flex size-12 min-w-12 items-center justify-center rounded-full border border-neutral-50 bg-neutral-500 font-medium">
         {!user ? (
           <>
             <span className="flex items-center justify-center">
@@ -45,7 +45,9 @@ export function Avatar({ hiddenNav = false }) {
                 <div className="mb-1 flex h-4 w-20 animate-pulse rounded-lg bg-neutral-300"></div>
               </>
             ) : (
-              <span className="font-medium">{user.name}</span>
+              <p className={`max-w-28 truncate text-base font-medium`}>
+                {user.name}
+              </p>
             )}
           </div>
 
