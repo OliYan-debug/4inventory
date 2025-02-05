@@ -35,12 +35,21 @@ export function MenuDropdownButton({
 
   //Verify if the url pathname is the same as the label name
   useEffect(() => {
-    if (label === "Products" && pathname.startsWith("/products")) {
-      setActiveLink(true);
-    } else if (label === "Categories" && pathname.startsWith("/categories")) {
-      setActiveLink(true);
-    } else {
-      setActiveLink(false);
+    switch (label) {
+      case "Products":
+        setActiveLink(pathname.startsWith("/products"));
+        break;
+      case "Categories":
+        setActiveLink(pathname.startsWith("/categories"));
+        break;
+      case "Administration":
+        setActiveLink(pathname.startsWith("/admin"));
+        break;
+      case "User":
+        setActiveLink(pathname.startsWith("/user"));
+        break;
+      default:
+        setActiveLink(false);
     }
   }, [label, pathname]);
 
