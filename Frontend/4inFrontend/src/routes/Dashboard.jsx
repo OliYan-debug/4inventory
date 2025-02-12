@@ -19,8 +19,8 @@ export default function Dashboard() {
   const defaultSort = "createdAt,desc";
   const [sort, setSort] = useState(defaultSort);
   const [totalItems, setTotalItems] = useState(0);
-  const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalCategories, setTotalCategories] = useState(0);
+  const [totalRegistries, setTotalRegistries] = useState(0);
   const [update, setUpdate] = useState(false);
 
   const navigate = useNavigate();
@@ -86,6 +86,7 @@ export default function Dashboard() {
 
         setRegisters(response.data.content);
         setResponse(response.data);
+        setTotalRegistries(response.data.totalElements);
       } catch (error) {
         console.error("Error fetching data:", error);
 
@@ -109,15 +110,6 @@ export default function Dashboard() {
       .get("/inventory")
       .then((response) => {
         setTotalItems(response.data.totalElements);
-
-        const initialValue = 0;
-
-        const total = response.data.content.reduce(
-          (accumulator, item) => accumulator + item.quantity,
-          initialValue,
-        );
-
-        setTotalQuantity(total);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -157,7 +149,7 @@ export default function Dashboard() {
             <div className="flex w-full flex-row justify-center gap-6">
               <Card title="Products" total={totalItems} />
               <Card title="Categories" total={totalCategories} />
-              <Card title="Items Quantity" total={totalQuantity} />
+              <Card title="Inventory movements" total={totalRegistries} />
             </div>
 
             <History
