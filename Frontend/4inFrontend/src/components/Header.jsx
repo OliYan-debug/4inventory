@@ -44,7 +44,7 @@ export function Header({ title, subtitle, children }) {
             onClick={() => setOpenSearch(true)}
             className="h-5 w-full rounded-lg border border-neutral-400 py-4 pl-8 pr-4 outline-none transition-all hover:border-neutral-600 focus-visible:border-neutral-600 lg:w-72"
           />
-          <kbd className="absolute right-1 rounded-lg border border-neutral-400 bg-neutral-500 px-1.5 py-1 text-xs font-semibold text-neutral-200">
+          <kbd className="absolute right-1 hidden rounded-lg border border-neutral-400 bg-neutral-500 px-1.5 py-1 text-xs font-semibold text-neutral-200 md:block">
             Ctrl + K
           </kbd>
         </div>

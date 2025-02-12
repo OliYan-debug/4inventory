@@ -53,7 +53,7 @@ const productsLinks = [
   },
   {
     path: "/products/search",
-    label: "Search Item",
+    label: "Search",
     Icon: PackageSearch,
     active: true,
     role: "USER",

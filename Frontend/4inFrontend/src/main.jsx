@@ -7,7 +7,7 @@ import ErrorPage from "./routes/ErrorPage";
 import Products from "./routes/Products";
 import NewItem from "./routes/NewItem";
 import DeleteItem from "./routes/DeleteItem";
-import SearchItem from "./routes/Search";
+import Search from "./routes/Search";
 import Categories from "./routes/Categories";
 import NewCategory from "./routes/NewCategory";
 import CheckOut from "./routes/CheckOut";
@@ -104,8 +104,8 @@ export const App = () => (
               path="search"
               element={
                 <ProtectedRoute>
-                  <PageTitle title="4Inventory | Search Product" />
-                  <SearchItem />
+                  <PageTitle title="4Inventory | Search" />
+                  <Search />
                 </ProtectedRoute>
               }
             />
