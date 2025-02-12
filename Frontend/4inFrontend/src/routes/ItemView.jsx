@@ -150,14 +150,14 @@ export default function ItemView() {
                             #{item.id}
                           </span>
                           <h1
-                            className={`text-center font-semibold ${item.item.length >= 20 ? "text-2xl" : "text-3xl"}`}
+                            className={`max-w-full truncate text-center font-semibold ${item.item.length >= 20 ? "text-2xl" : "text-3xl"}`}
                           >
                             {item.item}
                           </h1>
                         </div>
 
                         <div className="group/description relative flex items-center justify-center">
-                          <p className="text-justify text-neutral-500">
+                          <p className="max-w-full break-words text-justify text-neutral-500">
                             {item.description ? (
                               <>
                                 {item.description.length > 90
@@ -193,7 +193,7 @@ export default function ItemView() {
                                     style={{ backgroundColor: category.color }}
                                     className="rounded-md px-1 py-px text-sm"
                                   >
-                                    <p className="text-neutral-200 drop-shadow-sm">
+                                    <p className="max-w-32 truncate text-neutral-200 drop-shadow-sm">
                                       {category.name}
                                     </p>
                                   </div>

@@ -12,7 +12,9 @@ export function UserDetails({ user, children }) {
       <div className="to h-28 w-full rounded-tl-[62px] bg-gradient-to-r from-sky-400 to-emerald-400 shadow-sm"></div>
 
       <div className="mt-10 flex w-full flex-col items-center border-b border-neutral-200 pb-4">
-        <h2 className="text-3xl font-bold text-neutral-800">{user.name}</h2>
+        <h2 className="max-w-full truncate px-2 text-3xl font-bold text-neutral-800">
+          {user.name}
+        </h2>
         <span className="text-base font-semibold text-neutral-500">
           {user.username}
         </span>

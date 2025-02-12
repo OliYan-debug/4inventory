@@ -97,11 +97,11 @@ export function Item({
 
   return (
     <div
-      className={`relative grid min-w-[840px] animate-fadeIn grid-cols-7 justify-items-center text-wrap ${
+      className={`relative grid min-w-[840px] animate-fadeIn grid-cols-7 items-center justify-items-center text-wrap ${
         count % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >
-      <div className="absolute left-4 top-1 py-2">
+      <div className="absolute left-4 py-2">
         <button
           type="button"
           onClick={() => handleOpenItemMenu()}
@@ -143,7 +143,7 @@ export function Item({
         </div>
       </div>
 
-      <div className="col-auto flex items-center gap-1 py-2">
+      <div className="col-auto flex flex-col items-center gap-1 py-2">
         {categories.map((category) => {
           return (
             <div
