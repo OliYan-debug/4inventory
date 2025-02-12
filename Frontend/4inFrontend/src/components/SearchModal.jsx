@@ -1,4 +1,4 @@
-import { Eraser, Rat, SearchIcon } from "lucide-react";
+import { Eraser, Rat, SearchIcon, X } from "lucide-react";
 import { api } from "../services/api";
 import { ItemFound } from "./ItemFound";
 import { useEffect, useRef, useState } from "react";
@@ -116,9 +116,10 @@ export function Search({ setOpenSearch }) {
             }}
             className="absolute right-4 flex items-center transition hover:opacity-80"
           >
-            <kbd className="rounded-lg border border-neutral-400 bg-neutral-500 px-2 py-1.5 text-xs font-semibold text-neutral-200">
+            <kbd className="hidden rounded-lg border border-neutral-400 bg-neutral-500 px-2 py-1.5 text-xs font-semibold text-neutral-200 md:block">
               ESC
             </kbd>
+            <X size={24} className="block text-neutral-500 md:hidden" />
           </button>
 
           <label htmlFor="search">
@@ -138,7 +139,7 @@ export function Search({ setOpenSearch }) {
               searchRoutes(e.target.value);
             }}
             className="h-8 w-full bg-transparent pl-1 pr-11 text-neutral-500 outline-none"
-            placeholder="Search items"
+            placeholder="Search items or pages"
           />
 
           {search !== "" && (
@@ -158,7 +159,7 @@ export function Search({ setOpenSearch }) {
               {search !== "" && (
                 <div className="mt-4 flex animate-fadeIn flex-col items-center gap-2">
                   <Rat size={100} className="text-neutral-700" />
-                  <p className="font-medium text-neutral-600">{`No items found for "${search}"`}</p>
+                  <p className="w-52 break-words font-medium text-neutral-600">{`No items found for "${search}"`}</p>
                   <button
                     type="button"
                     onClick={() => handleResetSearch()}

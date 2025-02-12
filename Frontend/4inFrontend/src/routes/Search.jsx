@@ -118,13 +118,13 @@ export default function Search() {
                 searchRoutes(e.target.value);
               }}
               className="h-8 w-full bg-transparent pl-1 pr-11 text-neutral-500 outline-none"
-              placeholder="Search"
+              placeholder="Search items or pages"
             />
 
             {search !== "" && (
               <button
                 type="button"
-                className="absolute right-40 hover:opacity-50"
+                className="absolute right-5 hover:opacity-50 md:right-40"
                 onClick={() => handleResetSearch()}
               >
                 <Eraser size={20} color="#737373" />
@@ -146,7 +146,7 @@ export default function Search() {
                 {search !== "" && (
                   <div className="flex animate-fadeIn flex-col items-center gap-2">
                     <Rat size={100} className="text-neutral-700" />
-                    <p className="font-medium text-neutral-600">{`No items found for "${search}"`}</p>
+                    <p className="w-52 break-words font-medium text-neutral-600">{`No items found for "${search}"`}</p>
                     <button
                       type="button"
                       onClick={() => handleResetSearch()}
