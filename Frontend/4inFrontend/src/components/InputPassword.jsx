@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function InputPassword({ register, errors, isSubmitting }) {
+  const { t } = useTranslation("input_password");
+
   const [showPassword, setShowPassword] = useState(false);
 
   const handleEyeClick = () => {
@@ -17,23 +20,23 @@ export function InputPassword({ register, errors, isSubmitting }) {
             errors.password && "text-red-600"
           }`}
         >
-          Password
+          {t("password_label")}
         </label>
 
         <input
           defaultValue=""
           {...register("password", {
-            required: "Password is required",
+            required: t("password_required"),
             maxLength: {
               value: 20,
-              message: "Maximum character value exceeded",
+              message: t("password_max_length"),
             },
           })}
           aria-invalid={errors.password ? "true" : "false"}
           type={showPassword ? "text" : "password"}
           id="password"
           disabled={isSubmitting}
-          placeholder="your password"
+          placeholder={t("password_placeholder")}
           className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
             errors.password &&
             "border-red-600 text-red-600 hover:border-red-600 focus-visible:border-red-600"
@@ -44,7 +47,7 @@ export function InputPassword({ register, errors, isSubmitting }) {
           type="button"
           className="absolute right-2 hover:opacity-80"
           onClick={handleEyeClick}
-          aria-label="Show/hidden password"
+          aria-label={t("toggle_password_visibility")}
           disabled={isSubmitting}
         >
           {!showPassword ? (
