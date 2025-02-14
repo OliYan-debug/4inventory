@@ -1,0 +1,6 @@
+{
+  "name_label": "Nome",
+  "name_required": "O nome é obrigatório",
+  "name_max_length": "O número máximo de caracteres foi excedido",
+  "name_placeholder": "seu nome"
+}

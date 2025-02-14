@@ -1,0 +1,6 @@
+{
+  "username_label": "User Name",
+  "username_required": "User name is required",
+  "username_max_length": "Maximum character limit exceeded",
+  "username_placeholder": "your username"
+}
