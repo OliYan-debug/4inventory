@@ -26,6 +26,7 @@ import Logout from "./routes/Logout";
 import Users from "./routes/Users";
 import Profile from "./routes/Profile";
 import ItemView from "./routes/ItemView";
+import "../i18n";
 
 export const App = () => (
   <BrowserRouter>
