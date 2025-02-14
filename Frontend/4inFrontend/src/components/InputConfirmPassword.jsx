@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function InputConfirmPassword({
   register,
@@ -8,6 +9,8 @@ export function InputConfirmPassword({
   invalidPassword,
   isSubmitting,
 }) {
+  const { t } = useTranslation("input_confirm_password");
+
   const [showPassword, setShowPassword] = useState(false);
 
   const handleEyeClick = () => {
@@ -29,21 +32,21 @@ export function InputConfirmPassword({
             errors.confirmPass && "text-red-600"
           }`}
         >
-          Confirm Password
+          {t("confirm_password_label")}
         </label>
 
         <input
           defaultValue=""
           {...register("confirmPass", {
-            required: "Confirm Password is required",
+            required: t("confirm_password_required"),
             maxLength: {
               value: 64,
-              message: "Maximum 64 characters",
+              message: t("confirm_password_max_length"),
             },
             validate: {
               validatePassword: (value) => {
                 if (value !== getValues("createPassword")) {
-                  return "Passwords are different";
+                  return t("confirm_password_mismatch");
                 }
 
                 return true;
@@ -54,7 +57,7 @@ export function InputConfirmPassword({
           type={showPassword ? "text" : "password"}
           id="confirmPass"
           disabled={isSubmitting}
-          placeholder="confirm your password"
+          placeholder={t("confirm_password_placeholder")}
           className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
             errors.confirmPass &&
             "border-red-600 text-red-600 hover:border-red-600 focus-visible:border-red-600"
@@ -65,7 +68,7 @@ export function InputConfirmPassword({
           type="button"
           className="absolute right-2 hover:opacity-80"
           onClick={handleEyeClick}
-          aria-label="Show/hidden password"
+          aria-label={t("password_show_hide")}
           disabled={isSubmitting}
         >
           {!showPassword ? (

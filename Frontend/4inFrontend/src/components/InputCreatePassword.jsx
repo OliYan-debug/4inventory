@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function InputCreatePassword({
   register,
@@ -7,6 +8,8 @@ export function InputCreatePassword({
   setInvalidPassword,
   isSubmitting,
 }) {
+  const { t } = useTranslation("input_create_password");
+
   const [showPassword, setShowPassword] = useState(false);
 
   const handleEyeClick = () => {
@@ -22,41 +25,41 @@ export function InputCreatePassword({
             errors.createPassword && "text-red-600"
           }`}
         >
-          New Password
+          {t("password_label")}
         </label>
 
         <input
           defaultValue=""
           {...register("createPassword", {
-            required: "New password is required",
+            required: t("password_required"),
             maxLength: {
               value: 64,
-              message: "Maximum 64 characters",
+              message: t("password_max_length"),
             },
             minLength: {
               value: 8,
-              message: "Minimum 8 characters",
+              message: t("password_min_length"),
             },
             validate: {
               validatePassword: (value) => {
                 const lowerCaseLetters = /[a-z]/;
                 if (!value.match(lowerCaseLetters)) {
-                  return "You must use lowercase letters";
+                  return t("password_lowercase");
                 }
 
                 const upperCaseLetters = /[A-Z]/;
                 if (!value.match(upperCaseLetters)) {
-                  return "You must use uppercase letters";
+                  return t("password_uppercase");
                 }
 
                 const numbers = /[0-9]/;
                 if (!value.match(numbers)) {
-                  return "You must use numbers";
+                  return t("password_numbers");
                 }
 
                 const specialCharacters = /[!@#$%^&*()-=_+{};':"|,.<>?]/;
                 if (!value.match(specialCharacters)) {
-                  return "You must use special characters";
+                  return t("password_special_characters");
                 }
 
                 setInvalidPassword(false);
@@ -68,7 +71,7 @@ export function InputCreatePassword({
           type={showPassword ? "text" : "password"}
           id="createPassword"
           disabled={isSubmitting}
-          placeholder="your password"
+          placeholder={t("password_placeholder")}
           className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
             errors.createPassword &&
             "border-red-600 text-red-600 hover:border-red-600 focus-visible:border-red-600"
@@ -79,7 +82,7 @@ export function InputCreatePassword({
           type="button"
           className="absolute right-2 hover:opacity-80"
           onClick={handleEyeClick}
-          aria-label="Show/hidden password"
+          aria-label={t("password_show_hide")}
           disabled={isSubmitting}
         >
           {!showPassword ? (
