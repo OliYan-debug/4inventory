@@ -1,0 +1,9 @@
+{
+  "menu": {
+    "see": "Ver Item",
+    "edit": "Editar Item",
+    "checkin": "Entrada",
+    "checkout": "Saída",
+    "delete": "Excluir Item"
+  }
+}

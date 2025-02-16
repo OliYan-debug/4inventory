@@ -10,6 +10,7 @@ import {
   SquareArrowOutUpRight,
 } from "lucide-react";
 import useAuth from "../hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
 export function Item({
   id,
@@ -20,6 +21,8 @@ export function Item({
   createdAt,
   count,
 }) {
+  const { t } = useTranslation("item");
+
   const [itemMenuOpen, setItemMenuOpen] = useState(false);
   const ref = useRef(null);
 
@@ -59,34 +62,34 @@ export function Item({
           <li className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium">
             <Link to={`item/${id}`} className="flex w-full items-center">
               <PackageOpen size={19} className="me-1" />
-              See Item
+              {t("menu.see")}
             </Link>
           </li>
 
           <li className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium">
             <Link to={`update/${id}`} className="flex w-full items-center">
               <Pencil size={19} className="me-1" />
-              Edit Item
+              {t("menu.edit")}
             </Link>
           </li>
 
           <li className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium">
             <Link to={`checkin/${id}`} className="flex w-full items-center">
               <PackagePlus size={19} className="me-1" />
-              Check-in
+              {t("menu.checkin")}
             </Link>
           </li>
           <li className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium">
             <Link to={`checkout/${id}`} className="flex w-full items-center">
               <PackageMinus size={19} className="me-1" />
-              Check-out
+              {t("menu.checkout")}
             </Link>
           </li>
           {isAdmin && (
             <li className="flex h-7 w-full cursor-pointer items-center border-t px-4 py-2 text-red-500 transition hover:bg-red-300 hover:font-medium">
               <Link to={`delete/${id}`} className="flex w-full items-center">
                 <PackageX size={19} className="me-1" />
-                Delete Item
+                {t("menu.delete")}
               </Link>
             </li>
           )}

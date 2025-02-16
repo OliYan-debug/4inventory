@@ -1,0 +1,29 @@
+{
+  "title": "Products",
+  "subtitle": "Found",
+  "buttons": {
+    "new": "New",
+    "add": "Add",
+    "tryAdd": "Try adding some",
+    "retry": "Try again"
+  },
+  "loading": {
+    "finding": "Finding items...",
+    "success": "Items found:",
+    "errors": {
+      "network": "Error when finding, try again.",
+      "token": "Invalid token, please log in again.",
+      "generic": "Error when finding. Try again."
+    }
+  },
+  "noItems": "No items found...",
+  "or": "or",
+  "columns": {
+    "id": "ID",
+    "name": "Name",
+    "description": "Description",
+    "categories": "Categories",
+    "quantity": "Quantity",
+    "createdAt": "Created At"
+  }
+}
