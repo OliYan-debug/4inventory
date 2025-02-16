@@ -1,0 +1,25 @@
+{
+  "title": "Item",
+  "subtitle": "Produtos",
+  "loading": {
+    "finding": "Buscando item...",
+    "success": "Item encontrado",
+    "errors": {
+      "network": "Erro ao buscar, tente novamente.",
+      "badRequest": "Item não encontrado, tente outro.",
+      "generic": "Erro ao buscar. Tente novamente."
+    }
+  },
+  "noItem": "Item não encontrado...",
+  "buttons": {
+    "backToProducts": "Voltar para produtos",
+    "edit": "Editar Item",
+    "checkIn": "Entrada",
+    "checkOut": "Saída",
+    "delete": "Excluir Item"
+  },
+  "quantity": "Quantidade",
+  "createdAt": "Criado em",
+  "lastUpdate": "Última atualização",
+  "itemHistory": "Histórico do Item"
+}

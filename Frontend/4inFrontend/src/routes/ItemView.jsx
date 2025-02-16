@@ -20,8 +20,11 @@ import { Header } from "../components/Header";
 import { LoadingSkeleton } from "../components/LoadingSkeleton";
 import useAuth from "../hooks/useAuth";
 import { ItemViewHistory } from "../components/ItemViewHistory";
+import { useTranslation } from "react-i18next";
 
 export default function ItemView() {
+  const { t } = useTranslation("item_view");
+
   let { itemId } = useParams();
   const [item, setItem] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,10 +47,10 @@ export default function ItemView() {
           const response = await toast.promise(
             api.get(`/inventory/${itemId}`),
             {
-              pending: "Finding item",
+              pending: t("loading.finding"),
               success: {
                 render() {
-                  return <p>Item found</p>;
+                  return <p>{t("loading.success")}</p>;
                 },
                 toastId: itemId,
               },
@@ -59,7 +62,7 @@ export default function ItemView() {
                   ) {
                     return (
                       <p>
-                        Error when finding, Try again.{" "}
+                        {t("loading.errors.network")}{" "}
                         <span className="text-xs opacity-80">
                           #timeout exceeded/network error.
                         </span>
@@ -68,10 +71,10 @@ export default function ItemView() {
                   }
 
                   if (data.code === "ERR_BAD_REQUEST") {
-                    return <p>Item not found, please try another.</p>;
+                    return <p>{t("loading.errors.badRequest")}</p>;
                   }
 
-                  return <p>Error when finding. Try again.</p>;
+                  return <p>{t("loading.errors.generic")}</p>;
                 },
               },
             },
@@ -97,10 +100,10 @@ export default function ItemView() {
     return (
       <p className="flex items-center text-sm text-neutral-500">
         <Link to={`/products`} className="hover:font-semibold">
-          Products
+          {t("subtitle")}
         </Link>
         <ChevronRight size={16} color="#737373" />
-        <span className="font-semibold">Item</span>
+        <span className="font-semibold">{t("title")}</span>
       </p>
     );
   };
@@ -112,7 +115,7 @@ export default function ItemView() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Header title={"Item"} subtitle={Subtitle()} />
+      <Header title={t("title")} subtitle={Subtitle()} />
 
       <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div className="mt-8">
@@ -123,15 +126,13 @@ export default function ItemView() {
               {item.length <= 0 ? (
                 <div className="mt-10 flex animate-fadeIn flex-col items-center gap-2">
                   <Rat size={100} className="text-neutral-700" />
-                  <p className="font-medium text-neutral-600">
-                    Item not found...
-                  </p>
+                  <p className="font-medium text-neutral-600">{t("noItem")}</p>
 
                   <Link
                     to={"/products"}
                     className="flex items-center gap-1 rounded-lg bg-neutral-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-neutral-500"
                   >
-                    Back to products <Undo2 size={16} />
+                    {t("buttons.backToProducts")} <Undo2 size={16} />
                   </Link>
                 </div>
               ) : (
@@ -210,7 +211,7 @@ export default function ItemView() {
                         </div>
 
                         <div className="mt-2 flex justify-center gap-1">
-                          <p className="font-semibold">Quantity:</p>
+                          <p className="font-semibold">{t("quantity")}:</p>
                           <span className="flex items-center">
                             {item.quantity ? (
                               item.quantity
@@ -222,7 +223,7 @@ export default function ItemView() {
 
                         <div className="mt-2 flex flex-col gap-1 border-t border-neutral-200 pt-2">
                           <div className="flex justify-center gap-1 text-xs text-neutral-500">
-                            <p className="font-semibold">Created at:</p>
+                            <p className="font-semibold">{t("createdAt")}:</p>
                             <span className="flex items-center gap-1">
                               {item.createdAt ? (
                                 <>
@@ -237,7 +238,7 @@ export default function ItemView() {
                           </div>
 
                           <div className="flex justify-center gap-1 text-xs text-neutral-500">
-                            <p className="font-semibold">Last update:</p>
+                            <p className="font-semibold">{t("lastUpdate")}:</p>
                             <span className="flex items-center gap-1">
                               {item.lastUpdate ? (
                                 <>
@@ -263,7 +264,7 @@ export default function ItemView() {
                             className="flex w-full flex-col items-center text-xs md:flex-row md:text-base"
                           >
                             <PencilIcon size={19} className="me-1" />
-                            Edit Item
+                            {t("buttons.edit")}
                           </Link>
                         </li>
 
@@ -273,7 +274,7 @@ export default function ItemView() {
                             className="flex w-full flex-col items-center text-xs md:flex-row md:text-base"
                           >
                             <PackagePlus size={19} className="me-1" />
-                            Check-in
+                            {t("buttons.checkIn")}
                           </Link>
                         </li>
                         <li className="flex h-16 w-20 cursor-pointer items-center rounded-lg bg-neutral-200 transition hover:bg-neutral-300 hover:font-medium md:w-full md:px-4">
@@ -282,7 +283,7 @@ export default function ItemView() {
                             className="flex w-full flex-col items-center text-xs md:flex-row md:text-base"
                           >
                             <PackageMinus size={19} className="me-1" />
-                            Check-out
+                            {t("buttons.checkOut")}
                           </Link>
                         </li>
                         {isAdmin && (
@@ -292,7 +293,7 @@ export default function ItemView() {
                               className="flex w-full flex-col items-center text-xs md:flex-row md:text-base"
                             >
                               <PackageX size={19} className="me-1" />
-                              Delete Item
+                              {t("buttons.delete")}
                             </Link>
                           </li>
                         )}
@@ -304,7 +305,7 @@ export default function ItemView() {
                     className="flex w-full items-center justify-center gap-4 py-2 text-lg font-medium text-neutral-700"
                     onClick={() => handleShowAccordion()}
                   >
-                    <span>Item History</span>
+                    <span>{t("itemHistory")}</span>
                     {accordionIsActive ? (
                       <ChevronUp size={22} />
                     ) : (
