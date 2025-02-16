@@ -1,0 +1,22 @@
+{
+  "dashboard": "Painel",
+  "products": "Produtos",
+  "categories": "Categorias",
+  "administration": "Administração",
+  "user": "Usuário",
+  "links": {
+    "seeItems": "Ver Itens",
+    "newItem": "Novo Item",
+    "updateItem": "Atualizar Item",
+    "deleteItem": "Excluir Item",
+    "search": "Pesquisar",
+    "checkin": "Entrada",
+    "checkout": "Saída",
+    "seeCategories": "Ver Categorias",
+    "newCategory": "Nova Categoria",
+    "myProfile": "Meu Perfil",
+    "changePassword": "Alterar Senha",
+    "logout": "Sair",
+    "users": "Usuários"
+  }
+}
