@@ -1,0 +1,26 @@
+{
+  "title": "Categories",
+  "subtitle": "Found",
+  "loading": {
+    "finding": "Finding categories...",
+    "success": "Categories found:",
+    "errors": {
+      "network": "Error when finding, try again.",
+      "badRequest": "Invalid Token, please log in again.",
+      "generic": "Error when finding. Try again."
+    }
+  },
+  "noCategories": "No categories found...",
+  "or": "or",
+  "buttons": {
+    "new": "New",
+    "tryAdd": "Try adding some",
+    "tryAgain": "Try again"
+  },
+  "columns": {
+    "id": "ID",
+    "name": "Name",
+    "color": "Color",
+    "actions": "Actions"
+  }
+}

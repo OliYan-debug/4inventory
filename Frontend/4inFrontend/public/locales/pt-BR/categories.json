@@ -1,0 +1,26 @@
+{
+  "title": "Categorias",
+  "subtitle": "Encontradas",
+  "loading": {
+    "finding": "Buscando categorias...",
+    "success": "Categorias encontradas:",
+    "errors": {
+      "network": "Erro ao buscar, tente novamente.",
+      "badRequest": "Token inválido, faça login novamente.",
+      "generic": "Erro ao buscar. Tente novamente."
+    }
+  },
+  "noCategories": "Nenhuma categoria encontrada...",
+  "or": "ou",
+  "buttons": {
+    "new": "Nova",
+    "tryAdd": "Tente adicionar alguma",
+    "tryAgain": "Tentar novamente"
+  },
+  "columns": {
+    "id": "ID",
+    "name": "Nome",
+    "color": "Cor",
+    "actions": "Ações"
+  }
+}

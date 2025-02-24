@@ -6,8 +6,11 @@ import { ChevronRight, CirclePlus, Undo2 } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { ModalMaxCategoriesError } from "../components/ModalMaxCategoriesError";
+import { useTranslation } from "react-i18next";
 
 export default function NewCategory() {
+  const { t } = useTranslation("new_category");
+
   const [categories, setCategories] = useState([]);
   const [update, setUpdate] = useState(false);
   const [maxCategories, setMaxCategories] = useState(false);
@@ -38,12 +41,13 @@ export default function NewCategory() {
   const onSubmit = async (data) => {
     try {
       await toast.promise(api.post("/category", data), {
-        pending: "Adding category",
+        pending: t("loading.pending"),
         success: {
           render() {
             return (
               <p>
-                Category <span className="font-bold">{data.name}</span> added!
+                {t("loading.success")}{" "}
+                <span className="font-bold">{data.name}</span>
               </p>
             );
           },
@@ -52,9 +56,10 @@ export default function NewCategory() {
           render({ data }) {
             return (
               <p>
-                Error when adding:
-                <span className="font-bold">{data.response.data.message}</span>.
-                Try again.
+                {t("loading.error")} <br />
+                <span className="text-xs opacity-80">
+                  {data.response.data.message}
+                </span>
               </p>
             );
           },
@@ -67,21 +72,21 @@ export default function NewCategory() {
     }
   };
 
-  const subtitle = () => {
+  const Subtitle = () => {
     return (
       <p className="flex items-center text-sm text-neutral-500">
         <Link to={`/categories`} className="hover:font-semibold">
-          Category
+          {t("breadcrumb.category")}
         </Link>
         <ChevronRight size={16} color="#737373" />
-        <span className="font-semibold">New category</span>
+        <span className="font-semibold">{t("breadcrumb.newCategory")}</span>
       </p>
     );
   };
 
   return (
     <div className="flex flex-col gap-4">
-      <Header title={"New Category"} subtitle={subtitle()} />
+      <Header title={t("title")} subtitle={Subtitle()} />
 
       {maxCategories && <ModalMaxCategoriesError />}
 
@@ -92,15 +97,15 @@ export default function NewCategory() {
         >
           <div className="w-full">
             <label htmlFor="name" className="text-sm text-neutral-500">
-              Category Name*
+              {t("form.labels.name")}
             </label>
             <input
               defaultValue=""
               {...register("name", {
-                required: "Category name is required",
+                required: t("form.name_required"),
                 maxLength: {
                   value: 20,
-                  message: "Maximum character value exceeded",
+                  message: t("form.maxLength"),
                 },
               })}
               aria-invalid={errors.name ? "true" : "false"}
@@ -121,7 +126,7 @@ export default function NewCategory() {
 
           <div className="w-full">
             <label htmlFor="color" className="text-sm text-neutral-500">
-              Category color
+              {t("form.labels.color")}
             </label>
             <input
               defaultValue="#fafafa"
@@ -148,7 +153,7 @@ export default function NewCategory() {
             className="mt-10 flex items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500 disabled:cursor-no-drop disabled:opacity-70 md:w-2/5"
           >
             <CirclePlus size={20} color="#fafafa" className="me-2" />
-            Add new category
+            {t("buttons.submit")}
           </button>
 
           <Link
@@ -156,7 +161,7 @@ export default function NewCategory() {
             disabled={isSubmitting || maxCategories}
             className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80 disabled:cursor-no-drop disabled:opacity-70"
           >
-            Back to categories
+            {t("buttons.back")}
             <Undo2 size={20} color="#a3a3a3" className="ms-1" />
           </Link>
         </form>

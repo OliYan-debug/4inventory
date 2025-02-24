@@ -1,0 +1,24 @@
+{
+  "title": "Nova Categoria",
+  "breadcrumb": {
+    "category": "Categoria",
+    "newCategory": "Nova categoria"
+  },
+  "form": {
+    "labels": {
+      "name": "Nome da Categoria*",
+      "color": "Cor da Categoria"
+    },
+    "name_required": "O nome da categoria é obrigatório",
+    "maxLength": "Número máximo de caracteres excedido"
+  },
+  "buttons": {
+    "submit": "Adicionar nova categoria",
+    "back": "Voltar para categorias"
+  },
+  "loading": {
+    "pending": "Adicionando categoria...",
+    "success": "Categoria adicionada:",
+    "error": "Erro ao adicionar. Tente novamente."
+  }
+}

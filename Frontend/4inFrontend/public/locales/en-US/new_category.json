@@ -1,0 +1,24 @@
+{
+  "title": "New Category",
+  "breadcrumb": {
+    "category": "Category",
+    "newCategory": "New category"
+  },
+  "form": {
+    "labels": {
+      "name": "Category Name*",
+      "color": "Category color"
+    },
+    "name_required": "Category name is required",
+    "maxLength": "Maximum character value exceeded"
+  },
+  "buttons": {
+    "submit": "Add new category",
+    "back": "Back to categories"
+  },
+  "loading": {
+    "pending": "Adding category...",
+    "success": "Category added:",
+    "error": "Error when adding. Try again."
+  }
+}
