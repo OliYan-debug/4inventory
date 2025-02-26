@@ -1,0 +1,9 @@
+{
+  "modal": {
+    "title": "Oops!",
+    "text": "No category found, try to register one:"
+  },
+  "button": {
+    "add": "Add category"
+  }
+}

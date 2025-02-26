@@ -1,0 +1,6 @@
+{
+  "description_label": "Descrição",
+  "description_max_length": "O número máximo de caracteres foi excedido",
+  "description_placeholder": "Descrição do item",
+  "description_characters_left": "caracteres restantes"
+}
