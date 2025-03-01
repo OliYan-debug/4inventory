@@ -1,0 +1,17 @@
+{
+  "title": "Delete Item",
+  "breadcrumb": {
+    "products": "Products",
+    "deleteItem": "Delete Item"
+  },
+  "buttons": {
+    "submit": "Delete item",
+    "back": "Back to products"
+  },
+  "fetch_error": "Search other item",
+  "loading": {
+    "pending": "Deleting item...",
+    "success": "Item deleted.",
+    "error": "Error when adding. Try again."
+  }
+}

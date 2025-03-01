@@ -1,0 +1,7 @@
+{
+  "justification_label": "Justificativa*",
+  "justification_required": "Justificativa é obrigatória",
+  "justification_max_length": "Valor máximo de caracteres excedido",
+  "justification_placeholder": "Justificativa para exclusão",
+  "justification_characters_left": "caracteres restantes"
+}
