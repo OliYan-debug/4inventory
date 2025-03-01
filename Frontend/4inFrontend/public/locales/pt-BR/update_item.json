@@ -1,0 +1,25 @@
+{
+  "title": "Atualizar Item",
+  "breadcrumb": {
+    "products": "Produtos",
+    "updateItem": "Atualizar Item"
+  },
+  "categoriesError": {
+    "toastError": "Erro ao obter categorias, tente novamente",
+    "title": "Ops!",
+    "text": "Desculpe, ocorreu um erro inesperado:"
+  },
+  "form": {
+    "category_required": "A categoria é obrigatória"
+  },
+  "buttons": {
+    "submit": "Atualizar item",
+    "back": " Voltar para produtos"
+  },
+  "fetch_error": "Busque outro item",
+  "loading": {
+    "pending": "Atualizando item...",
+    "success": "Item atualizado:",
+    "error": "Erro ao atualizar. Tente novamente."
+  }
+}
