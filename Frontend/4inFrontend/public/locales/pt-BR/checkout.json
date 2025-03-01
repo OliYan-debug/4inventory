@@ -1,0 +1,19 @@
+{
+  "title": "Saída",
+  "breadcrumb": {
+    "products": "Produtos",
+    "checkIn": "Saída"
+  },
+  "buttons": {
+    "submit": "Registrar Saída",
+    "back": "Voltar para produtos"
+  },
+  "fetch_error": "Busque outro item",
+  "quantity_invalid": "Quantidade inválida",
+  "quantity_higher": "Quantidade solicitada é maior que a atual",
+  "loading": {
+    "pending": "Atualizando quantidade...",
+    "success": "Quantidade removida!",
+    "error": "Erro ao remover. Tente novamente."
+  }
+}
