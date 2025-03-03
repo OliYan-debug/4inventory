@@ -8,8 +8,11 @@ import { Card } from "../components/Card";
 import { History } from "../components/History";
 import { Pagination } from "../components/Pagination";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
+  const { t } = useTranslation("dashboard");
+
   let { page } = useParams();
   const [cookies] = useCookies();
   const [registers, setRegisters] = useState([]);
@@ -39,12 +42,12 @@ export default function Dashboard() {
             },
           }),
           {
-            pending: "Finding registers",
+            pending: t("loading.pending"),
             success: {
               render({ data }) {
                 return (
                   <p>
-                    Registers found:{" "}
+                    {t("loading.success")}{" "}
                     <span className="font-semibold">
                       {data.data.totalElements}
                     </span>
@@ -61,7 +64,7 @@ export default function Dashboard() {
                 ) {
                   return (
                     <p>
-                      Error when finding, Try again.{" "}
+                      {t("loading.errors.network")}{" "}
                       <span className="text-xs opacity-80">
                         #timeout exceeded/network error.
                       </span>
@@ -72,13 +75,13 @@ export default function Dashboard() {
                 if (data.code === "ERR_BAD_REQUEST") {
                   return (
                     <p>
-                      Invalid Token, please log in again.{" "}
+                      {t("loading.errors.token")}{" "}
                       <span className="text-xs opacity-80">path:/products</span>
                     </p>
                   );
                 }
 
-                return <p>Error when finding. Try again.</p>;
+                return <p>{t("loading.errors.generic")}</p>;
               },
             },
           },
@@ -131,10 +134,10 @@ export default function Dashboard() {
     return (
       <p className="flex items-center text-sm text-neutral-500">
         <Link to={`/products`} className="hover:font-semibold">
-          Products
+          {t("breadcrumb.products")}
         </Link>
         <ChevronRight size={16} color="#737373" />
-        <span className="font-semibold">Dashboard</span>
+        <span className="font-semibold">{t("breadcrumb.dashboard")}</span>
       </p>
     );
   };
@@ -142,14 +145,14 @@ export default function Dashboard() {
   return (
     <>
       <div className="flex flex-col gap-4">
-        <Header title={"Dashboard"} subtitle={Subtitle()} />
+        <Header title={t("title")} subtitle={Subtitle()} />
 
         <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
           <div className="flex flex-col gap-4">
             <div className="flex w-full flex-row justify-center gap-6">
-              <Card title="Products" total={totalItems} />
-              <Card title="Categories" total={totalCategories} />
-              <Card title="Inventory movements" total={totalRegistries} />
+              <Card title={t("card.products")} total={totalItems} />
+              <Card title={t("card.categories")} total={totalCategories} />
+              <Card title={t("card.inventory")} total={totalRegistries} />
             </div>
 
             <History
