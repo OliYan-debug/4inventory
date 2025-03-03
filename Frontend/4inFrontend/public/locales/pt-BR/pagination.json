@@ -1,0 +1,12 @@
+{
+  "buttons": {
+    "previous": "Anterior",
+    "next": "Próximo",
+    "last": "Último"
+  },
+  "totalItems": {
+    "showing": "Exibindo",
+    "of": "de",
+    "results": "resultados"
+  }
+}
