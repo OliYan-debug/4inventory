@@ -1,7 +1,10 @@
 import { ChevronRight, RouteIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 
 export function RouteFound({ name, path, setOpenSearch }) {
+  const { t } = useTranslation("search");
+
   return (
     <Link
       to={path}
@@ -22,7 +25,7 @@ export function RouteFound({ name, path, setOpenSearch }) {
 
         <div className="flex flex-col items-start">
           <span className="text-xs text-neutral-600 group-hover:text-neutral-50 group-focus-visible:text-neutral-50">
-            Go to
+            {t("page_go")}
           </span>
 
           <p className="font-medium text-neutral-700 group-hover:text-neutral-50 group-focus-visible:text-neutral-50">
