@@ -1,0 +1,23 @@
+{
+  "title": "Users",
+  "subtitle": "Found",
+  "buttons": {
+    "retry": "Try again"
+  },
+  "loading": {
+    "finding": "Finding users...",
+    "success": "Users found:",
+    "errors": {
+      "network": "Error when finding, try again.",
+      "token": "Invalid token, please log in again.",
+      "generic": "Error when finding. Try again."
+    }
+  },
+  "noUsers": "No users found...",
+  "columns": {
+    "name": "Name",
+    "user": "User",
+    "permission": "Permission",
+    "actions": "Actions"
+  }
+}

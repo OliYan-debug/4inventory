@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { FolderSync, PlusCircle, Rat } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import { FolderSync, Rat } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { LoadingSkeleton } from "../components/LoadingSkeleton";
 import { User } from "../components/User";
 import { toast } from "react-toastify";
 import { TableHeader } from "../components/TableHeader";
+import { useTranslation } from "react-i18next";
 
 export default function Users() {
+  const { t } = useTranslation("users");
+
   let { page } = useParams();
   const [loading, setLoading] = useState(false);
   const defaultSort = "id,asc";
@@ -33,12 +36,12 @@ export default function Users() {
             },
           }),
           {
-            pending: "Finding users",
+            pending: t("loading.finding"),
             success: {
               render({ data }) {
                 return (
                   <p>
-                    Users found:{" "}
+                    {t("loading.success")}{" "}
                     <span className="font-semibold">
                       {data.data.totalElements}
                     </span>
@@ -55,7 +58,7 @@ export default function Users() {
                 ) {
                   return (
                     <p>
-                      Error when finding, Try again.{" "}
+                      {t("loading.errors.network")}{" "}
                       <span className="text-xs opacity-80">
                         #timeout exceeded/network error.
                       </span>
@@ -66,7 +69,7 @@ export default function Users() {
                 if (data.code === "ERR_BAD_REQUEST") {
                   return (
                     <p>
-                      Invalid Token, please log in again.{" "}
+                      {t("loading.errors.token")}{" "}
                       <span className="text-xs opacity-80">
                         path:/admin/users
                       </span>
@@ -74,7 +77,7 @@ export default function Users() {
                   );
                 }
 
-                return <p>Error when finding. Try again.</p>;
+                return <p>{t("loading.errors.generic")}</p>;
               },
             },
           },
@@ -101,28 +104,28 @@ export default function Users() {
 
   const usersColumns = [
     {
-      label: "Name",
+      label: t("columns.name"),
       orderBy: "name",
       sorting: true,
       order: "asc",
       isOrderable: true,
     },
     {
-      label: "User",
+      label: t("columns.user"),
       orderBy: "username",
       sorting: false,
       order: "neutral",
       isOrderable: true,
     },
     {
-      label: "Permission",
+      label: t("columns.permission"),
       orderBy: "role",
       sorting: false,
       order: "neutral",
       isOrderable: true,
     },
     {
-      label: "Actions",
+      label: t("columns.actions"),
       orderBy: "",
       sorting: false,
       order: "",
@@ -130,23 +133,16 @@ export default function Users() {
     },
   ];
 
-  const subtitle = () => {
+  const Subtitle = () => {
     return (
       <p className="text-sm text-neutral-500">
-        Found: <span className="font-bold">{users.length}</span>
+        {t("subtitle")}: <span className="font-bold">{users.length}</span>
       </p>
     );
   };
   return (
     <div className="flex flex-col gap-4">
-      <Header title={"Products"} subtitle={subtitle()}>
-        <Link
-          to={"/products/new"}
-          className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
-        >
-          New <PlusCircle size={16} />
-        </Link>
-      </Header>
+      <Header title={t("title")} subtitle={Subtitle()}></Header>
 
       <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div>
@@ -159,9 +155,7 @@ export default function Users() {
               {users.length <= 0 ? (
                 <div className="mt-10 flex animate-fadeIn flex-col items-center gap-2">
                   <Rat size={100} className="text-neutral-700" />
-                  <p className="font-medium text-neutral-600">
-                    No users found...
-                  </p>
+                  <p className="font-medium text-neutral-600">{t("noUsers")}</p>
 
                   <button
                     type="button"
@@ -170,7 +164,7 @@ export default function Users() {
                     }}
                     className="flex items-center gap-1 rounded-lg bg-neutral-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-neutral-500"
                   >
-                    Try again <FolderSync size={16} />
+                    {t("buttons.retry")} <FolderSync size={16} />
                   </button>
                 </div>
               ) : (
