@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { FolderSearch, SearchIcon } from "lucide-react";
 import { Search } from "./SearchModal";
+import { useTranslation } from "react-i18next";
 
 export function Header({ title, subtitle, children }) {
+  const { t } = useTranslation("search");
+
   const [openSearch, setOpenSearch] = useState(false);
 
   //open search shortcut key
@@ -40,7 +43,7 @@ export function Header({ title, subtitle, children }) {
           </div>
           <input
             type="text"
-            placeholder="Search"
+            placeholder={t("form.item_placeholder")}
             onClick={() => setOpenSearch(true)}
             className="h-5 w-full rounded-lg border border-neutral-400 py-4 pl-8 pr-4 outline-none transition-all hover:border-neutral-600 focus-visible:border-neutral-600 lg:w-72"
           />
@@ -54,7 +57,7 @@ export function Header({ title, subtitle, children }) {
           onClick={() => setOpenSearch(true)}
           className="flex items-center justify-center rounded-lg bg-sky-400 px-4 font-semibold text-neutral-50 transition hover:bg-sky-500"
         >
-          <span className="hidden md:block">Search</span>
+          <span className="hidden md:block">{t("buttons.submit")}</span>
           <FolderSearch size={20} color="#fafafa" className="ms-0 md:ms-2" />
         </button>
       </form>
