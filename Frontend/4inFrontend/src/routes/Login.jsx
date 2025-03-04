@@ -49,7 +49,7 @@ export default function Login() {
       resetField("password");
       setError("password", {
         type: "invalid",
-        message: "Invalid user or password, try again.",
+        message: t("auth_error"),
       });
     }
     setAuthError(null);

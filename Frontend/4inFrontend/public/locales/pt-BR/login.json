@@ -4,5 +4,6 @@
   "login": "Entrar",
   "or": "ou",
   "signup": "Cadastre-se",
-  "app_description": "Um inventário simples, mas poderoso"
+  "app_description": "Um inventário simples, mas poderoso",
+  "auth_error": "Usuário ou senha inválido, tente novamente."
 }

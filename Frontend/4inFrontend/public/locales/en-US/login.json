@@ -4,5 +4,6 @@
   "login": "Log in",
   "or": "or",
   "signup": "Sign up",
-  "app_description": "A simple but powerful inventory"
+  "app_description": "A simple but powerful inventory",
+  "auth_error": "Invalid user or password, try again."
 }
