@@ -1,0 +1,30 @@
+{
+  "modal": {
+    "title": "Change User Permission?",
+    "text": {
+      "currently": "Currently, the user has",
+      "permission": "permission"
+    },
+    "subtitle": "Choose permission:",
+    "alert": {
+      "info": "You are choosing your own permission,",
+      "disconnected": "you will be disconnected."
+    }
+  },
+  "form": {
+    "admin_label": "Admin",
+    "user_label": "User"
+  },
+  "loading": {
+    "pending": "Updating user...",
+    "success": "User updated!",
+    "errors": {
+      "userAdmin": "The user permission cannot be changed on the default administrator user!",
+      "generic": "Error when updating. Try again."
+    }
+  },
+  "buttons": {
+    "cancel": "Cancel",
+    "save": "Yes, Save"
+  }
+}
