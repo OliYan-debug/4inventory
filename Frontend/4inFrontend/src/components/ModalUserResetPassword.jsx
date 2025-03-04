@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { api } from "../services/api";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export function ModalUserResetPassword({
   id,
@@ -10,6 +11,10 @@ export function ModalUserResetPassword({
   name,
   setCheckResetOpen,
 }) {
+  const { t } = useTranslation("modal_user_reset_password", {
+    useSuspense: false,
+  });
+
   const { user } = useAuth();
 
   const navigate = useNavigate();
@@ -23,21 +28,17 @@ export function ModalUserResetPassword({
       const result = await toast.promise(
         api.post(`/admin/users/${id}/password`, data),
         {
-          pending: "Updating user",
-          success: {
-            render() {
-              return <p>User updated!</p>;
-            },
-          },
+          pending: t("loading.pending"),
+          success: t("loading.success"),
           error: {
             render({ data }) {
               return (
                 <p>
-                  Error when updating:
-                  <span className="font-bold">
+                  {t("loading.errors.generic")}
+                  <br />
+                  <span className="text-xs opacity-80">
                     {data.response.data.message}
                   </span>
-                  . Try again.
                 </p>
               );
             },
@@ -62,18 +63,22 @@ export function ModalUserResetPassword({
           <LockOpen size={22} className="text-blue-600" />
         </span>
         <h1 className="my-2 text-2xl font-bold text-neutral-800">
-          Reset User Password?
+          {t("modal.title")}
         </h1>
         <span className="font-medium text-blue-700">{name}</span>
         <p className="text-sm text-neutral-500">
-          On reset, the user password will be their{" "}
-          <span className="font-medium">username</span> in capital letters.
+          {t("modal.text.on_reset")}
+          <span className="font-medium">username</span>{" "}
+          {t("modal.text.in_capital_letters")}
         </p>
 
         {user.sub === username && (
           <div className="mt-4 text-xs text-neutral-400">
-            You are choosing your own password,{" "}
-            <span className="font-semibold">you will be disconnected.</span>
+            {t("modal.alert.your_own")}
+            <span className="font-semibold">
+              {" "}
+              {t("modal.alert.disconnected")}
+            </span>
           </div>
         )}
 
@@ -83,7 +88,7 @@ export function ModalUserResetPassword({
             onClick={() => setCheckResetOpen(false)}
             className="flex items-center justify-center rounded-lg border border-neutral-400 px-2 py-1 font-semibold text-neutral-400 transition hover:bg-neutral-200 hover:underline"
           >
-            Cancel
+            {t("buttons.cancel")}
           </button>
 
           <button
@@ -91,7 +96,7 @@ export function ModalUserResetPassword({
             onClick={() => handleResetPassword()}
             className="flex w-32 items-center justify-center rounded-lg bg-blue-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-blue-500 hover:underline"
           >
-            Yes, Reset
+            {t("buttons.reset")}
           </button>
         </div>
       </div>
