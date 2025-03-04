@@ -4,10 +4,13 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { api } from "../services/api";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  const { t } = useTranslation("auth_provider");
+
   const [cookies, setCookie, removeCookie] = useCookies(["4inventory.token"]);
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -38,7 +41,7 @@ const AuthProvider = ({ children }) => {
             if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
               return (
                 <p>
-                  Error when checking token, Try again.{" "}
+                  {t("token.generic")} <br />
                   <span className="text-xs opacity-80">
                     #timeout exceeded/network error.
                   </span>
@@ -47,10 +50,10 @@ const AuthProvider = ({ children }) => {
             }
 
             if (error.code === "ERR_BAD_REQUEST") {
-              return <p>Error when checking token, please log in again.</p>;
+              return t("token.bad_request");
             }
 
-            return <p> Error when checking token. Try again.</p>;
+            return t("token.generic");
           });
 
           if (error.status === 403) {
@@ -72,7 +75,7 @@ const AuthProvider = ({ children }) => {
       .post("/auth/register", data)
       .then((response) => {
         if (response.status === 200) {
-          toast.success("User created successfully! Log in to continue.");
+          toast.success(t("signup.success"));
 
           navigate("/login", { replace: true });
         }
@@ -81,14 +84,18 @@ const AuthProvider = ({ children }) => {
         if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
           toast.error(
             <p>
-              The information could not be validated, try again. <br />
+              {t("signup.errors.bad_request")} <br />
               <span className="text-xs opacity-80">
                 #timeout exceeded/network error.
               </span>
             </p>,
           );
         } else {
-          toast.error(error.response.data.message);
+          if (error.response.data.message === "Username already exists") {
+            toast.error(t("signup.errors.username_exists"));
+          } else {
+            toast.error(error.response.data.message);
+          }
         }
       });
   };
@@ -100,7 +107,7 @@ const AuthProvider = ({ children }) => {
         const token = response.data.token;
 
         if (!token) {
-          toast.error("Token undefined.");
+          toast.error(t("login.errors.token_undefined"));
           setAuthError(true);
           return false;
         }
@@ -118,8 +125,8 @@ const AuthProvider = ({ children }) => {
 
         toast.success(
           <p>
-            Login successful! <br />
-            Welcome, <span className="font-bold"> {decoded.sub}.</span>
+            {t("login.success")}{" "}
+            <span className="font-bold"> {decoded.sub}.</span>
           </p>,
         );
 
@@ -129,14 +136,18 @@ const AuthProvider = ({ children }) => {
         if (error.code === "ECONNABORTED" || error.code === "ERR_NETWORK") {
           toast.error(
             <p>
-              The information could not be validated, try again. <br />
+              {t("login.errors.bad_request")} <br />
               <span className="text-xs opacity-80">
                 #timeout exceeded/network error.
               </span>
             </p>,
           );
         } else {
-          toast.error(error.response.data.message);
+          if (error.response.data.message === "User or password invalid") {
+            toast.error(t("login.errors.auth_error"));
+          } else {
+            toast.error(error.response.data.message);
+          }
           setAuthError(true);
         }
       });
@@ -147,20 +158,14 @@ const AuthProvider = ({ children }) => {
       .post("/auth/logout")
       .then((response) => {
         if (response.status === 200) {
-          toast.info(
-            <p>
-              You are
-              <span className="font-bold"> logged out.</span>
-            </p>,
-          );
+          toast.info(t("logout"));
         }
       })
       .catch((error) => {
         if (error.status !== 403) {
           toast.error(
             <p>
-              You are
-              <span className="font-bold"> logged out.</span> <br />
+              {t("logout")} <br />
               <span className="text-xs opacity-80">{error.message}</span>
             </p>,
           );

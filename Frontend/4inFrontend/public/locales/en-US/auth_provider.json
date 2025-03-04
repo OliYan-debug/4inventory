@@ -1,0 +1,22 @@
+{
+  "token": {
+    "generic": "Error when checking token, Try again.",
+    "bad_request": "Error when checking token, please log in again."
+  },
+  "signup": {
+    "success": "User created successfully! Log in to continue.",
+    "errors": {
+      "bad_request": "The information could not be validated, try again.",
+      "username_exists": "Username already exists"
+    }
+  },
+  "login": {
+    "errors": {
+      "token_undefined": "Token undefined.",
+      "bad_request": "The information could not be validated, try again.",
+      "auth_error": "Invalid user or password, try again."
+    },
+    "success": "Login successful! Welcome, "
+  },
+  "logout": "You are logged out."
+}

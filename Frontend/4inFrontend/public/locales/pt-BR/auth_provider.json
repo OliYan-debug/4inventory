@@ -1,0 +1,22 @@
+{
+  "token": {
+    "generic": "Erro ao verificar o token. Tente novamente.",
+    "bad_request": "Erro ao verificar o token. Faça login novamente."
+  },
+  "signup": {
+    "success": "Usuário criado com sucesso! Faça login para continuar.",
+    "errors": {
+      "bad_request": "As informações não puderam ser validadas. Tente novamente.",
+      "username_exists": "O nome de usuário já existe"
+    }
+  },
+  "login": {
+    "errors": {
+      "token_undefined": "Token indefinido.",
+      "bad_request": "As informações não puderam ser validadas. Tente novamente.",
+      "auth_error": "Usuário ou senha inválido, tente novamente."
+    },
+    "success": "Login realizado com sucesso! Bem-vindo, "
+  },
+  "logout": "Você foi desconectado."
+}
