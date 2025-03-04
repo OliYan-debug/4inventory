@@ -1,0 +1,20 @@
+{
+  "title": "Update your information",
+  "form": {
+    "current_name": "Your name cannot be the same as your current name"
+  },
+  "buttons": {
+    "submit": "Save",
+    "password": "Change password"
+  },
+  "or": "or",
+  "loading": {
+    "pending": "Updating user...",
+    "success": "User updated!",
+    "errors": {
+      "network": "Error when updating, try again.",
+      "token": "Invalid token, please log in again.",
+      "generic": "Error when updating. Try again."
+    }
+  }
+}
