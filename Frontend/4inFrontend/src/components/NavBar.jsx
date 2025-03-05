@@ -5,6 +5,7 @@ import logoMin from "../assets/logoMin.svg";
 import { Menu } from "./Menu";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { Avatar } from "./Avatar";
+import { ButtonChooseLanguage } from "./ButtonChooseLanguage";
 
 export function NavBar() {
   const [hiddenNav, setHiddenNav] = useState(false);
@@ -60,6 +61,10 @@ export function NavBar() {
         <Menu hiddenNav={hiddenNav} />
 
         <Avatar hiddenNav={hiddenNav} />
+
+        <div className="mt-2 hidden md:block">
+          <ButtonChooseLanguage />
+        </div>
       </div>
     </nav>
   );
