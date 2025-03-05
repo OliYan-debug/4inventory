@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-import logo from "../assets/logo.svg";
 import { InputConfirmPassword } from "../components/InputConfirmPassword";
 import { InputCreatePassword } from "../components/InputCreatePassword";
 import { InputCreateUserName } from "../components/InputCreateUsername";
 import useAuth from "../hooks/useAuth";
 import { InputName } from "../components/InputName";
 import { useTranslation } from "react-i18next";
+import { AppDescription } from "../components/AppDescription";
 
 export default function Signup() {
   const { t } = useTranslation("signup");
@@ -116,10 +116,7 @@ export default function Signup() {
           </form>
         </div>
 
-        <div className="flex h-48 w-full flex-col items-center justify-center rounded-lg bg-neutral-800 md:h-full">
-          <img src={logo} alt="4inventory" className="w-1/2" />
-          <p className="text-neutral-50">{t("app_description")}</p>
-        </div>
+        <AppDescription />
       </div>
     </div>
   );

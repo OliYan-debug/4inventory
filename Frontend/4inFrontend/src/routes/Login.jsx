@@ -3,11 +3,11 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import useAuth from "../hooks/useAuth";
-import logo from "../assets/logo.svg";
 import { InputPassword } from "../components/InputPassword";
 import { InputUserName } from "../components/InputUsername";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { AppDescription } from "../components/AppDescription";
 
 export default function Login() {
   const { t } = useTranslation("login");
@@ -120,10 +120,7 @@ export default function Login() {
           </form>
         </div>
 
-        <div className="flex h-48 w-full flex-col items-center justify-center rounded-lg bg-neutral-800 md:h-full">
-          <img src={logo} alt="4inventory" className="w-1/2" />
-          <p className="text-neutral-50">{t("app_description")}</p>
-        </div>
+        <AppDescription />
       </div>
     </div>
   );
