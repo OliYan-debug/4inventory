@@ -27,291 +27,295 @@ import Users from "./routes/Users";
 import Profile from "./routes/Profile";
 import ItemView from "./routes/ItemView";
 import "../i18n";
+import { Suspense } from "react";
+import { Loading } from "./components/Loading";
 
 export const App = () => (
   <BrowserRouter>
     <AuthProvider>
       <CookiesProvider defaultSetOptions={{ path: "/" }}>
-        <Routes>
-          {/* Products routes */}
-          <Route
-            path="/products"
-            element={<Root />}
-            errorElement={<ErrorPage />}
-          >
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            {/* Products routes */}
             <Route
               path="/products"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Products" />
-                  <Products />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/products/:page"
-              element={
-                <ProtectedRoute>
-                  <Products />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="new"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | New Product" />
-                  <NewItem />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="delete"
-              element={
-                <ProtectedRoute roles={["ADMIN"]}>
-                  <PageTitle title="4Inventory | Delete Product" />
-                  <DeleteItem />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="delete/:itemId"
-              element={
-                <ProtectedRoute roles={["ADMIN"]}>
-                  <PageTitle title="4Inventory | Delete Product" />
-                  <DeleteItem />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="update"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Update Product" />
-                  <UpdateItem />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="update/:itemId"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Update Product" />
-                  <UpdateItem />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="search"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Search" />
-                  <Search />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="checkin"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Product CheckIn" />
-                  <CheckIn />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="checkin/:itemId"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Product CheckIn" />
-                  <CheckIn />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="checkout"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Product CheckOut" />
-                  <CheckOut />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="checkout/:itemId"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Product CheckOut" />
-                  <CheckOut />
-                </ProtectedRoute>
-              }
-            />
+              element={<Root />}
+              errorElement={<ErrorPage />}
+            >
+              <Route
+                path="/products"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Products" />
+                    <Products />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/products/:page"
+                element={
+                  <ProtectedRoute>
+                    <Products />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="new"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | New Product" />
+                    <NewItem />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="delete"
+                element={
+                  <ProtectedRoute roles={["ADMIN"]}>
+                    <PageTitle title="4Inventory | Delete Product" />
+                    <DeleteItem />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="delete/:itemId"
+                element={
+                  <ProtectedRoute roles={["ADMIN"]}>
+                    <PageTitle title="4Inventory | Delete Product" />
+                    <DeleteItem />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="update"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Update Product" />
+                    <UpdateItem />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="update/:itemId"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Update Product" />
+                    <UpdateItem />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="search"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Search" />
+                    <Search />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="checkin"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Product CheckIn" />
+                    <CheckIn />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="checkin/:itemId"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Product CheckIn" />
+                    <CheckIn />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="checkout"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Product CheckOut" />
+                    <CheckOut />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="checkout/:itemId"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Product CheckOut" />
+                    <CheckOut />
+                  </ProtectedRoute>
+                }
+              />
 
-            <Route
-              path="item"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Item" />
-                  <ItemView />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="item/:itemId"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Item" />
-                  <ItemView />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
+              <Route
+                path="item"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Item" />
+                    <ItemView />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="item/:itemId"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Item" />
+                    <ItemView />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
 
-          <Route
-            path="/dashboard"
-            element={<Root />}
-            errorElement={<ErrorPage />}
-          >
             <Route
               path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Dashboard" />
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard/:page"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Dashboard" />
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
+              element={<Root />}
+              errorElement={<ErrorPage />}
+            >
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Dashboard" />
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/dashboard/:page"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Dashboard" />
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
 
-          {/* Categories routes */}
-          <Route
-            path="/categories"
-            element={<Root />}
-            errorElement={<ErrorPage />}
-          >
+            {/* Categories routes */}
             <Route
               path="/categories"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Categories" />
-                  <Categories />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/categories/new"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | New Category" />
-                  <NewCategory />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
+              element={<Root />}
+              errorElement={<ErrorPage />}
+            >
+              <Route
+                path="/categories"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Categories" />
+                    <Categories />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/categories/new"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | New Category" />
+                    <NewCategory />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
 
-          {/* User routes */}
-          <Route path="/user" element={<Root />} errorElement={<ErrorPage />}>
-            <Route
-              path="/user"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Profile" />
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/user/:page"
-              element={
-                <ProtectedRoute>
-                  <PageTitle title="4Inventory | Profile" />
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
+            {/* User routes */}
+            <Route path="/user" element={<Root />} errorElement={<ErrorPage />}>
+              <Route
+                path="/user"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Profile" />
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/user/:page"
+                element={
+                  <ProtectedRoute>
+                    <PageTitle title="4Inventory | Profile" />
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
 
-          {/* Admin routes */}
-          <Route
-            path="/admin/users"
-            element={<Root />}
-            errorElement={<ErrorPage />}
-          >
+            {/* Admin routes */}
             <Route
               path="/admin/users"
+              element={<Root />}
+              errorElement={<ErrorPage />}
+            >
+              <Route
+                path="/admin/users"
+                element={
+                  <ProtectedRoute roles={["ADMIN"]}>
+                    <PageTitle title="4Inventory | Users" />
+                    <Users />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/users/:page"
+                element={
+                  <ProtectedRoute roles={["ADMIN"]}>
+                    <PageTitle title="4Inventory | Users" />
+                    <Users />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+
+            <Route
+              path="/"
               element={
-                <ProtectedRoute roles={["ADMIN"]}>
-                  <PageTitle title="4Inventory | Users" />
-                  <Users />
-                </ProtectedRoute>
+                <>
+                  <PageTitle title="4Inventory" />
+                  <Login />
+                </>
               }
+              errorElement={<ErrorPage />}
+            />
+
+            <Route
+              path="/login"
+              element={
+                <>
+                  <PageTitle title="4Inventory | Login" />
+                  <Login />
+                </>
+              }
+              errorElement={<ErrorPage />}
             />
             <Route
-              path="/admin/users/:page"
+              path="/signup"
               element={
-                <ProtectedRoute roles={["ADMIN"]}>
-                  <PageTitle title="4Inventory | Users" />
-                  <Users />
-                </ProtectedRoute>
+                <>
+                  <PageTitle title="4Inventory | Signup" />
+                  <Signup />
+                </>
               }
+              errorElement={<ErrorPage />}
             />
-          </Route>
 
-          <Route
-            path="/"
-            element={
-              <>
-                <PageTitle title="4Inventory" />
-                <Login />
-              </>
-            }
-            errorElement={<ErrorPage />}
-          />
+            <Route
+              path="/logout"
+              element={
+                <>
+                  <PageTitle title="4Inventory | logout" />
+                  <Logout />
+                </>
+              }
+              errorElement={<ErrorPage />}
+            />
 
-          <Route
-            path="/login"
-            element={
-              <>
-                <PageTitle title="4Inventory | Login" />
-                <Login />
-              </>
-            }
-            errorElement={<ErrorPage />}
-          />
-          <Route
-            path="/signup"
-            element={
-              <>
-                <PageTitle title="4Inventory | Signup" />
-                <Signup />
-              </>
-            }
-            errorElement={<ErrorPage />}
-          />
-
-          <Route
-            path="/logout"
-            element={
-              <>
-                <PageTitle title="4Inventory | logout" />
-                <Logout />
-              </>
-            }
-            errorElement={<ErrorPage />}
-          />
-
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <ToastContainer />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <ToastContainer />
+        </Suspense>
       </CookiesProvider>
     </AuthProvider>
   </BrowserRouter>
