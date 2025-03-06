@@ -11,9 +11,7 @@ export function ButtonChooseLanguage() {
   const ref = useRef();
 
   function handleShowPopover() {
-    setTimeout(() => {
-      !showLanguages && setShowPopover(!showPopover);
-    }, 300);
+    !showLanguages && setShowPopover(!showPopover);
   }
 
   function handleShowLanguages() {
@@ -51,8 +49,7 @@ export function ButtonChooseLanguage() {
       >
         <Languages
           data-active={showLanguages}
-          size={24}
-          className="text-neutral-50 transition hover:opacity-60 data-[active=true]:opacity-60"
+          className="size-5 text-neutral-50 transition hover:opacity-60 data-[active=true]:opacity-60 md:size-6"
         />
       </button>
 
