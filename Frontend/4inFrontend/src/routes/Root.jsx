@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import { Logo } from "../components/Logo";
 import { NavBar } from "../components/NavBar";
+import { MobileHeader } from "../components/MobileHeader";
 
 function root() {
   return (
@@ -8,7 +8,7 @@ function root() {
       <NavBar />
 
       <div id="content" className="h-full w-full">
-        <Logo />
+        <MobileHeader />
         <Outlet />
       </div>
     </div>

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import { ButtonChooseLanguage } from "./ButtonChooseLanguage";
 
-export function Logo() {
+export function MobileHeader() {
   return (
     <div
       className={
@@ -20,7 +20,7 @@ export function Logo() {
           </span>
         </div>
       </div>
-      <div className="absolute right-8 top-2">
+      <div className="absolute right-8 top-3">
         <ButtonChooseLanguage />
       </div>
     </div>
