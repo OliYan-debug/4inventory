@@ -8,6 +8,13 @@
     <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white" alt="Postgres" />
     <img src="https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white" alt="Spring" />
 </div>
+<div align="center">
+    <br/>
+    <h3>Readme Version</h3>
+    <a href="#">English</a>
+    <span>|</span>
+    <a href="#">PT-BR</a>
+</div>
 
 # What is 4Inventory
 
@@ -82,6 +89,15 @@ To <b>get started</b> with this APP, you need to have Docker installed. Docker i
    - username: `admin`
    - password: `admin123`
 
+## Preview
+<h3>Login Page</h3>
+<img src="https://i.imgur.com/31B5LTu.png" alt="Login Page"/>
+<h3>Products Page</h3>
+<img src="https://i.imgur.com/9j67DzX.png"/>
+<h3>New product</h3>
+<img src="https://i.imgur.com/Uw2QXdD.png"/>
+<h3>Operations Registry</h3>
+<img src="https://i.imgur.com/WpRwTRg.png"/>
 
 ## 🚀 Development Team:
 - [André Luis](https://github.com/aandreluis) - Frontend and Design 🖌️
