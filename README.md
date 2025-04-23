@@ -11,9 +11,9 @@
 <div align="center">
     <br/>
     <h3>Readme Version</h3>
-    <a href="#">English</a>
+    <a href="https://github.com/OliYan-debug/4inventory/blob/main/README.md">English</a>
     <span>|</span>
-    <a href="#">PT-BR</a>
+    <a href="https://github.com/OliYan-debug/4inventory/blob/main/README-PT_BR.md">PT-BR</a>
 </div>
 
 # What is 4Inventory
