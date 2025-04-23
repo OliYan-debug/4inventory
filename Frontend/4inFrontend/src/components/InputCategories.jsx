@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function InputCategories({
   register,
@@ -9,6 +10,8 @@ export function InputCategories({
   selectedCategories,
   setSelectedCategories,
 }) {
+  const { t } = useTranslation("input_category");
+
   const ref = useRef(null);
   const [categoriesSuggestions, setCategoriessuggestions] = useState([]);
   const tagsLimit = 2;
@@ -108,7 +111,7 @@ export function InputCategories({
   return (
     <div className="relative w-full">
       <label htmlFor="item" className="text-sm text-neutral-500">
-        Category*
+        {t("category_label")}
       </label>
       <div className="relative flex items-center">
         <ChevronDown
@@ -120,14 +123,14 @@ export function InputCategories({
           {...register("category", {
             maxLength: {
               value: 255,
-              message: "Maximum character value exceeded",
+              message: t("category_max_length"),
             },
           })}
           aria-invalid={errors.category ? "true" : "false"}
           type="text"
           id="category"
           placeholder={
-            selectedCategories.length === 0 ? "Select categories" : ""
+            selectedCategories.length === 0 ? t("category_placeholder") : ""
           }
           onChange={handleSearchCategories}
           onClick={handleGetCategories}

@@ -1,0 +1,22 @@
+{
+  "modal": {
+    "title": "Excluir Usuário?",
+    "text": "Será excluído, essa ação não poderá ser desfeita.",
+    "subtitle": "Escolha a permissão:",
+    "alert": {
+      "your_own": "Você está excluindo sua própria conta,",
+      "disconnected": "você será desconectado."
+    }
+  },
+  "loading": {
+    "pending": "Excluindo usuário...",
+    "success": "Usuário excluído!",
+    "errors": {
+      "generic": "Erro ao excluir. Tente novamente."
+    }
+  },
+  "buttons": {
+    "cancel": "Cancelar",
+    "delete": "Sim, excluir"
+  }
+}

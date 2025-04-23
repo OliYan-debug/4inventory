@@ -1,0 +1,19 @@
+{
+  "title": "Check-out",
+  "breadcrumb": {
+    "products": "Products",
+    "checkIn": "Check-out"
+  },
+  "buttons": {
+    "submit": "Check-out",
+    "back": "Back to products"
+  },
+  "fetch_error": "Search other item",
+  "quantity_invalid": "Quantity is invalid",
+  "quantity_higher": "Quantity requested is higher than current",
+  "loading": {
+    "pending": "Updating quantity...",
+    "success": "Quantity removed!",
+    "error": "Error when adding. Try again."
+  }
+}

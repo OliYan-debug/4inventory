@@ -1,0 +1,9 @@
+{
+  "username_label": "User Name",
+  "username_required": "User name is required",
+  "username_max_length": "Maximum character value exceeded",
+  "username_min_length": "Minimum 3 characters",
+  "username_reserved": "System Reserved user name, try another",
+  "username_invalid": "The username can only contain letters, numbers, underlines, hyphens and dots",
+  "username_placeholder": "your username"
+}

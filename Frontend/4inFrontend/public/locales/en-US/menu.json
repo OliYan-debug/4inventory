@@ -1,0 +1,22 @@
+{
+  "dashboard": "Dashboard",
+  "products": "Products",
+  "categories": "Categories",
+  "administration": "Administration",
+  "user": "User",
+  "links": {
+    "seeItems": "See Items",
+    "newItem": "New Item",
+    "updateItem": "Update Item",
+    "deleteItem": "Delete Item",
+    "search": "Search",
+    "checkin": "Check-in",
+    "checkout": "Check-out",
+    "seeCategories": "See Categories",
+    "newCategory": "New Category",
+    "myProfile": "My Profile",
+    "changePassword": "Change Password",
+    "logout": "Logout",
+    "users": "Users"
+  }
+}

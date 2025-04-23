@@ -1,0 +1,15 @@
+{
+  "title": "History",
+  "columns": {
+    "id": "ID",
+    "name": "Name",
+    "type": "Type",
+    "justification": "Justification",
+    "author": "Author",
+    "createdAt": "Created At"
+  },
+  "buttons": {
+    "retry": "Try again"
+  },
+  "noItems": "No items found..."
+}

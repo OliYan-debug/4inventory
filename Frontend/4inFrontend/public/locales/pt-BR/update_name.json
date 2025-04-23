@@ -1,0 +1,20 @@
+{
+  "title": "Atualize suas informações",
+  "form": {
+    "current_name": "Seu nome não pode ser o mesmo que o nome atual"
+  },
+  "buttons": {
+    "submit": "Salvar",
+    "password": "Alterar senha"
+  },
+  "or": "ou",
+  "loading": {
+    "pending": "Atualizando usuário...",
+    "success": "Usuário atualizado!",
+    "errors": {
+      "network": "Erro ao atualizar, tente novamente.",
+      "token": "Token inválido, faça login novamente.",
+      "generic": "Erro ao atualizar. Tente novamente."
+    }
+  }
+}

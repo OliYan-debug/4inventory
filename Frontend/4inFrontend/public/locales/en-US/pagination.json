@@ -1,0 +1,12 @@
+{
+  "buttons": {
+    "previous": "Previous",
+    "next": "Next",
+    "last": "Last"
+  },
+  "totalItems": {
+    "showing": "Showing",
+    "of": "of",
+    "results": "results"
+  }
+}

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Check, Pencil, PencilOff, Trash } from "lucide-react";
 import { api } from "../services/api";
+import { useTranslation } from "react-i18next";
 
 export function Category({
   id,
@@ -13,6 +14,8 @@ export function Category({
   activeButton,
   handleButtonClick,
 }) {
+  const { t } = useTranslation("category");
+
   const [editable, setEditable] = useState(false);
   const [checkDeleteOpen, setCheckDeleteOpen] = useState(false);
   const ref = useRef(null);
@@ -52,12 +55,13 @@ export function Category({
       await toast.promise(
         api.delete("/category", { data: { id, name, color } }),
         {
-          pending: "Updating category",
+          pending: t("loading.updating"),
           success: {
             render() {
               return (
                 <p>
-                  Category <span className="font-bold">{name}</span> deleted!
+                  {t("loading.success.updated")}{" "}
+                  <span className="font-bold">{name}</span>
                 </p>
               );
             },
@@ -66,11 +70,10 @@ export function Category({
             render({ data }) {
               return (
                 <p>
-                  Error when updating:
-                  <span className="font-bold">
+                  {t("loading.errors.delete")} <br />
+                  <span className="text-xs opacity-80">
                     {data.response.data.message}
                   </span>
-                  . Try again.
                 </p>
               );
             },
@@ -99,12 +102,13 @@ export function Category({
     try {
       data.id = id;
       await toast.promise(api.put("/category", data), {
-        pending: "Updating category",
+        pending: t("loading.updating"),
         success: {
           render() {
             return (
               <p>
-                Category <span className="font-bold">{data.name}</span> updated!
+                {t("loading.success.updated")}{" "}
+                <span className="font-bold">{data.name}</span>
               </p>
             );
           },
@@ -113,9 +117,10 @@ export function Category({
           render({ data }) {
             return (
               <p>
-                Error when updating:
-                <span className="font-bold">{data.response.data.message}</span>.
-                Try again.
+                {t("loading.errors.update")} <br />
+                <span className="text-xs opacity-80">
+                  {data.response.data.message}
+                </span>
               </p>
             );
           },
@@ -138,19 +143,16 @@ export function Category({
         <span className="absolute -right-1 -top-1 size-3 rounded-full bg-red-500"></span>
 
         <h2 className="font-medium text-neutral-600">
-          Confirm&nbsp;
-          <span className="underline">delete?</span>
+          {t("confirmDelete.title")}
         </h2>
-        <p className="text-sm text-neutral-400">
-          This action cannot be undone.
-        </p>
+        <p className="text-sm text-neutral-400">{t("confirmDelete.warning")}</p>
         <div className="mt-4 flex gap-2">
           <button
             type="button"
             onClick={() => setCheckDeleteOpen(false)}
             className="flex items-center justify-center rounded-lg border border-neutral-400 px-2 py-1 font-semibold text-neutral-400 transition hover:bg-neutral-200 hover:underline"
           >
-            Cancel
+            {t("confirmDelete.buttons.cancel")}
           </button>
 
           <button
@@ -158,7 +160,7 @@ export function Category({
             onClick={() => handleDelete()}
             className="flex w-32 items-center justify-center rounded-lg bg-red-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-red-500 hover:underline"
           >
-            Yes, delete
+            {t("confirmDelete.buttons.confirm")}
           </button>
         </div>
       </div>

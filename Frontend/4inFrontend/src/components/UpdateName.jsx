@@ -5,8 +5,11 @@ import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { api } from "../services/api";
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export function UpdateName({ user, updateUser }) {
+  const { t } = useTranslation("update_name");
+
   const {
     register,
     handleSubmit,
@@ -25,7 +28,7 @@ export function UpdateName({ user, updateUser }) {
     if (data.name === user.name) {
       setError("name", {
         type: "invalid",
-        message: "Your name cannot be the same as your current name",
+        message: t("form.current_name"),
       });
       return;
     }
@@ -36,28 +39,37 @@ export function UpdateName({ user, updateUser }) {
 
     try {
       await toast.promise(api.put("/user", data), {
-        pending: "Updating user",
-        success: {
-          render() {
-            return <p>User updated!</p>;
-          },
-        },
+        pending: t("loading.pending"),
+        success: t("loading.success"),
         error: {
           render({ data }) {
             if (data.code === "ECONNABORTED" || data.code === "ERR_NETWORK") {
               return (
                 <p>
-                  Error when updating, Try again. #timeout exceeded/network
-                  error.
+                  {t("loading.errors.network")}{" "}
+                  <span className="text-xs opacity-80">
+                    #timeout exceeded/network error.
+                  </span>
+                </p>
+              );
+            }
+
+            if (data.code === "ERR_BAD_REQUEST") {
+              return (
+                <p>
+                  {t("loading.errors.token")}{" "}
+                  <span className="text-xs opacity-80">path:/products</span>
                 </p>
               );
             }
 
             return (
               <p>
-                Error when updating:
-                <span className="font-bold">{data.response.data.message}</span>.
-                Try again.
+                {t("loading.errors.generic")}
+                <br />
+                <span className="text-xs opacity-80">
+                  {data.response.data.message}
+                </span>
               </p>
             );
           },
@@ -75,9 +87,7 @@ export function UpdateName({ user, updateUser }) {
       onSubmit={handleSubmit(onSubmit)}
       className="mt-4 flex w-80 flex-col items-center gap-8"
     >
-      <h3 className="text-lg font-bold text-neutral-700">
-        Update your information
-      </h3>
+      <h3 className="text-lg font-bold text-neutral-700">{t("title")}</h3>
       <InputName
         register={register}
         errors={errors}
@@ -97,21 +107,21 @@ export function UpdateName({ user, updateUser }) {
               <Loader2 className="animate-spin" color="#ffffff" size={18} />
             </span>
           ) : (
-            <span>Save</span>
+            <span>{t("buttons.submit")}</span>
           )}
         </button>
 
         <div className="relative mt-8 flex w-1/2 flex-col items-center">
           <span className="w-full border-t border-neutral-400"></span>
           <p className="absolute -top-3 bg-neutral-50 px-1 text-neutral-500">
-            or
+            {t("or")}
           </p>
         </div>
         <Link
           to={"/user/password"}
           className="mt-4 font-bold text-neutral-600 underline hover:text-neutral-700"
         >
-          Change password
+          {t("buttons.password")}
         </Link>
       </div>
     </form>

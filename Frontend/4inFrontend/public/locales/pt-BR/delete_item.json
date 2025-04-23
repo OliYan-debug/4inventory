@@ -1,0 +1,17 @@
+{
+  "title": "Excluir Item",
+  "breadcrumb": {
+    "products": "Produtos",
+    "deleteItem": "Excluir Item"
+  },
+  "buttons": {
+    "submit": "Excluir item",
+    "back": "Voltar para produtos"
+  },
+  "fetch_error": "Busque outro item",
+  "loading": {
+    "pending": "Excluindo item...",
+    "success": "Item excluído.",
+    "error": "Erro ao excluir. Tente novamente."
+  }
+}

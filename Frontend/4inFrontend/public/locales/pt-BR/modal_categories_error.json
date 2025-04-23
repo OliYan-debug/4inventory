@@ -1,0 +1,9 @@
+{
+  "modal": {
+    "title": "Ops!",
+    "text": "Nenhuma categoria encontrada, tente cadastrar uma:"
+  },
+  "button": {
+    "add": "Adicionar categoria"
+  }
+}

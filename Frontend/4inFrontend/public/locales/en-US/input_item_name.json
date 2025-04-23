@@ -1,0 +1,7 @@
+{
+  "item_label": "Item Name",
+  "item_required": "Item name is required",
+  "item_max_length": "Maximum character value exceeded",
+  "item_placeholder": "Item name",
+  "update_item_placeholder": "Search items"
+}

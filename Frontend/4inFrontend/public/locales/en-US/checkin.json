@@ -1,0 +1,18 @@
+{
+  "title": "Check-in",
+  "breadcrumb": {
+    "products": "Products",
+    "checkIn": "Check-in"
+  },
+  "buttons": {
+    "submit": "Check-in",
+    "back": "Back to products"
+  },
+  "fetch_error": "Search other item",
+  "quantity_invalid": "Quantity is invalid",
+  "loading": {
+    "pending": "Updating quantity...",
+    "success": "Quantity added!",
+    "error": "Error when adding. Try again."
+  }
+}

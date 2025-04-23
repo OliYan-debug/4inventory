@@ -1,0 +1,24 @@
+{
+  "title": "Search",
+  "breadcrumb": {
+    "products": "Products",
+    "search": "Search"
+  },
+  "form": {
+    "item_placeholder": "Search items or pages"
+  },
+  "buttons": {
+    "submit": "Search",
+    "back": "Back to products"
+  },
+  "no_items": {
+    "text": "No items found for",
+    "or": "or",
+    "button": {
+      "clear_and_try_again": "Clear and try again"
+    }
+  },
+  "items": "Items",
+  "pages": "Pages",
+  "page_go": "Go to"
+}

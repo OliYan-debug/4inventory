@@ -1,0 +1,31 @@
+{
+  "loading": {
+    "updating": "Atualizando categoria...",
+    "success": {
+      "updated": "Categoria atualizada:",
+      "deleted": "Categoria excluida:"
+    },
+    "errors": {
+      "update": "Erro ao atualizar. Tente novamente.",
+      "delete": "Erro ao excluir. Tente novamente."
+    }
+  },
+  "confirmDelete": {
+    "title": "Confirmar exclusão?",
+    "warning": "Essa ação não poderá ser desfeita.",
+    "buttons": {
+      "cancel": "Cancelar",
+      "confirm": "Sim, excluir"
+    }
+  },
+  "validation": {
+    "nameRequired": "O nome da categoria é obrigatório",
+    "maxLength": "Limite máximo de caracteres excedido"
+  },
+  "buttons": {
+    "edit": "Editar",
+    "cancelEdit": "Cancelar edição",
+    "save": "Salvar",
+    "delete": "Excluir"
+  }
+}

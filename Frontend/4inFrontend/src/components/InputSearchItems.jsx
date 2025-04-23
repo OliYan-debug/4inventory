@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../services/api";
 import { SearchIcon, X } from "lucide-react";
 import { ItemSearch } from "./ItemSearch";
+import { useTranslation } from "react-i18next";
 
-export function InputUpdateItemName({
+export function InputSearchItems({
   register,
   errors,
   setValue,
@@ -14,6 +15,11 @@ export function InputUpdateItemName({
   selectedItem,
   setSelectedItem,
 }) {
+  const { t } = useTranslation("input_item_name");
+
+  let location = useLocation();
+  let pathname = location.pathname;
+
   const ref = useRef(null);
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
@@ -49,7 +55,7 @@ export function InputUpdateItemName({
   };
 
   function handleSelect(id) {
-    navigate(`/products/update/${id}`);
+    navigate(`${pathname}/${id}`);
 
     const itemFind = items.find((item) => item.id === Number(id));
 
@@ -74,28 +80,32 @@ export function InputUpdateItemName({
   const handleClearSearch = () => {
     setSelectedItem([]);
     reset();
-    navigate(`/products/update`);
+
+    const lastSlashIndex = pathname.lastIndexOf("/");
+    let newPath = pathname.slice(0, lastSlashIndex);
+    navigate(`${newPath}`);
   };
+
   return (
     <div className="relative w-full">
       <label htmlFor="item" className="text-sm text-neutral-500">
-        Item Name*
+        {t("item_label")}
       </label>
       <div className="relative flex items-center">
         <input
           defaultValue={itemId ? selectedItem.item : ""}
           {...register("item", {
-            required: "Item name is required",
+            required: t("item_required"),
             maxLength: {
               value: 20,
-              message: "Maximum character value exceeded",
+              message: t("item_max_length"),
             },
           })}
           aria-invalid={errors.item ? "true" : "false"}
           type="text"
           id="item"
           onChange={handleSearchProduct}
-          placeholder="Search items"
+          placeholder={t("update_item_placeholder")}
           className={`focus-visible::border-neutral-500 ${items.length > 0 ? "rounded-t-lg border-b-0" : "rounded-lg"} w-full border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
             errors.item &&
             "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"

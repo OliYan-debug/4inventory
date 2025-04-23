@@ -1,0 +1,30 @@
+{
+  "modal": {
+    "title": "Alterar Permissão do Usuário?",
+    "text": {
+      "currently": "Atualmente, o usuário tem",
+      "permission": "permissão"
+    },
+    "subtitle": "Escolha a permissão:",
+    "alert": {
+      "info": "Você está escolhendo sua própria permissão,",
+      "disconnected": "você será desconectado."
+    }
+  },
+  "form": {
+    "admin_label": "Admin",
+    "user_label": "Usuário"
+  },
+  "loading": {
+    "pending": "Atualizando usuário...",
+    "success": "Usuário atualizado!",
+    "errors": {
+      "userAdmin": "A permissão do usuário não pode ser alterada no usuário administrador padrão!",
+      "generic": "Erro ao atualizar. Tente novamente."
+    }
+  },
+  "buttons": {
+    "cancel": "Cancelar",
+    "save": "Sim, Salvar"
+  }
+}

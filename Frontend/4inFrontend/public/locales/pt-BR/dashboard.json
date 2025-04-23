@@ -1,0 +1,21 @@
+{
+  "title": "Painel",
+  "breadcrumb": {
+    "products": "Produtos",
+    "dashboard": "Painel"
+  },
+  "card": {
+    "products": "Produtos",
+    "categories": "Categorias",
+    "inventory": "Movimentações"
+  },
+  "loading": {
+    "pending": "Buscando registros...",
+    "success": "Registros encontrados:",
+    "errors": {
+      "network": "Erro ao buscar, tente novamente.",
+      "token": "Token inválido, faça login novamente.",
+      "generic": "Erro ao buscar. Tente novamente."
+    }
+  }
+}

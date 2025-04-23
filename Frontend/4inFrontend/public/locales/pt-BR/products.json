@@ -1,0 +1,29 @@
+{
+  "title": "Produtos",
+  "subtitle": "Encontrado",
+  "buttons": {
+    "new": "Novo",
+    "add": "Adicionar",
+    "tryAdd": "Tente adicionar alguns",
+    "retry": "Tentar novamente"
+  },
+  "loading": {
+    "finding": "Buscando itens...",
+    "success": "Itens encontrados:",
+    "errors": {
+      "network": "Erro ao buscar, tente novamente.",
+      "token": "Token inválido, faça login novamente.",
+      "generic": "Erro ao buscar, tente novamente."
+    }
+  },
+  "noItems": "Nenhum item encontrado...",
+  "or": "ou",
+  "columns": {
+    "id": "ID",
+    "name": "Nome",
+    "description": "Descrição",
+    "categories": "Categorias",
+    "quantity": "Quantidade",
+    "createdAt": "Criado em"
+  }
+}

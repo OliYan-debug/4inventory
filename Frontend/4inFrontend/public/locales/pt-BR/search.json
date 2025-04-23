@@ -1,0 +1,24 @@
+{
+  "title": "Buscar",
+  "breadcrumb": {
+    "products": "Produtos",
+    "search": "Buscar"
+  },
+  "form": {
+    "item_placeholder": "Buscar itens ou páginas"
+  },
+  "buttons": {
+    "submit": "Buscar",
+    "back": "Voltar para produtos"
+  },
+  "no_items": {
+    "text": "Nenhum item encontrado para",
+    "or": "ou",
+    "button": {
+      "clear_and_try_again": "Limpar e tentar novamente"
+    }
+  },
+  "items": "Itens",
+  "pages": "Páginas",
+  "page_go": "Ir para"
+}

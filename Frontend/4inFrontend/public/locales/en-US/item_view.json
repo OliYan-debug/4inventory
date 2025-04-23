@@ -1,0 +1,25 @@
+{
+  "title": "Item",
+  "subtitle": "Products",
+  "loading": {
+    "finding": "Finding item...",
+    "success": "Item found",
+    "errors": {
+      "network": "Error when finding, try again.",
+      "badRequest": "Item not found, please try another.",
+      "generic": "Error when finding. Try again."
+    }
+  },
+  "noItem": "Item not found...",
+  "buttons": {
+    "backToProducts": "Back to products",
+    "edit": "Edit Item",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "delete": "Delete Item"
+  },
+  "quantity": "Quantity",
+  "createdAt": "Created at",
+  "lastUpdate": "Last update",
+  "itemHistory": "Item History"
+}

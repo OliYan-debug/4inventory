@@ -1,0 +1,25 @@
+{
+  "title": "Update Item",
+  "breadcrumb": {
+    "products": "Products",
+    "updateItem": "Update Item"
+  },
+  "categoriesError": {
+    "toastError": "Error getting categories, try again",
+    "title": "Oops!",
+    "text": "Sorry, an unexpected error has occurred:"
+  },
+  "form": {
+    "category_required": "Category is required"
+  },
+  "buttons": {
+    "submit": "Update item",
+    "back": "Back to products"
+  },
+  "fetch_error": "Search other item",
+  "loading": {
+    "pending": "Updating item...",
+    "success": "Item updated:",
+    "error": "Error when adding. Try again."
+  }
+}

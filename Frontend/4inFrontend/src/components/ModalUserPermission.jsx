@@ -4,6 +4,7 @@ import { api } from "../services/api";
 import { toast } from "react-toastify";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export function ModalUserPermission({
   id,
@@ -13,6 +14,8 @@ export function ModalUserPermission({
   setCheckPermissionOpen,
   updateData,
 }) {
+  const { t } = useTranslation("modal_user_permission", { useSuspense: false });
+
   const { user } = useAuth();
 
   const { register, handleSubmit } = useForm({
@@ -23,9 +26,7 @@ export function ModalUserPermission({
 
   const onSubmit = async (data) => {
     if (username === "admin") {
-      return toast.error(
-        "The user permission cannot be changed on the default administrator user!",
-      );
+      return toast.error(t("loading.errors.userAdmin"));
     }
 
     data = {
@@ -37,21 +38,17 @@ export function ModalUserPermission({
       const result = await toast.promise(
         api.patch(`/admin/users/${id}/role`, data),
         {
-          pending: "Updating user",
-          success: {
-            render() {
-              return <p>User updated!</p>;
-            },
-          },
+          pending: t("loading.pending"),
+          success: t("loading.success"),
           error: {
             render({ data }) {
               return (
                 <p>
-                  Error when updating:
-                  <span className="font-bold">
+                  {t("loading.errors.generic")}
+                  <br />
+                  <span className="text-xs opacity-80">
                     {data.response.data.message}
                   </span>
-                  . Try again.
                 </p>
               );
             },
@@ -77,21 +74,22 @@ export function ModalUserPermission({
           <ShieldEllipsis size={22} className="text-green-600" />
         </span>
         <h1 className="my-2 text-2xl font-bold text-neutral-800">
-          Change User Permission?
+          {t("modal.title")}
         </h1>
         <span className="font-medium text-green-700">{name}</span>
         <p className="text-sm text-neutral-500">
-          Currently, the user has{" "}
-          <span className="font-medium">{permission}</span> permission.
+          {t("modal.text.currently")}{" "}
+          <span className="font-medium">{permission}</span>{" "}
+          {t("modal.text.permission")}.
         </p>
 
         <h2 className="mt-4 text-lg font-semibold text-neutral-800">
-          Choose permission:
+          {t("modal.subtitle")}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4">
           <div className="my-2 flex items-center gap-1">
             <label className="font-medium text-neutral-700" htmlFor="admin">
-              Admin
+              {t("form.admin_label")}
             </label>
             <input
               {...register("role")}
@@ -104,7 +102,7 @@ export function ModalUserPermission({
 
           <div className="flex items-center gap-1">
             <label className="font-medium text-neutral-700" htmlFor="User">
-              User
+              {t("form.user_label")}
             </label>
             <input
               {...register("role")}
@@ -118,8 +116,10 @@ export function ModalUserPermission({
 
         {user.sub === username && (
           <div className="text-xs text-neutral-400">
-            You are choosing your own permission,{" "}
-            <span className="font-semibold">you will be disconnected.</span>
+            {t("modal.alert.info")}{" "}
+            <span className="font-semibold">
+              {t("modal.alert.disconnected")}
+            </span>
           </div>
         )}
 
@@ -129,7 +129,7 @@ export function ModalUserPermission({
             onClick={() => setCheckPermissionOpen(false)}
             className="flex items-center justify-center rounded-lg border border-neutral-400 px-2 py-1 font-semibold text-neutral-400 transition hover:bg-neutral-200 hover:underline"
           >
-            Cancel
+            {t("buttons.cancel")}
           </button>
 
           <button
@@ -137,7 +137,7 @@ export function ModalUserPermission({
             onClick={handleSubmit(onSubmit)}
             className="flex w-32 items-center justify-center rounded-lg bg-green-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-green-500 hover:underline"
           >
-            Yes, Save
+            {t("buttons.save")}
           </button>
         </div>
       </div>

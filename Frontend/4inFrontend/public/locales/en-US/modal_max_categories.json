@@ -1,0 +1,9 @@
+{
+  "modal": {
+    "title": "Oops!",
+    "text": "Maximum number of categories reached. Please try deleting or editing some."
+  },
+  "button": {
+    "back": "Back to categories"
+  }
+}

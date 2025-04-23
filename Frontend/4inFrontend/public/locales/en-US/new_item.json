@@ -1,0 +1,24 @@
+{
+  "title": "New Product",
+  "breadcrumb": {
+    "products": "Products",
+    "newItem": "New Item"
+  },
+  "categoriesError": {
+    "toastError": "Error getting categories, try again",
+    "title": "Oops!",
+    "text": "Sorry, an unexpected error has occurred:"
+  },
+  "form": {
+    "category_required": "Category is required"
+  },
+  "buttons": {
+    "submit": "Add new item",
+    "back": " Back to products"
+  },
+  "loading": {
+    "pending": "Adding item...",
+    "success": "Item added:",
+    "error": "Error when adding. Try again."
+  }
+}

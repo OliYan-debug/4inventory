@@ -1,0 +1,22 @@
+{
+  "modal": {
+    "title": "Delete User?",
+    "text": "Will be deleted, this action cannot be undone.",
+    "subtitle": "Choose permission:",
+    "alert": {
+      "your_own": "You are deleting your own account,",
+      "disconnected": "you will be disconnected."
+    }
+  },
+  "loading": {
+    "pending": "Deleting user...",
+    "success": "User deleted!",
+    "errors": {
+      "generic": "Error when deleting. Try again."
+    }
+  },
+  "buttons": {
+    "cancel": "Cancel",
+    "delete": "Yes, delete"
+  }
+}

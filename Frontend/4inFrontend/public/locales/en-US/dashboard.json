@@ -1,0 +1,21 @@
+{
+  "title": "Dashboard",
+  "breadcrumb": {
+    "products": "Products",
+    "dashboard": "Dashboard"
+  },
+  "card": {
+    "products": "Products",
+    "categories": "Categories",
+    "inventory": "Inventory movements"
+  },
+  "loading": {
+    "pending": "Finding registers...",
+    "success": "Registers found:",
+    "errors": {
+      "network": "Error when finding, try again.",
+      "token": "Invalid token, please log in again.",
+      "generic": "Error when finding. Try again."
+    }
+  }
+}

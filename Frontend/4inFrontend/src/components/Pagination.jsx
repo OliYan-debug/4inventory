@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
 
 export function Pagination({
   totalElements,
@@ -17,6 +18,8 @@ export function Pagination({
   setSize,
   path,
 }) {
+  const { t } = useTranslation("pagination");
+
   const navigate = useNavigate();
   const [cookies, setCookie] = useCookies();
   const [hiddenMoreNumbers, setHiddenMoreNumbers] = useState(true);
@@ -75,7 +78,7 @@ export function Pagination({
         className="flex flex-row gap-1 text-sm text-neutral-700"
       >
         <label className="hidden sm:flex" htmlFor="size">
-          Showing
+          {t("totalItems.showing")}
         </label>
         <select
           id="size"
@@ -98,7 +101,7 @@ export function Pagination({
           to={`/${path}/${pageNumber - 1}`}
           className={`relative inline-flex items-center rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 ${first && "pointer-events-none opacity-70"}`}
         >
-          Previous
+          {t("buttons.previous")}
         </Link>
 
         <FormSelectSize />
@@ -107,7 +110,7 @@ export function Pagination({
           to={`/${path}/${pageNumber + 1}`}
           className={`relative ml-3 inline-flex items-center rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 ${last && "pointer-events-none opacity-70"}`}
         >
-          Next
+          {t("buttons.next")}
         </Link>
       </div>
 
@@ -115,9 +118,9 @@ export function Pagination({
         <div className="flex gap-1 text-sm text-neutral-700">
           <FormSelectSize />
           <p>
-            of
+            {t("totalItems.of")}
             <span className="font-medium"> {totalElements} </span>
-            results
+            {t("totalItems.results")}
           </p>
         </div>
 
@@ -138,7 +141,7 @@ export function Pagination({
                 to={`/${path}/${pageNumber - 1}`}
                 className={`relative inline-flex items-center px-2 py-2 text-neutral-400 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50 focus:z-20 focus:outline-offset-0 ${first && "pointer-events-none opacity-70"}`}
               >
-                <span className="sr-only">Previous</span>
+                <span className="sr-only"> {t("totalItems.previous")}</span>
                 <ChevronLeft aria-hidden="true" className="h-5 w-5" />
               </Link>
 
@@ -158,14 +161,14 @@ export function Pagination({
                 to={`/${path}/${pageNumber + 1}`}
                 className={`relative inline-flex items-center px-2 py-2 text-neutral-400 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50 focus:z-20 focus:outline-offset-0 ${last && "pointer-events-none opacity-70"}`}
               >
-                <span className="sr-only">Next</span>
+                <span className="sr-only"> {t("totalItems.next")}</span>
                 <ChevronRight aria-hidden="true" className="h-5 w-5" />
               </Link>
               <Link
                 to={`/${path}/${totalPages - 1}`}
                 className={`relative inline-flex items-center rounded-r-lg px-2 py-2 text-neutral-400 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50 focus:z-20 focus:outline-offset-0 ${last && "pointer-events-none opacity-70"}`}
               >
-                <span className="sr-only">Last</span>
+                <span className="sr-only">{t("totalItems.last")}</span>
                 <ChevronsRight aria-hidden="true" className="h-5 w-5" />
               </Link>
             </nav>

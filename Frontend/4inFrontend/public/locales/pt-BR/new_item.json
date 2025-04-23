@@ -1,0 +1,24 @@
+{
+  "title": "Novo Produto",
+  "breadcrumb": {
+    "products": "Produtos",
+    "newItem": "Novo Item"
+  },
+  "categoriesError": {
+    "toastError": "Erro ao obter categorias, tente novamente",
+    "title": "Ops!",
+    "text": "Desculpe, ocorreu um erro inesperado:"
+  },
+  "form": {
+    "category_required": "A categoria é obrigatória"
+  },
+  "buttons": {
+    "submit": "Adicionar novo item",
+    "back": " Voltar para produtos"
+  },
+  "loading": {
+    "pending": "Adicionando item...",
+    "success": "Item adicionado:",
+    "error": "Erro ao adicionar. Tente novamente."
+  }
+}

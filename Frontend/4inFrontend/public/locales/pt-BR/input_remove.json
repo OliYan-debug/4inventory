@@ -1,0 +1,8 @@
+{
+  "quantity_label": "Remover*",
+  "quantity_current": "Atualmente: ",
+  "quantity_required": "Quantidade é obrigatória",
+  "quantity_max_length": "Valor máximo de caracteres excedido",
+  "quantity_min_length": "Quantidade mínima para remover é 1",
+  "quantity_higher": "Quantidade solicitada é maior que a atual"
+}

@@ -1,0 +1,22 @@
+{
+  "login": "Entrar",
+  "signup": "Cadastro",
+  "logout": "Sair",
+  "products": {
+    "products": "Produtos",
+    "new": "Novo Produto",
+    "delete": "Excluir Produto",
+    "update": "Atualizar Produto",
+    "search": "Buscar",
+    "checkin": "Entrada",
+    "checkout": "Saída",
+    "item": "Item"
+  },
+  "dashboard": "Painel",
+  "categories": {
+    "categories": "Categorias",
+    "new": "Nova Categoria"
+  },
+  "profile": "Perfil",
+  "users": "Usuários"
+}

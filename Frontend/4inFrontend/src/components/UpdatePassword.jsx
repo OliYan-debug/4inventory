@@ -7,8 +7,11 @@ import { InputConfirmPassword } from "./InputConfirmPassword";
 import { toast } from "react-toastify";
 import { api } from "../services/api";
 import { Link, useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export function UpdatePassword({ username }) {
+  const { t } = useTranslation("update_password");
+
   const {
     register,
     handleSubmit,
@@ -30,7 +33,7 @@ export function UpdatePassword({ username }) {
 
       setError("createPassword", {
         type: "invalid",
-        message: "Your new password must not be the same as your current one",
+        message: t("form.current_password"),
       });
 
       return;
@@ -44,19 +47,17 @@ export function UpdatePassword({ username }) {
 
     try {
       const result = await toast.promise(api.post("/user/password", data), {
-        pending: "Updating password",
-        success: {
-          render() {
-            return <p>Password updated! Please, Log in to continue.</p>;
-          },
-        },
+        pending: t("loading.pending"),
+        success: t("loading.success"),
         error: {
           render({ data }) {
             if (data.code === "ECONNABORTED" || data.code === "ERR_NETWORK") {
               return (
                 <p>
-                  Error when updating, Try again. #timeout exceeded/network
-                  error.
+                  {t("loading.errors.network")}{" "}
+                  <span className="text-xs opacity-80">
+                    #timeout exceeded/network error.
+                  </span>
                 </p>
               );
             }
@@ -65,22 +66,19 @@ export function UpdatePassword({ username }) {
               resetField("password");
               setError("password", {
                 type: "invalid",
-                message: "Invalid password, try again.",
+                message: t("form.invalid_password"),
               });
 
-              return (
-                <p>
-                  Error when updating:
-                  <span className="font-bold">Invalid password</span>. Try
-                  again.
-                </p>
-              );
+              return t("loading.errors.invalid_password");
             }
+
             return (
               <p>
-                Error when updating:
-                <span className="font-bold">{data.response.data.message}</span>.
-                Try again.
+                {t("loading.errors.generic")}
+                <br />
+                <span className="text-xs opacity-80">
+                  {data.response.data.message}
+                </span>
               </p>
             );
           },
@@ -101,20 +99,21 @@ export function UpdatePassword({ username }) {
         onSubmit={handleSubmit(onSubmit)}
         className="mt-4 flex w-80 flex-col items-center gap-8"
       >
-        <h3 className="text-lg font-bold text-neutral-700">
-          Update your password
-        </h3>
+        <h3 className="text-lg font-bold text-neutral-700">{t("title")}</h3>
+
         <InputPassword
           register={register}
           errors={errors}
           isSubmitting={isSubmitting}
         />
+
         <InputCreatePassword
           register={register}
           errors={errors}
           setInvalidPassword={setInvalidPassword}
           isSubmitting={isSubmitting}
         />
+
         <InputConfirmPassword
           register={register}
           getValues={getValues}
@@ -122,6 +121,7 @@ export function UpdatePassword({ username }) {
           invalidPassword={invalidPassword}
           isSubmitting={isSubmitting}
         />
+
         <div className="flex w-full flex-col items-center">
           <button
             type="submit"
@@ -133,21 +133,21 @@ export function UpdatePassword({ username }) {
                 <Loader2 className="animate-spin" color="#ffffff" size={18} />
               </span>
             ) : (
-              <span>Save</span>
+              <span>{t("buttons.submit")}</span>
             )}
           </button>
 
           <div className="relative mt-8 flex w-1/2 flex-col items-center">
             <span className="w-full border-t border-neutral-400"></span>
             <p className="absolute -top-3 bg-neutral-50 px-1 text-neutral-500">
-              or
+              {t("or")}
             </p>
           </div>
           <Link
             to={"/user/profile"}
             className="mt-4 font-bold text-neutral-600 underline hover:text-neutral-700"
           >
-            Change user details
+            {t("buttons.user")}
           </Link>
         </div>
       </form>

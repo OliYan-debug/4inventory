@@ -1,0 +1,31 @@
+{
+  "loading": {
+    "updating": "Updating category...",
+    "success": {
+      "updated": "Category updated:",
+      "deleted": "Category deleted:"
+    },
+    "errors": {
+      "update": "Error when updating. Try again.",
+      "delete": "Error when deleting. Try again."
+    }
+  },
+  "confirmDelete": {
+    "title": "Confirm delete?",
+    "warning": "This action cannot be undone.",
+    "buttons": {
+      "cancel": "Cancel",
+      "confirm": "Yes, delete"
+    }
+  },
+  "validation": {
+    "nameRequired": "Category name is required",
+    "maxLength": "Maximum character limit exceeded"
+  },
+  "buttons": {
+    "edit": "Edit",
+    "cancelEdit": "Cancel edit",
+    "save": "Save",
+    "delete": "Delete"
+  }
+}

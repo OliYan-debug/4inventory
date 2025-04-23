@@ -1,0 +1,6 @@
+{
+  "name_label": "Name",
+  "name_required": "Name is required",
+  "name_max_length": "Maximum character value exceeded",
+  "name_placeholder": "your name"
+}

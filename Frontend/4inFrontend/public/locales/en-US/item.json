@@ -1,0 +1,9 @@
+{
+  "menu": {
+    "see": "See Item",
+    "edit": "Edit Item",
+    "checkin": "Check-in",
+    "checkout": "Check-out",
+    "delete": "Delete Item"
+  }
+}

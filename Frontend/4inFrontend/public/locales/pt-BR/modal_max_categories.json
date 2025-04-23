@@ -1,0 +1,9 @@
+{
+  "modal": {
+    "title": "Oops!",
+    "text": "O número máximo de categorias foi atingido. Tente excluir ou editar alguma."
+  },
+  "button": {
+    "back": "Voltar para categorias"
+  }
+}
