@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { History } from "./History";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { api } from "../services/api";
+import { ItemTimeline } from "./Timeline";
 
 export function ItemViewHistory({ itemId }) {
   const [registers, setRegisters] = useState([]);
-  const [update, setUpdate] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -67,7 +66,6 @@ export function ItemViewHistory({ itemId }) {
           },
         );
 
-        console.log(response);
         setRegisters(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -81,13 +79,7 @@ export function ItemViewHistory({ itemId }) {
     };
 
     fetchData();
-  }, [update]);
+  }, []);
 
-  const updateData = () => {
-    update ? setUpdate(false) : setUpdate(true);
-  };
-
-  return (
-    <History registers={registers} loading={loading} updateData={updateData} />
-  );
+  return <ItemTimeline registers={registers} loading={loading} />;
 }
