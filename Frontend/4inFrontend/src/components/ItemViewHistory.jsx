@@ -3,8 +3,11 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { api } from "../services/api";
 import { ItemTimeline } from "./Timeline";
+import { useTranslation } from "react-i18next";
 
 export function ItemViewHistory({ itemId }) {
+  const { t } = useTranslation("item_view_history");
+
   const [registers, setRegisters] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -21,12 +24,12 @@ export function ItemViewHistory({ itemId }) {
             },
           }),
           {
-            pending: "Finding registers",
+            pending: t("loading.pending"),
             success: {
               render({ data }) {
                 return (
                   <p>
-                    Registers found:{" "}
+                    {t("loading.success")}{" "}
                     <span className="font-semibold">
                       {data.data.totalElements}
                     </span>
@@ -43,7 +46,8 @@ export function ItemViewHistory({ itemId }) {
                 ) {
                   return (
                     <p>
-                      Error when finding, Try again.{" "}
+                      {t("loading.errors.generic")}
+                      <br />
                       <span className="text-xs opacity-80">
                         #timeout exceeded/network error.
                       </span>
@@ -54,13 +58,16 @@ export function ItemViewHistory({ itemId }) {
                 if (data.code === "ERR_BAD_REQUEST") {
                   return (
                     <p>
-                      Invalid Token, please log in again.{" "}
-                      <span className="text-xs opacity-80">path:/products</span>
+                      {t("loading.errors.token")}
+                      <br />
+                      <span className="text-xs opacity-80">
+                        path:/products/item
+                      </span>
                     </p>
                   );
                 }
 
-                return <p>Error when finding. Try again.</p>;
+                return <p>{t("loading.errors.generic")}</p>;
               },
             },
           },

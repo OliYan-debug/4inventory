@@ -1,0 +1,10 @@
+{
+  "loading": {
+    "pending": "Buscando histórico do item...",
+    "success": "Histórico encontrado",
+    "errors": {
+      "token": "Token inválido, faça login novamente.",
+      "generic": "Erro ao buscar. Tente novamente."
+    }
+  }
+}
