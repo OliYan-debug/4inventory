@@ -2,8 +2,11 @@ import { ArrowUp, Plus } from "lucide-react";
 import { Timeline } from "./TimelineItem";
 import { useState } from "react";
 import { TimelineSkeleton } from "./TimelineSkeleton";
+import { useTranslation } from "react-i18next";
 
 export function ItemTimeline({ registers, loading }) {
+  const { t } = useTranslation("timeline");
+
   const [visibleCount, setVisibleCount] = useState(5);
   const visibleQuantity = 5;
 
@@ -41,7 +44,7 @@ export function ItemTimeline({ registers, loading }) {
               onClick={handleShowMore}
               className="flex items-center gap-1 rounded-lg bg-neutral-400 px-4 py-1 font-semibold text-neutral-50 transition hover:opacity-80"
             >
-              Show more
+              {t("buttons.show_more")}
               <Plus className="size-5" />
             </button>
           ) : (
@@ -53,7 +56,7 @@ export function ItemTimeline({ registers, loading }) {
                   }}
                   className="flex items-center gap-1 rounded-lg border border-neutral-400 px-4 py-1 font-semibold text-neutral-400 transition hover:opacity-80"
                 >
-                  Back top
+                  {t("buttons.back_top")}
                   <ArrowUp className="size-5" />
                 </button>
               )}
