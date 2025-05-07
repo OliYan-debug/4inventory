@@ -12,8 +12,7 @@ import {
   PackagePlus,
   PencilIcon,
   PackageX,
-  ChevronDown,
-  ChevronUp,
+  HistoryIcon,
 } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
@@ -23,7 +22,8 @@ import { ItemViewHistory } from "../components/ItemViewHistory";
 import { useTranslation } from "react-i18next";
 
 export default function ItemView() {
-  const { t } = useTranslation("item_view");
+  const { t, i18n } = useTranslation("item_view");
+  const currentLanguage = i18n.language;
 
   let { itemId } = useParams();
   const [item, setItem] = useState([]);
@@ -96,6 +96,8 @@ export default function ItemView() {
     }
   }, [itemId]);
 
+  const formatDate = (value) => value.toString().padStart(2, "0");
+
   const Subtitle = () => {
     return (
       <p className="flex items-center text-sm text-neutral-500">
@@ -106,11 +108,6 @@ export default function ItemView() {
         <span className="font-semibold">{t("title")}</span>
       </p>
     );
-  };
-
-  const [accordionIsActive, setAccordionIsActive] = useState(false);
-  const handleShowAccordion = () => {
-    setAccordionIsActive(accordionIsActive ? false : true);
   };
 
   return (
@@ -227,8 +224,19 @@ export default function ItemView() {
                             <span className="flex items-center gap-1">
                               {item.createdAt ? (
                                 <>
-                                  {item.createdAt[0]}/{item.createdAt[1]}/
-                                  {item.createdAt[2]}
+                                  {currentLanguage === "en-US" ? (
+                                    <>
+                                      {item.createdAt[0]}/
+                                      {formatDate(item.createdAt[1])}/
+                                      {formatDate(item.createdAt[2])}
+                                    </>
+                                  ) : (
+                                    <>
+                                      {formatDate(item.createdAt[2])}/
+                                      {formatDate(item.createdAt[1])}/
+                                      {item.createdAt[0]}
+                                    </>
+                                  )}
                                 </>
                               ) : (
                                 <div className="flex h-3 w-20 animate-pulse rounded-lg bg-neutral-300"></div>
@@ -242,9 +250,23 @@ export default function ItemView() {
                             <span className="flex items-center gap-1">
                               {item.lastUpdate ? (
                                 <>
-                                  {item.lastUpdate[0]}/{item.lastUpdate[1]}/
-                                  {item.lastUpdate[2]} - {item.lastUpdate[3]}:
-                                  {item.lastUpdate[4]}:{item.lastUpdate[5]}
+                                  {currentLanguage === "en-US" ? (
+                                    <>
+                                      {item.lastUpdate[0]}/
+                                      {formatDate(item.lastUpdate[1])}/
+                                      {formatDate(item.lastUpdate[2])}
+                                    </>
+                                  ) : (
+                                    <>
+                                      {formatDate(item.lastUpdate[2])}/
+                                      {formatDate(item.lastUpdate[1])}/
+                                      {item.lastUpdate[0]}
+                                    </>
+                                  )}
+                                  <> - </>
+                                  {formatDate(item.lastUpdate[3])}:
+                                  {formatDate(item.lastUpdate[4])}:
+                                  {formatDate(item.lastUpdate[5])}
                                 </>
                               ) : (
                                 <div className="flex h-3 w-20 animate-pulse rounded-lg bg-neutral-200"></div>
@@ -301,19 +323,14 @@ export default function ItemView() {
                     </div>
                   </div>
 
-                  <button
-                    className="flex w-full items-center justify-center gap-4 py-2 text-lg font-medium text-neutral-700"
-                    onClick={() => handleShowAccordion()}
-                  >
-                    <span>{t("itemHistory")}</span>
-                    {accordionIsActive ? (
-                      <ChevronUp size={22} />
-                    ) : (
-                      <ChevronDown size={22} />
-                    )}
-                  </button>
-                  <div className={`${accordionIsActive ? "block" : "hidden"}`}>
-                    {accordionIsActive && <ItemViewHistory itemId={itemId} />}
+                  <div className="flex flex-col items-center space-y-4">
+                    <h2 className="flex items-center gap-1 text-xl font-semibold text-neutral-700">
+                      {t("itemHistory")} <HistoryIcon className="size-4" />
+                    </h2>
+
+                    <div>
+                      <ItemViewHistory itemId={itemId} />
+                    </div>
                   </div>
                 </>
               )}
