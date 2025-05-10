@@ -26,6 +26,9 @@ export default function NewItem() {
     resetField,
     setError,
     watch,
+    control,
+    setValue,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
@@ -151,6 +154,10 @@ export default function NewItem() {
               register={register}
               errors={errors}
               isSubmitting={isSubmitting}
+              control={control}
+              setValue={setValue}
+              watch={watch}
+              clearErrors={clearErrors}
             />
 
             <button
