@@ -2,6 +2,6 @@
   "justification_label": "Justification*",
   "justification_required": "Justification is required",
   "justification_max_length": "Maximum character value exceeded",
-  "justification_placeholder": "Justification for exclusion",
+  "justification_placeholder": "Justification for this action",
   "justification_characters_left": "characters left"
 }
