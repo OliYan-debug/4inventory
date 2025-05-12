@@ -24,6 +24,7 @@ export default function CheckOut() {
     clearErrors,
     reset,
     watch,
+    control,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -128,9 +129,12 @@ export default function CheckOut() {
           />
 
           <InputRemove
-            register={register}
             errors={errors}
             selectedItem={selectedItem}
+            control={control}
+            setValue={setValue}
+            watch={watch}
+            clearErrors={clearErrors}
           />
 
           <InputJustification

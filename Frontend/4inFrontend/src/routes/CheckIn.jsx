@@ -24,6 +24,7 @@ export default function CheckIn() {
     reset,
     clearErrors,
     watch,
+    control,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -124,9 +125,12 @@ export default function CheckIn() {
           />
 
           <InputAdd
-            register={register}
             errors={errors}
             selectedItem={selectedItem}
+            control={control}
+            setValue={setValue}
+            watch={watch}
+            clearErrors={clearErrors}
           />
 
           <InputJustification
