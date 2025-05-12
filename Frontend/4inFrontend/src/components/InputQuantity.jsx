@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { CirclePlus, CircleMinus } from "lucide-react";
 import { Controller } from "react-hook-form";
-import { useRef } from "react";
+import { QuantityIncrementDecrement } from "./QuantityIncrementDecrement";
 
 export function InputQuantity({
   control,
@@ -12,39 +11,6 @@ export function InputQuantity({
   isSubmitting,
 }) {
   const { t } = useTranslation("input_quantity");
-
-  const intervalRef = useRef(null);
-
-  const quantity = Number(watch("quantity"));
-
-  const minusQtd = () => {
-    setValue("quantity", Number(watch("quantity")) - 1);
-
-    intervalRef.current = setInterval(() => {
-      if (watch("quantity") <= 0) {
-        return;
-      }
-
-      setValue("quantity", Number(watch("quantity") - 1));
-    }, 100);
-  };
-
-  const plusQtd = () => {
-    if (Number(watch("quantity")) < 0) {
-      setValue("quantity", 0);
-      clearErrors("quantity");
-    }
-
-    setValue("quantity", Number(watch("quantity")) + 1);
-
-    intervalRef.current = setInterval(() => {
-      setValue("quantity", Number(watch("quantity")) + 1);
-    }, 100);
-  };
-
-  const stopIncrement = () => {
-    clearInterval(intervalRef.current);
-  };
 
   return (
     <div className="w-full">
@@ -82,26 +48,13 @@ export function InputQuantity({
           )}
         />
 
-        <button
-          type="button"
-          onMouseDown={minusQtd}
-          onMouseUp={stopIncrement}
-          onMouseLeave={stopIncrement}
-          disabled={quantity <= 0}
-          className="ml-2 rounded-lg border border-neutral-400 px-3 outline-none transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-neutral-50"
-        >
-          <CircleMinus className="size-5 text-neutral-600" />
-        </button>
-        <button
-          type="button"
-          onMouseDown={plusQtd}
-          onMouseUp={stopIncrement}
-          onMouseLeave={stopIncrement}
-          className="rounded-lg border border-neutral-400 px-3 outline-none transition hover:bg-neutral-200"
-        >
-          <CirclePlus className="size-5 text-neutral-600" />
-        </button>
+        <QuantityIncrementDecrement
+          setValue={setValue}
+          watch={watch}
+          clearErrors={clearErrors}
+        />
       </div>
+
       {errors.quantity && (
         <p role="alert" className="mr-32 mt-1 text-center text-xs text-red-600">
           {errors.quantity?.message}
