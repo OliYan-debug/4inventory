@@ -151,7 +151,6 @@ export default function NewItem() {
             />
 
             <InputQuantity
-              register={register}
               errors={errors}
               isSubmitting={isSubmitting}
               control={control}
