@@ -56,6 +56,8 @@ export default function CheckOut() {
   }, [itemId, navigate, selectedItem.item]);
 
   const onSubmit = async (data) => {
+    data.quantity = Number(data.quantity);
+
     if (Number.isNaN(data.quantity)) {
       return toast.error(t("quantity_invalid"));
     }
