@@ -27,8 +27,6 @@ public class InventoryService {
     @Autowired
     InventoryRepository inventoryRepo;
     @Autowired
-    InventoryCategoryService inventoryCategoryService;
-    @Autowired
     RegistryRepository registryRepository;
 
     public Page<InventoryItem> findAll(int page, int size, String sort) {
