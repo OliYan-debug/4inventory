@@ -11,5 +11,7 @@ public interface RegistryRepository extends PagingAndSortingRepository<Registry,
 
     void deleteAll();
 
+    List<Registry> findAll();
+
     Optional<List<Registry>> findByItemId(Long itemId);
 }
