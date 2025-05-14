@@ -2,6 +2,7 @@ package _inventory._inventory_api.domain.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "tb_inventory")
+@NoArgsConstructor
 public class InventoryItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

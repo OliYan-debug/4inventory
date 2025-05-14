@@ -1,5 +1,6 @@
 package _inventory._inventory_api.domain.entities.user;
 
+import _inventory._inventory_api.domain.dto.UserJsonDTO;
 import _inventory._inventory_api.domain.enums.UserRoles;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,7 +24,7 @@ public class User implements UserDetails {
     private String id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false)
     private String password;
@@ -35,6 +36,13 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+    public User(UserJsonDTO userDTO){
+        this.id = userDTO.id();
+        this.name = userDTO.name();
+        this.username = userDTO.username();
+        this.password = userDTO.password();
+        this.role = userDTO.role();
     }
 
     @Override
