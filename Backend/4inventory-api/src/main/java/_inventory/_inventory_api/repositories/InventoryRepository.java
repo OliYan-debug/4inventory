@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface InventoryRepository extends PagingAndSortingRepository<InventoryItem, Long> {
     List<InventoryItem> findByItemContainingIgnoreCase(String text);
 
+    List<InventoryItem> findAll();
+
     InventoryItem save(InventoryItem item);
 
     Optional<InventoryItem> findById(Long aLong);

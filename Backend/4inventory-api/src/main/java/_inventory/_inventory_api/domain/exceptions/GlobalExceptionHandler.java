@@ -5,6 +5,7 @@ import _inventory._inventory_api.domain.exceptions.security.RegisterException;
 import _inventory._inventory_api.domain.exceptions.users.UserException;
 import _inventory._inventory_api.domain.utils.ResponseErrorHandler;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleInvalidAuthException(InvalidAuthException e) {
         return responseErrorHandler.generate(HttpStatus.FORBIDDEN, e.getMessage());
     }
+
+    @ExceptionHandler(JsonProcessingException.class)
+    public ResponseEntity<Object> handleJsonProcessingException(JsonProcessingException e){
+        return responseErrorHandler.generate(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
 
     @ExceptionHandler(PropertyValueException.class)
     public ResponseEntity<Object> handlePropertyValueException(PropertyValueException e) {

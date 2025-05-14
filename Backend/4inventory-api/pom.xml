@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.2</version>
+        <version>3.4.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>4inventory</groupId>
     <artifactId>4inventory-api</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
     <name>4inventory-api</name>
     <description>Api for the 4inventory project</description>
     <url/>
