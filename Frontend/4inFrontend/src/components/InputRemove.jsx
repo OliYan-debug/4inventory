@@ -16,7 +16,7 @@ export function InputRemove({
     <div className="w-full">
       <label htmlFor="quantity" className="text-sm text-neutral-500">
         {t("quantity_label")} ({t("quantity_current")}
-        <span className="font-medium"> {selectedItem.quantity}</span>)
+        <span className="font-medium"> {selectedItem.quantity ?? 0}</span>)
       </label>
 
       <div className="flex gap-2">
@@ -55,10 +55,8 @@ export function InputRemove({
           setValue={setValue}
           watch={watch}
           clearErrors={clearErrors}
-          disable={
-            selectedItem.length === 0 ||
-            watch("quantity") >= selectedItem.quantity
-          }
+          disable={selectedItem.length === 0}
+          disablePlusBtn={watch("quantity") >= selectedItem.quantity}
         />
       </div>
 
