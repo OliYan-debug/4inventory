@@ -52,6 +52,8 @@ export default function CheckOut() {
 
           navigate("/products/checkout");
         });
+    } else {
+      setSelectedItem([]);
     }
   }, [itemId, navigate, selectedItem.item]);
 

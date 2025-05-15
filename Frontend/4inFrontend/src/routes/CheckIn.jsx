@@ -52,6 +52,8 @@ export default function CheckIn() {
 
           navigate("/products/checkin");
         });
+    } else {
+      setSelectedItem([]);
     }
   }, [itemId, navigate, selectedItem.item]);
 
