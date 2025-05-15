@@ -6,6 +6,8 @@ export function QuantityIncrementDecrement({
   setValue,
   clearErrors,
   disable = false,
+  disableMinusBtn = false,
+  disablePlusBtn = false,
 }) {
   const intervalRef = useRef(null);
 
@@ -37,10 +39,10 @@ export function QuantityIncrementDecrement({
   };
 
   useEffect(() => {
-    if (disable) {
+    if (disable || disableMinusBtn || disablePlusBtn) {
       stopIncrement();
     }
-  }, [disable]);
+  }, [disable, disableMinusBtn, disablePlusBtn]);
 
   const stopIncrement = () => {
     clearInterval(intervalRef.current);
@@ -53,7 +55,7 @@ export function QuantityIncrementDecrement({
         onMouseDown={decrementQtd}
         onMouseUp={stopIncrement}
         onMouseLeave={stopIncrement}
-        disabled={quantity <= 0 || disable}
+        disabled={quantity <= 0 || disable || disableMinusBtn}
         className="ml-2 rounded-lg border border-neutral-400 px-3 outline-none transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-neutral-50"
       >
         <CircleMinus className="size-5 text-neutral-600" />
@@ -64,7 +66,7 @@ export function QuantityIncrementDecrement({
         onMouseDown={incrementQtd}
         onMouseUp={stopIncrement}
         onMouseLeave={stopIncrement}
-        disabled={disable}
+        disabled={disable || disablePlusBtn}
         className="rounded-lg border border-neutral-400 px-3 outline-none transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-neutral-50"
       >
         <CirclePlus className="size-5 text-neutral-600" />
