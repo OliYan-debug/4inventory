@@ -3,6 +3,6 @@
   "quantity_current": "Current: ",
   "quantity_required": "Quantity is required",
   "quantity_max_length": "Maximum character value exceeded",
-  "quantity_min_length": "Minimum quantity to add is 1",
+  "quantity_min_length": "Minimum quantity to remove is 1",
   "quantity_higher": "Quantity requested is higher than current"
 }
