@@ -25,6 +25,7 @@ export function InputAdd({
           control={control}
           defaultValue={0}
           rules={{
+            required: t("quantity_required"),
             maxLength: {
               value: 20,
               message: t("quantity_max_length"),
