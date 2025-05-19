@@ -1,4 +1,5 @@
 {
   "quantity_label": "Quantidade",
-  "quantity_max_length": "O número máximo de caracteres foi excedido"
+  "quantity_max_length": "O número máximo de caracteres foi excedido",
+  "invalid_value": "Valor inválido"
 }

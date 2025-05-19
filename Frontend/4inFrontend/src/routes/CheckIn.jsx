@@ -24,6 +24,7 @@ export default function CheckIn() {
     reset,
     clearErrors,
     watch,
+    control,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -51,18 +52,22 @@ export default function CheckIn() {
 
           navigate("/products/checkin");
         });
+    } else {
+      setSelectedItem([]);
     }
   }, [itemId, navigate, selectedItem.item]);
 
   const onSubmit = async (data) => {
+    data.quantity = Number(data.quantity);
+
     if (Number.isNaN(data.quantity)) {
       return toast.error(t("quantity_invalid"));
     }
 
+    data.quantity += selectedItem.quantity;
+
     data.id = selectedItem.id;
     delete data.item;
-
-    data.quantity += selectedItem.quantity;
 
     try {
       await toast.promise(api.patch("/inventory", data), {
@@ -124,9 +129,12 @@ export default function CheckIn() {
           />
 
           <InputAdd
-            register={register}
             errors={errors}
             selectedItem={selectedItem}
+            control={control}
+            setValue={setValue}
+            watch={watch}
+            clearErrors={clearErrors}
           />
 
           <InputJustification

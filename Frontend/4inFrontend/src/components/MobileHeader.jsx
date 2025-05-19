@@ -16,7 +16,7 @@ export function MobileHeader() {
           </Link>
 
           <span className="mt-px text-xs font-thin text-neutral-200">
-            1.10.0
+            1.11.2
           </span>
         </div>
       </div>

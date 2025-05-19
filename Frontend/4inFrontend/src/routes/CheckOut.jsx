@@ -24,6 +24,7 @@ export default function CheckOut() {
     clearErrors,
     reset,
     watch,
+    control,
     formState: { errors },
   } = useForm({
     mode: "onChange",
@@ -51,10 +52,14 @@ export default function CheckOut() {
 
           navigate("/products/checkout");
         });
+    } else {
+      setSelectedItem([]);
     }
   }, [itemId, navigate, selectedItem.item]);
 
   const onSubmit = async (data) => {
+    data.quantity = Number(data.quantity);
+
     if (Number.isNaN(data.quantity)) {
       return toast.error(t("quantity_invalid"));
     }
@@ -128,9 +133,12 @@ export default function CheckOut() {
           />
 
           <InputRemove
-            register={register}
             errors={errors}
             selectedItem={selectedItem}
+            control={control}
+            setValue={setValue}
+            watch={watch}
+            clearErrors={clearErrors}
           />
 
           <InputJustification
