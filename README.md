@@ -63,6 +63,9 @@ To <b>get started</b> with this APP, you need to have Docker installed. Docker i
    SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${DATABASE}
    SPRING_DATASOURCE_USERNAME=${USERNAME}
    SPRING_DATASOURCE_PASSWORD=${PASSWORD}
+
+
+   TIMEZONE = America/Bahia # Change for your default timezone
    ```
 
 
