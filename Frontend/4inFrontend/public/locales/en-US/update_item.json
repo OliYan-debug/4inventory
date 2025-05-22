@@ -14,7 +14,8 @@
   },
   "buttons": {
     "submit": "Update item",
-    "back": "Back to products"
+    "backToProducts": "Back to products",
+    "backToItem": "Back to item"
   },
   "fetch_error": "Search other item",
   "loading": {
