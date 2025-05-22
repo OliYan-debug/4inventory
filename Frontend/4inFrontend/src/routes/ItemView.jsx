@@ -8,18 +8,15 @@ import {
   Rat,
   PackageOpen,
   Undo2,
-  PackageMinus,
-  PackagePlus,
-  PencilIcon,
-  PackageX,
   HistoryIcon,
 } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { LoadingSkeleton } from "../components/LoadingSkeleton";
-import useAuth from "../hooks/useAuth";
+
 import { ItemViewHistory } from "../components/ItemViewHistory";
 import { useTranslation } from "react-i18next";
+import { ItemViewButtons } from "../components/ItemViewButtons";
 
 export default function ItemView() {
   const { t, i18n } = useTranslation("item_view");
@@ -29,14 +26,6 @@ export default function ItemView() {
   const [item, setItem] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      setIsAdmin(user.role === "ADMIN");
-    }
-  }, [user]);
 
   useEffect(() => {
     if (itemId) {
@@ -163,22 +152,20 @@ export default function ItemView() {
                                   : item.description}
                               </>
                             ) : (
-                              <div className="flex flex-col gap-1">
-                                <div className="flex h-4 w-64 animate-pulse rounded-lg bg-neutral-300"></div>
-
-                                <div className="flex h-4 w-64 animate-pulse rounded-lg bg-neutral-200"></div>
-
-                                <div className="flex h-4 w-64 animate-pulse rounded-lg bg-neutral-300"></div>
-                              </div>
+                              <span className="italic">
+                                {t("noDescription")}
+                              </span>
                             )}
                           </p>
 
-                          <div className="absolute top-10 z-10 hidden max-w-72 animate-fadeIn justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/description:flex">
-                            <span className="absolute -top-1 block size-2 -translate-y-px rotate-45 border-l border-t border-neutral-500 bg-neutral-400"></span>
-                            <p className="text-justify text-xs text-neutral-50">
-                              {item.description}
-                            </p>
-                          </div>
+                          {item.description.length > 90 && (
+                            <div className="absolute top-10 z-10 hidden max-w-72 animate-fadeIn justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/description:flex">
+                              <span className="absolute -top-1 block size-2 -translate-y-px rotate-45 border-l border-t border-neutral-500 bg-neutral-400"></span>
+                              <p className="text-justify text-xs text-neutral-50">
+                                {item.description}
+                              </p>
+                            </div>
+                          )}
                         </div>
 
                         <div className="flex items-center justify-center gap-1">
@@ -210,11 +197,7 @@ export default function ItemView() {
                         <div className="mt-2 flex justify-center gap-1">
                           <p className="font-semibold">{t("quantity")}:</p>
                           <span className="flex items-center">
-                            {item.quantity ? (
-                              item.quantity
-                            ) : (
-                              <div className="flex h-4 w-10 animate-pulse rounded-lg bg-neutral-300"></div>
-                            )}
+                            {item.quantity}
                           </span>
                         </div>
 
@@ -278,49 +261,7 @@ export default function ItemView() {
                       </div>
                     </div>
 
-                    <div className="right-48 top-0 rounded-lg">
-                      <ul className="flex w-full flex-row gap-1 text-neutral-600 md:w-36 md:flex-col">
-                        <li className="flex h-16 w-20 cursor-pointer items-center rounded-lg bg-neutral-200 transition hover:bg-neutral-300 hover:font-medium md:w-full md:px-4">
-                          <Link
-                            to={`/products/update/${item.id}`}
-                            className="flex w-full flex-col items-center text-xs md:flex-row md:text-base"
-                          >
-                            <PencilIcon size={19} className="me-1" />
-                            {t("buttons.edit")}
-                          </Link>
-                        </li>
-
-                        <li className="flex h-16 w-20 cursor-pointer items-center rounded-lg bg-neutral-200 transition hover:bg-neutral-300 hover:font-medium md:w-full md:px-4">
-                          <Link
-                            to={`/products/checkin/${item.id}`}
-                            className="flex w-full flex-col items-center text-xs md:flex-row md:text-base"
-                          >
-                            <PackagePlus size={19} className="me-1" />
-                            {t("buttons.checkIn")}
-                          </Link>
-                        </li>
-                        <li className="flex h-16 w-20 cursor-pointer items-center rounded-lg bg-neutral-200 transition hover:bg-neutral-300 hover:font-medium md:w-full md:px-4">
-                          <Link
-                            to={`/products/checkout/${item.id}`}
-                            className="flex w-full flex-col items-center text-xs md:flex-row md:text-base"
-                          >
-                            <PackageMinus size={19} className="me-1" />
-                            {t("buttons.checkOut")}
-                          </Link>
-                        </li>
-                        {isAdmin && (
-                          <li className="flex h-16 w-20 cursor-pointer items-center rounded-lg bg-red-200 text-red-600 transition hover:bg-red-300 hover:font-medium md:w-full md:px-4">
-                            <Link
-                              to={`/products/delete/${item.id}`}
-                              className="flex w-full flex-col items-center text-xs md:flex-row md:text-base"
-                            >
-                              <PackageX size={19} className="me-1" />
-                              {t("buttons.delete")}
-                            </Link>
-                          </li>
-                        )}
-                      </ul>
-                    </div>
+                    <ItemViewButtons item={item} />
                   </div>
 
                   <div className="flex flex-col items-center space-y-4">

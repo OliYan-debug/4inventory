@@ -18,6 +18,7 @@
     "checkOut": "Check-out",
     "delete": "Delete Item"
   },
+  "noDescription": "No description",
   "quantity": "Quantity",
   "createdAt": "Created at",
   "lastUpdate": "Last update",
