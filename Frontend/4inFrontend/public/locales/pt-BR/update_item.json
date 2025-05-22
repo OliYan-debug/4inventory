@@ -14,7 +14,8 @@
   },
   "buttons": {
     "submit": "Atualizar item",
-    "back": " Voltar para produtos"
+    "backToProducts": " Voltar para produtos",
+    "backToItem": "Voltar para o item"
   },
   "fetch_error": "Busque outro item",
   "loading": {
