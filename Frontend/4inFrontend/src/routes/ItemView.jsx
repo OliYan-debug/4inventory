@@ -17,6 +17,7 @@ import { LoadingSkeleton } from "../components/LoadingSkeleton";
 import { ItemViewHistory } from "../components/ItemViewHistory";
 import { useTranslation } from "react-i18next";
 import { ItemViewButtons } from "../components/ItemViewButtons";
+import { getContrastingTextColor } from "../utils/getContrast";
 
 export default function ItemView() {
   const { t, i18n } = useTranslation("item_view");
@@ -176,9 +177,11 @@ export default function ItemView() {
                                   <div
                                     key={category.id}
                                     style={{ backgroundColor: category.color }}
-                                    className="rounded-md px-1 py-px text-sm"
+                                    className="rounded-2xl px-2 py-px text-sm"
                                   >
-                                    <p className="max-w-32 truncate text-neutral-200 drop-shadow-sm">
+                                    <p
+                                      className={`max-w-32 truncate drop-shadow-sm ${getContrastingTextColor(category.color)}`}
+                                    >
                                       {category.name}
                                     </p>
                                   </div>
