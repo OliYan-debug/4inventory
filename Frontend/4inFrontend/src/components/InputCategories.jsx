@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { getContrastingTextColor } from "../utils/getContrast";
 
 export function InputCategories({
   register,
@@ -13,7 +14,7 @@ export function InputCategories({
   const { t } = useTranslation("input_category");
 
   const ref = useRef(null);
-  const [categoriesSuggestions, setCategoriessuggestions] = useState([]);
+  const [categoriesSuggestions, setCategoriesSuggestions] = useState([]);
   const tagsLimit = 2;
   const [maxTagsLimit, setMaxTagsLimit] = useState(false);
 
@@ -29,7 +30,7 @@ export function InputCategories({
         ),
     );
 
-    setCategoriessuggestions(newSuggestions);
+    setCategoriesSuggestions(newSuggestions);
   };
 
   const handleSearchCategories = (e) => {
@@ -44,7 +45,7 @@ export function InputCategories({
         ),
     );
 
-    setCategoriessuggestions(newSuggestions);
+    setCategoriesSuggestions(newSuggestions);
   };
 
   const handleSelectCategory = (id) => {
@@ -54,7 +55,7 @@ export function InputCategories({
 
     setSelectedCategories([...selectedCategories, newCategory]);
 
-    setCategoriessuggestions([]);
+    setCategoriesSuggestions([]);
   };
 
   // Add/remove tags using just the keyboard
@@ -97,7 +98,7 @@ export function InputCategories({
 
   const handleClickOutside = (event) => {
     if (ref.current && !ref.current.contains(event.target)) {
-      setCategoriessuggestions([]);
+      setCategoriesSuggestions([]);
     }
   };
 
@@ -151,7 +152,7 @@ export function InputCategories({
                 <li
                   key={category.id}
                   style={{ backgroundColor: category.color }}
-                  className="flex items-center gap-px rounded-md px-1 py-px text-xs text-neutral-300 drop-shadow-sm"
+                  className={`flex items-center gap-px rounded-2xl px-2 py-0.5 text-xs drop-shadow-sm ${getContrastingTextColor(category.color)}`}
                 >
                   <span>{category.name}</span>
                   <X

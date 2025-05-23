@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Check, Pencil, PencilOff, Trash } from "lucide-react";
 import { api } from "../services/api";
 import { useTranslation } from "react-i18next";
+import { getContrastingTextColor } from "../utils/getContrast";
 
 export function Category({
   id,
@@ -212,14 +213,17 @@ export function Category({
               aria-invalid={errors.color ? "true" : "false"}
               type="color"
               id="color"
+              className="h-7 w-24"
             />
           </div>
         ) : (
           <div
             style={{ backgroundColor: color }}
-            className="rounded-md px-1 py-px"
+            className="flex h-5 w-24 items-center justify-center rounded-2xl px-1 py-px"
           >
-            <p className="text-neutral-300 drop-shadow-sm">
+            <p
+              className={`drop-shadow-xm text-xs opacity-60 ${getContrastingTextColor(color)}`}
+            >
               {color.toUpperCase()}
             </p>
           </div>
