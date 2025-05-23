@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ChevronRight, CirclePlus, ServerOff, Undo2 } from "lucide-react";
+import { ChevronRight, CircleCheck, ServerOff } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { ModalCategoriesError } from "../components/ModalCategoriesError";
@@ -10,16 +10,21 @@ import { InputCategories } from "../components/InputCategories";
 import { InputSearchItems } from "../components/InputSearchItems";
 import { InputDescription } from "../components/InputDescription";
 import { useTranslation } from "react-i18next";
+import { BackToButton } from "../components/BackToButton";
 
 export default function UpdateItem() {
   const { t } = useTranslation("update_item");
 
   let { itemId } = useParams();
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [getCategoriesError, setGetCategoriesError] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const navigate = useNavigate();
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const from = searchParams.get("from");
 
   const {
     register,
@@ -59,6 +64,8 @@ export default function UpdateItem() {
 
           navigate("/products/update");
         });
+    } else {
+      setSelectedItem([]);
     }
   }, [itemId, navigate, selectedItem.item]);
 
@@ -119,7 +126,8 @@ export default function UpdateItem() {
           },
         },
       });
-      navigate("/products");
+
+      navigate(`/products/item/${itemId}`);
     } catch (error) {
       console.error(error);
     }
@@ -131,7 +139,22 @@ export default function UpdateItem() {
         <Link to={`/products`} className="hover:font-semibold">
           {t("breadcrumb.products")}
         </Link>
-        <ChevronRight size={16} color="#737373" />
+
+        <ChevronRight className="size-4 text-neutral-500" />
+
+        {from === "item" && (
+          <>
+            <Link
+              to={`/products/item/${itemId}`}
+              className="hover:font-semibold"
+            >
+              Item
+            </Link>
+
+            <ChevronRight className="size-4 text-neutral-500" />
+          </>
+        )}
+
         <span className="font-semibold">{t("breadcrumb.updateItem")}</span>
       </p>
     );
@@ -171,6 +194,7 @@ export default function UpdateItem() {
               itemId={itemId}
               selectedItem={selectedItem}
               setSelectedItem={setSelectedItem}
+              isSearchable={false}
             />
 
             <InputCategories
@@ -194,19 +218,13 @@ export default function UpdateItem() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-10 flex items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500 disabled:cursor-no-drop disabled:opacity-70 md:w-2/5"
+              className="mt-10 flex items-center justify-center rounded-lg bg-indigo-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-indigo-500 disabled:cursor-no-drop disabled:opacity-70 md:w-2/5"
             >
-              <CirclePlus size={20} className="me-2 text-neutral-50" />
+              <CircleCheck size={20} className="me-2 text-neutral-50" />
               {t("buttons.submit")}
             </button>
 
-            <Link
-              to={"/products"}
-              className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80"
-            >
-              {t("buttons.back")}
-              <Undo2 size={20} className="ms-1 text-neutral-400" />
-            </Link>
+            <BackToButton itemId={itemId} from={from} />
           </form>
         </div>
       )}

@@ -18,6 +18,7 @@
     "checkOut": "Saída",
     "delete": "Excluir Item"
   },
+  "noDescription": "Sem descrição",
   "quantity": "Quantidade",
   "createdAt": "Criado em",
   "lastUpdate": "Última atualização",

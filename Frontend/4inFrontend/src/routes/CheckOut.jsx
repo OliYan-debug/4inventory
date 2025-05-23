@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { ChevronRight, CircleMinus, Undo2 } from "lucide-react";
+import { ChevronRight, CircleMinus } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { InputRemove } from "../components/InputRemove";
 import { InputJustification } from "../components/InputJustification";
 import { InputSearchItems } from "../components/InputSearchItems";
 import { useTranslation } from "react-i18next";
+import { BackToButton } from "../components/BackToButton";
 
 export default function CheckOut() {
   const { t } = useTranslation("checkout");
 
   let { itemId } = useParams();
-  const [selectedItem, setSelectedItem] = useState([]);
   const navigate = useNavigate();
+  const [selectedItem, setSelectedItem] = useState([]);
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const from = searchParams.get("from");
 
   const {
     register,
@@ -106,7 +111,22 @@ export default function CheckOut() {
         <Link to={`/products`} className="hover:font-semibold">
           {t("breadcrumb.products")}
         </Link>
-        <ChevronRight size={16} color="#737373" />
+
+        <ChevronRight className="size-4 text-neutral-500" />
+
+        {from === "item" && (
+          <>
+            <Link
+              to={`/products/item/${itemId}`}
+              className="hover:font-semibold"
+            >
+              Item
+            </Link>
+
+            <ChevronRight className="size-4 text-neutral-500" />
+          </>
+        )}
+
         <span className="font-semibold">{t("breadcrumb.checkIn")}</span>
       </p>
     );
@@ -130,6 +150,7 @@ export default function CheckOut() {
             itemId={itemId}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}
+            isSearchable={from === "item"}
           />
 
           <InputRemove
@@ -150,18 +171,13 @@ export default function CheckOut() {
 
           <button
             type="submit"
-            className="mt-10 flex items-center justify-center rounded-lg bg-red-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-red-500 md:w-2/5"
+            className="mt-10 flex items-center justify-center rounded-lg bg-orange-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-orange-500 md:w-2/5"
           >
             <CircleMinus size={20} color="#fafafa" className="me-2" />
             {t("buttons.submit")}
           </button>
-          <Link
-            to={"/products"}
-            className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80"
-          >
-            {t("buttons.back")}
-            <Undo2 size={20} color="#a3a3a3" className="ms-1" />
-          </Link>
+
+          <BackToButton itemId={itemId} from={from} />
         </form>
       </div>
     </div>

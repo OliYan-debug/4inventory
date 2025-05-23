@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../services/api";
-import { SearchIcon, X } from "lucide-react";
+import { X } from "lucide-react";
 import { ItemSearch } from "./ItemSearch";
 import { useTranslation } from "react-i18next";
 
@@ -14,6 +14,7 @@ export function InputSearchItems({
   itemId,
   selectedItem,
   setSelectedItem,
+  isSearchable,
 }) {
   const { t } = useTranslation("input_item_name");
 
@@ -38,13 +39,13 @@ export function InputSearchItems({
   }, []);
 
   const handleSearchProduct = async (event) => {
+    let search = event.target.value;
+
     errors && clearErrors();
 
-    if (event.target.value === "") {
+    if (search === "") {
       return;
     }
-
-    let search = event.target.value;
 
     try {
       const response = await api.get(`/search?s=${search}`);
@@ -55,7 +56,16 @@ export function InputSearchItems({
   };
 
   function handleSelect(id) {
-    navigate(`${pathname}/${id}`);
+    const pathnameParts = pathname.split("/");
+
+    if (pathnameParts.length === 4) {
+      let lastSlashIndex = pathname.lastIndexOf("/");
+      let newPath = pathname.slice(0, lastSlashIndex);
+
+      navigate(`${newPath}/${id}`);
+    } else {
+      navigate(`${pathname}/${id}`);
+    }
 
     const itemFind = items.find((item) => item.id === Number(id));
 
@@ -66,24 +76,19 @@ export function InputSearchItems({
     setSelectedItem(itemFind);
   }
 
-  async function handleSearch() {
-    await api
-      .get("/inventory")
-      .then((response) => {
-        setItems(response.data);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar dados:", error);
-      });
-  }
-
   const handleClearSearch = () => {
     setSelectedItem([]);
+    errors && clearErrors();
     reset();
 
-    const lastSlashIndex = pathname.lastIndexOf("/");
-    let newPath = pathname.slice(0, lastSlashIndex);
-    navigate(`${newPath}`);
+    const pathnameParts = pathname.split("/");
+
+    if (pathnameParts.length === 4) {
+      let lastSlashIndex = pathname.lastIndexOf("/");
+      let newPath = pathname.slice(0, lastSlashIndex);
+
+      navigate(`${newPath}`);
+    }
   };
 
   return (
@@ -91,6 +96,7 @@ export function InputSearchItems({
       <label htmlFor="item" className="text-sm text-neutral-500">
         {t("item_label")}
       </label>
+
       <div className="relative flex items-center">
         <input
           defaultValue={itemId ? selectedItem.item : ""}
@@ -105,6 +111,7 @@ export function InputSearchItems({
           type="text"
           id="item"
           onChange={handleSearchProduct}
+          disabled={isSearchable}
           placeholder={t("update_item_placeholder")}
           className={`focus-visible::border-neutral-500 ${items.length > 0 ? "rounded-t-lg border-b-0" : "rounded-lg"} w-full border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
             errors.item &&
@@ -112,23 +119,11 @@ export function InputSearchItems({
           }`}
         />
 
-        {selectedItem.length === 0 ? (
+        {!Array.isArray(selectedItem) && (
           <button
             type="button"
             className="absolute right-2 hover:opacity-50"
             onClick={() => {
-              errors && clearErrors();
-              handleSearch();
-            }}
-          >
-            <SearchIcon size={20} color="#737373" />
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="absolute right-2 hover:opacity-50"
-            onClick={() => {
-              errors && clearErrors();
               handleClearSearch();
             }}
           >
@@ -146,16 +141,16 @@ export function InputSearchItems({
       {items.length > 0 && (
         <div
           ref={ref}
-          className="absolute z-50 max-h-36 w-full overflow-y-auto rounded-b-lg border border-neutral-400 bg-neutral-50 py-2 text-neutral-500 shadow-md transition"
+          className="absolute z-50 max-h-44 w-full overflow-y-auto rounded-b-lg border border-neutral-400 bg-neutral-50 py-2 text-neutral-500 shadow-md transition"
         >
-          {items.length > 0 && (
+          {items.length && (
             <ul className="flex w-full flex-col justify-items-center gap-px">
               {items.map((item) => {
                 return (
                   <ItemSearch
                     key={item.id}
                     id={item.id}
-                    item={item.item}
+                    item={item}
                     handleSelect={handleSelect}
                   />
                 );

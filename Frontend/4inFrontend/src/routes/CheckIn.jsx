@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { ChevronRight, CirclePlus, Undo2 } from "lucide-react";
+import { ChevronRight, CirclePlus } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { InputSearchItems } from "../components/InputSearchItems";
 import { InputJustification } from "../components/InputJustification";
 import { InputAdd } from "../components/InputAdd";
 import { useTranslation } from "react-i18next";
+import { BackToButton } from "../components/BackToButton";
 
 export default function CheckIn() {
   const { t } = useTranslation("checkin");
 
   let { itemId } = useParams();
-  const [selectedItem, setSelectedItem] = useState([]);
   const navigate = useNavigate();
+  const [selectedItem, setSelectedItem] = useState([]);
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const from = searchParams.get("from");
 
   const {
     register,
@@ -102,7 +107,22 @@ export default function CheckIn() {
         <Link to={`/products`} className="hover:font-semibold">
           {t("breadcrumb.products")}
         </Link>
-        <ChevronRight size={16} color="#737373" />
+
+        <ChevronRight className="size-4 text-neutral-500" />
+
+        {from === "item" && (
+          <>
+            <Link
+              to={`/products/item/${itemId}`}
+              className="hover:font-semibold"
+            >
+              Item
+            </Link>
+
+            <ChevronRight className="size-4 text-neutral-500" />
+          </>
+        )}
+
         <span className="font-semibold">{t("breadcrumb.checkIn")}</span>
       </p>
     );
@@ -126,6 +146,7 @@ export default function CheckIn() {
             itemId={itemId}
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}
+            isSearchable={from === "item"}
           />
 
           <InputAdd
@@ -146,18 +167,13 @@ export default function CheckIn() {
 
           <button
             type="submit"
-            className="mt-10 flex items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500 md:w-2/5"
+            className="mt-10 flex items-center justify-center rounded-lg bg-sky-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-sky-500 md:w-2/5"
           >
             <CirclePlus size={20} color="#fafafa" className="me-2" />
             {t("buttons.submit")}
           </button>
-          <Link
-            to={"/products"}
-            className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80"
-          >
-            {t("buttons.back")}
-            <Undo2 size={20} color="#a3a3a3" className="ms-1" />
-          </Link>
+
+          <BackToButton itemId={itemId} from={from} />
         </form>
       </div>
     </div>
