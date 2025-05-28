@@ -1,31 +1,49 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useCookies } from "react-cookie";
+import { toast } from "react-toastify";
 import { FolderSync, PlusCircle, Rat } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { Item } from "../components/Item";
 import { Pagination } from "../components/Pagination";
 import { LoadingSkeleton } from "../components/LoadingSkeleton";
-import { toast } from "react-toastify";
 import { TableHeader } from "../components/TableHeader";
-import { useTranslation } from "react-i18next";
 
 export default function Products() {
   const { t } = useTranslation("products");
 
-  let { page } = useParams();
+  const [cookies] = useCookies(["4inUserPaginationSize"]);
+  const userSize = cookies["4inUserPaginationSize"];
+
   const defaultSort = "id,asc";
   const [sort, setSort] = useState(defaultSort);
-  const [cookies] = useCookies();
-  const [loading, setLoading] = useState(false);
+  const [size, setSize] = useState(10);
+  const [page, setPage] = useState(1);
+
   const [items, setItems] = useState([]);
   const [response, setResponse] = useState([]);
-  const [size, setSize] = useState(10);
+
+  const [loading, setLoading] = useState(false);
   const [update, setUpdate] = useState(false);
+
   let count = 0;
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+
+  const urlSize = searchParams.get("size");
+  const urlSort = searchParams.get("sort");
+  const urlPage = searchParams.get("page");
+
+  useEffect(() => {
+    setSize(urlSize);
+    setSort(urlSort);
+    setPage(urlPage);
+  }, [urlSize, urlSort, urlPage]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +54,7 @@ export default function Products() {
           api.get("/inventory", {
             params: {
               page,
-              size: cookies.paginationSize || 10,
+              size: userSize || size,
               sort,
             },
           }),
@@ -100,7 +118,7 @@ export default function Products() {
     };
 
     fetchData();
-  }, [page, sort, size, cookies.paginationSize, update]);
+  }, [page, sort, size, update, userSize]);
 
   const updateData = () => {
     update ? setUpdate(false) : setUpdate(true);
@@ -187,7 +205,21 @@ export default function Products() {
               {items.length <= 0 ? (
                 <div className="mt-10 flex animate-fadeIn flex-col items-center gap-2">
                   <Rat size={100} className="text-neutral-700" />
-                  <p className="font-medium text-neutral-600">{t("noItems")}</p>
+                  <div className="flex space-x-1">
+                    <p className="font-medium text-neutral-600">
+                      {t("noItems")}
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigate(`/products`);
+                      }}
+                      className="font-bold text-neutral-600 underline hover:no-underline"
+                    >
+                      Clear filters
+                    </button>
+                  </div>
                   <Link
                     to={"/products/new"}
                     className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
@@ -238,8 +270,7 @@ export default function Products() {
             numberOfElements={response.numberOfElements}
             first={response.first}
             last={response.last}
-            setSize={setSize}
-            path={"products"}
+            size={size}
           />
         )}
       </div>
