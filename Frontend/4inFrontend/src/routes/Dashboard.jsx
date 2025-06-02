@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useCookies } from "react-cookie";
 import { ChevronRight } from "lucide-react";
 import { api } from "../services/api";
@@ -13,20 +13,42 @@ import { useTranslation } from "react-i18next";
 export default function Dashboard() {
   const { t } = useTranslation("dashboard");
 
-  let { page } = useParams();
-  const [cookies] = useCookies();
+  const [cookies] = useCookies(["4inUserSettings"]);
+
+  let cookieSettings = null;
+
+  if (cookies["4inUserSettings"]) {
+    cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+  }
+
+  const [sort, setSort] = useState("createdAt,desc");
+  const [size, setSize] = useState(20);
+  const [page, setPage] = useState(0);
+
   const [registers, setRegisters] = useState([]);
   const [response, setResponse] = useState([]);
+
   const [loading, setLoading] = useState(false);
-  const [size, setSize] = useState(10);
-  const defaultSort = "createdAt,desc";
-  const [sort, setSort] = useState(defaultSort);
+  const [update, setUpdate] = useState(false);
+
   const [totalItems, setTotalItems] = useState(0);
   const [totalCategories, setTotalCategories] = useState(0);
   const [totalRegistries, setTotalRegistries] = useState(0);
-  const [update, setUpdate] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+
+  const urlSize = searchParams.get("size");
+  const urlSort = searchParams.get("sort")?.replace("-", ",");
+  const urlPage = searchParams.get("page");
+
+  useEffect(() => {
+    urlSize && setSize(urlSize);
+    urlSort && setSort(urlSort);
+    urlPage && setPage(urlPage);
+  }, [urlSize, urlSort, urlPage]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,8 +59,8 @@ export default function Dashboard() {
           api.get("/registry", {
             params: {
               page,
-              size: cookies.paginationSize || 10,
-              sort,
+              size: cookieSettings?.dashboardSize || size,
+              sort: cookieSettings?.dashboardSort || sort,
             },
           }),
           {
@@ -102,7 +124,7 @@ export default function Dashboard() {
     };
 
     fetchData();
-  }, [page, sort, size, cookies.paginationSize, update]);
+  }, [page, sort, size, update]);
 
   const updateData = () => {
     update ? setUpdate(false) : setUpdate(true);
@@ -157,7 +179,6 @@ export default function Dashboard() {
 
             <History
               registers={registers}
-              setSort={setSort}
               loading={loading}
               updateData={updateData}
             />
@@ -171,8 +192,7 @@ export default function Dashboard() {
               numberOfElements={response.numberOfElements}
               first={response.first}
               last={response.last}
-              setSize={setSize}
-              path={"dashboard"}
+              size={size}
             />
           )}
         </div>
