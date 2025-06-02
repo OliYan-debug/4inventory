@@ -58,8 +58,8 @@ export default function Products() {
           api.get("/inventory", {
             params: {
               page,
-              size: cookieSettings?.size || size,
-              sort: cookieSettings?.sort || sort,
+              size: cookieSettings?.productsSize || size,
+              sort: cookieSettings?.productsSort || sort,
             },
           }),
           {

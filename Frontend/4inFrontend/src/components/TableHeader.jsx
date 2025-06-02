@@ -20,9 +20,11 @@ export function TableHeader({ columnsDefault }) {
   const searchParams = new URLSearchParams(location.search);
   const path = location.pathname;
 
+  const currentPath = path === "/products" ? "productsSort" : "dashboardSort";
+
   useEffect(() => {
-    if (cookieSettings?.sort) {
-      let cookieSort = cookieSettings.sort;
+    if (cookieSettings?.[currentPath]) {
+      let cookieSort = cookieSettings?.[currentPath];
 
       const cookieSortSplit = cookieSort.split(",");
       let cookieSortOrderBy = cookieSortSplit[0];
@@ -85,12 +87,14 @@ export function TableHeader({ columnsDefault }) {
       searchParams.set("sort", newSort);
       navigate(`${path}?${searchParams.toString()}`);
 
-      const cookieValue = btoa(
-        JSON.stringify({
-          size: cookieSettings?.size,
-          sort: newSort.replace("-", ","),
-        }),
-      );
+      const baseSettings = cookieSettings ?? {};
+
+      const newCookieValue = {
+        ...baseSettings,
+        [currentPath]: newSort.replace("-", ","),
+      };
+
+      const cookieValue = btoa(JSON.stringify(newCookieValue));
 
       setCookie("4inUserSettings", cookieValue, {
         path: "/",

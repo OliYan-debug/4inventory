@@ -14,9 +14,11 @@ export function SelectSize({ size }) {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
 
+  const searchParams = new URLSearchParams(location.search);
   const path = location.pathname;
+
+  const currentPath = path === "/products" ? "productsSize" : "dashboardSize";
 
   const handleChangeSize = (e) => {
     let newSize = e.target.value;
@@ -28,9 +30,14 @@ export function SelectSize({ size }) {
     searchParams.set("size", newSize);
     navigate(`${path}?${searchParams.toString()}`);
 
-    const cookieValue = btoa(
-      JSON.stringify({ size: newSize, sort: cookieSettings?.sort }),
-    );
+    const baseSettings = cookieSettings ?? {};
+
+    const newCookieValue = {
+      ...baseSettings,
+      [currentPath]: newSize,
+    };
+
+    const cookieValue = btoa(JSON.stringify(newCookieValue));
 
     setCookie("4inUserSettings", cookieValue, {
       path: "/",
@@ -50,7 +57,7 @@ export function SelectSize({ size }) {
       </label>
 
       <select
-        defaultValue={cookieSettings?.size || size}
+        defaultValue={cookieSettings?.[currentPath] || size}
         id="size"
         className="rounded-lg border border-neutral-300 font-medium"
       >
