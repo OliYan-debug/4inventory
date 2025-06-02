@@ -4,7 +4,7 @@ import { TableHeader } from "./TableHeader";
 import { LoadingSkeleton } from "./LoadingSkeleton";
 import { useTranslation } from "react-i18next";
 
-export function History({ registers, setSort, loading, updateData }) {
+export function History({ registers, loading, updateData }) {
   const { t } = useTranslation("history");
 
   const registersColumns = [
@@ -70,7 +70,7 @@ export function History({ registers, setSort, loading, updateData }) {
       </div>
 
       <div>
-        <TableHeader setSort={setSort} columnsDefault={registersColumns} />
+        <TableHeader columnsDefault={registersColumns} />
 
         {loading ? (
           <LoadingSkeleton />
