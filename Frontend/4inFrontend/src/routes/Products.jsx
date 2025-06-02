@@ -14,13 +14,17 @@ import { TableHeader } from "../components/TableHeader";
 export default function Products() {
   const { t } = useTranslation("products");
 
-  const [cookies] = useCookies(["4inUserPaginationSize"]);
-  const userSize = cookies["4inUserPaginationSize"];
+  const [cookies] = useCookies(["4inUserSettings"]);
 
-  const defaultSort = "id,asc";
-  const [sort, setSort] = useState(defaultSort);
-  const [size, setSize] = useState(10);
-  const [page, setPage] = useState(1);
+  let cookieSettings = null;
+
+  if (cookies["4inUserSettings"]) {
+    cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+  }
+
+  const [sort, setSort] = useState("id,asc");
+  const [size, setSize] = useState(20);
+  const [page, setPage] = useState(0);
 
   const [items, setItems] = useState([]);
   const [response, setResponse] = useState([]);
@@ -36,13 +40,13 @@ export default function Products() {
   const searchParams = new URLSearchParams(location.search);
 
   const urlSize = searchParams.get("size");
-  const urlSort = searchParams.get("sort");
+  const urlSort = searchParams.get("sort")?.replace("-", ",");
   const urlPage = searchParams.get("page");
 
   useEffect(() => {
-    setSize(urlSize);
-    setSort(urlSort);
-    setPage(urlPage);
+    urlSize && setSize(urlSize);
+    urlSort && setSort(urlSort);
+    urlPage && setPage(urlPage);
   }, [urlSize, urlSort, urlPage]);
 
   useEffect(() => {
@@ -54,8 +58,8 @@ export default function Products() {
           api.get("/inventory", {
             params: {
               page,
-              size: userSize || size,
-              sort,
+              size: cookieSettings?.size || size,
+              sort: cookieSettings?.sort || sort,
             },
           }),
           {
@@ -118,7 +122,7 @@ export default function Products() {
     };
 
     fetchData();
-  }, [page, sort, size, update, userSize]);
+  }, [page, sort, size, update]);
 
   const updateData = () => {
     update ? setUpdate(false) : setUpdate(true);
@@ -196,7 +200,7 @@ export default function Products() {
 
       <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div>
-          <TableHeader setSort={setSort} columnsDefault={productsColumns} />
+          <TableHeader columnsDefault={productsColumns} />
 
           {loading ? (
             <LoadingSkeleton />
