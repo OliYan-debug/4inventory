@@ -5,8 +5,12 @@ import { useTranslation } from "react-i18next";
 export function SelectSize({ size }) {
   const { t } = useTranslation("pagination");
 
-  const [cookies, setCookie] = useCookies(["4inUserPaginationSize"]);
-  const userSize = cookies["4inUserPaginationSize"];
+  const [cookies, setCookie] = useCookies(["4inUserSettings"]);
+  let cookieSettings = null;
+
+  if (cookies["4inUserSettings"]) {
+    cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+  }
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,14 +21,21 @@ export function SelectSize({ size }) {
   const handleChangeSize = (e) => {
     let newSize = e.target.value;
 
-    if (searchParams.has("size")) {
-      searchParams.set("size", newSize);
-      navigate(`${path}?${searchParams.toString()}`);
-    } else {
-      navigate(`${path}?${searchParams.toString()}&size=${newSize}`);
+    if (searchParams.has("page")) {
+      searchParams.set("page", 0);
     }
 
-    setCookie("4inUserPaginationSize", newSize, { path: "/" });
+    searchParams.set("size", newSize);
+    navigate(`${path}?${searchParams.toString()}`);
+
+    const cookieValue = btoa(
+      JSON.stringify({ size: newSize, sort: cookieSettings?.sort }),
+    );
+
+    setCookie("4inUserSettings", cookieValue, {
+      path: "/",
+      maxAge: 30 * 24 * 60 * 60, //30 dias
+    });
   };
 
   return (
@@ -39,7 +50,7 @@ export function SelectSize({ size }) {
       </label>
 
       <select
-        defaultValue={size || userSize}
+        defaultValue={cookieSettings?.size || size}
         id="size"
         className="rounded-lg border border-neutral-300 font-medium"
       >
