@@ -1,9 +1,56 @@
 import { ArrowDownNarrowWide, ArrowUpNarrowWide } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { useLocation, useNavigate } from "react-router";
 
-export function TableHeader({ setSort, columnsDefault }) {
+export function TableHeader({ columnsDefault }) {
   const [columns, setColumns] = useState(columnsDefault);
   const [newSort, setNewSort] = useState(null);
+
+  const [cookies, setCookie] = useCookies(["4inUserSettings"]);
+  let cookieSettings = null;
+
+  if (cookies["4inUserSettings"]) {
+    cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+  }
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  const path = location.pathname;
+
+  useEffect(() => {
+    if (cookieSettings?.sort) {
+      let cookieSort = cookieSettings.sort;
+
+      const cookieSortSplit = cookieSort.split(",");
+      let cookieSortOrderBy = cookieSortSplit[0];
+      let cookieSortOrder = cookieSortSplit[1];
+
+      let cookieSortIndex = columnsDefault.findIndex(
+        (element) => element.orderBy === cookieSortOrderBy,
+      );
+
+      setColumns((prevColumns) => {
+        return prevColumns.map((column, index) => {
+          if (index === cookieSortIndex) {
+            return {
+              ...column,
+              order: cookieSortOrder,
+              sorting: true,
+            };
+          } else {
+            return {
+              ...column,
+              order: "neutral",
+              sorting: false,
+            };
+          }
+        });
+      });
+    }
+  }, []);
 
   const handleSort = (selectedIndex) => {
     setColumns((prevColumns) => {
@@ -13,7 +60,7 @@ export function TableHeader({ setSort, columnsDefault }) {
 
           newOrder = column.order === "asc" ? "desc" : "asc";
 
-          let newSort = `${column.orderBy},${newOrder}`;
+          let newSort = `${column.orderBy}-${newOrder}`;
 
           setNewSort(newSort);
 
@@ -35,7 +82,20 @@ export function TableHeader({ setSort, columnsDefault }) {
 
   useEffect(() => {
     if (newSort) {
-      setSort(newSort);
+      searchParams.set("sort", newSort);
+      navigate(`${path}?${searchParams.toString()}`);
+
+      const cookieValue = btoa(
+        JSON.stringify({
+          size: cookieSettings?.size,
+          sort: newSort.replace("-", ","),
+        }),
+      );
+
+      setCookie("4inUserSettings", cookieValue, {
+        path: "/",
+        maxAge: 30 * 24 * 60 * 60, //30 dias
+      });
     }
   }, [newSort]);
 
