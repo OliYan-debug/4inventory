@@ -16,6 +16,7 @@
       "generic": "Erro ao buscar, tente novamente."
     }
   },
+  "wrongFilter": "Ops, filtro de url errado, tente novamente",
   "noItems": "Nenhum item encontrado...",
   "or": "ou",
   "columns": {

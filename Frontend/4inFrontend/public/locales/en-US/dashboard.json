@@ -9,6 +9,14 @@
     "categories": "Categories",
     "inventory": "Inventory movements"
   },
+  "columns": {
+    "id": "ID",
+    "name": "Name",
+    "type": "Type",
+    "justification": "Justification",
+    "author": "Author",
+    "createdAt": "Created At"
+  },
   "loading": {
     "pending": "Finding registers...",
     "success": "Registers found:",
@@ -17,5 +25,6 @@
       "token": "Invalid token, please log in again.",
       "generic": "Error when finding. Try again."
     }
-  }
+  },
+  "wrongFilter": "Oops, wrong url filter, try again"
 }

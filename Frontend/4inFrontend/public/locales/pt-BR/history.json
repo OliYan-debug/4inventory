@@ -1,13 +1,5 @@
 {
   "title": "Histórico",
-  "columns": {
-    "id": "ID",
-    "name": "Nome",
-    "type": "Tipo",
-    "justification": "Justificativa",
-    "author": "Autor",
-    "createdAt": "Criado Em"
-  },
   "buttons": {
     "retry": "Tentar novamente"
   },

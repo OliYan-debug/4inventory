@@ -16,6 +16,7 @@
       "generic": "Error when finding. Try again."
     }
   },
+  "wrongFilter": "Oops, wrong url filter, try again",
   "noItems": "No items found...",
   "or": "or",
   "columns": {
