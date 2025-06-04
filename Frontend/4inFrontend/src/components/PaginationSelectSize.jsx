@@ -64,10 +64,15 @@ export function SelectSize({ size }) {
       </label>
 
       <select
-        defaultValue={cookieSettings?.[currentPathKey] || size}
+        defaultValue={size || cookieSettings?.[currentPathKey]}
         id="size"
         className="rounded-lg border border-neutral-300 font-medium"
       >
+        {size && (
+          <option className="hidden" value={size}>
+            {size}
+          </option>
+        )}
         <option value="5">5</option>
         <option value="10">10</option>
         <option value="20">20</option>
