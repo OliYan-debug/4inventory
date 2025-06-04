@@ -18,28 +18,37 @@ export function TableHeader({ columnsDefault }) {
   const location = useLocation();
 
   const searchParams = new URLSearchParams(location.search);
+  const urlSort = searchParams.get("sort")?.replace("-", ",");
+
   const path = location.pathname;
 
-  const currentPath = path === "/products" ? "productsSort" : "dashboardSort";
+  const pathsCookieKey = {
+    "/products": "productsSort",
+    "/dashboard": "dashboardSort",
+  };
+
+  const currentPathKey = pathsCookieKey[path];
 
   useEffect(() => {
-    if (cookieSettings?.[currentPath]) {
-      let cookieSort = cookieSettings?.[currentPath];
+    const cookieSavedSort = cookieSettings?.[currentPathKey];
 
-      const cookieSortSplit = cookieSort.split(",");
-      let cookieSortOrderBy = cookieSortSplit[0];
-      let cookieSortOrder = cookieSortSplit[1];
+    let currentSort = urlSort || cookieSavedSort;
 
-      let cookieSortIndex = columnsDefault.findIndex(
-        (element) => element.orderBy === cookieSortOrderBy,
+    if (currentSort) {
+      const currentSortSplit = currentSort.split(",");
+      let currentSortOrderBy = currentSortSplit[0];
+      let currentSortOrder = currentSortSplit[1];
+
+      let currentSortIndex = columnsDefault.findIndex(
+        (element) => element.orderBy === currentSortOrderBy,
       );
 
       setColumns((prevColumns) => {
         return prevColumns.map((column, index) => {
-          if (index === cookieSortIndex) {
+          if (index === currentSortIndex) {
             return {
               ...column,
-              order: cookieSortOrder,
+              order: currentSortOrder,
               sorting: true,
             };
           } else {
@@ -87,19 +96,21 @@ export function TableHeader({ columnsDefault }) {
       searchParams.set("sort", newSort);
       navigate(`${path}?${searchParams.toString()}`);
 
-      const baseSettings = cookieSettings ?? {};
+      if (currentPathKey) {
+        const baseSettings = cookieSettings ?? {};
 
-      const newCookieValue = {
-        ...baseSettings,
-        [currentPath]: newSort.replace("-", ","),
-      };
+        const newCookieValue = {
+          ...baseSettings,
+          [currentPathKey]: newSort.replace("-", ","),
+        };
 
-      const cookieValue = btoa(JSON.stringify(newCookieValue));
+        const cookieValue = btoa(JSON.stringify(newCookieValue));
 
-      setCookie("4inUserSettings", cookieValue, {
-        path: "/",
-        maxAge: 30 * 24 * 60 * 60, //30 dias
-      });
+        setCookie("4inUserSettings", cookieValue, {
+          path: "/",
+          maxAge: 30 * 24 * 60 * 60, //30 days
+        });
+      }
     }
   }, [newSort]);
 

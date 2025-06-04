@@ -18,7 +18,12 @@ export function SelectSize({ size }) {
   const searchParams = new URLSearchParams(location.search);
   const path = location.pathname;
 
-  const currentPath = path === "/products" ? "productsSize" : "dashboardSize";
+  const pathsCookieKey = {
+    "/products": "productsSize",
+    "/dashboard": "dashboardSize",
+  };
+
+  const currentPathKey = pathsCookieKey[path];
 
   const handleChangeSize = (e) => {
     let newSize = e.target.value;
@@ -30,19 +35,21 @@ export function SelectSize({ size }) {
     searchParams.set("size", newSize);
     navigate(`${path}?${searchParams.toString()}`);
 
-    const baseSettings = cookieSettings ?? {};
+    if (currentPathKey) {
+      const baseSettings = cookieSettings ?? {};
 
-    const newCookieValue = {
-      ...baseSettings,
-      [currentPath]: newSize,
-    };
+      const newCookieValue = {
+        ...baseSettings,
+        [currentPathKey]: newSize,
+      };
 
-    const cookieValue = btoa(JSON.stringify(newCookieValue));
+      const cookieValue = btoa(JSON.stringify(newCookieValue));
 
-    setCookie("4inUserSettings", cookieValue, {
-      path: "/",
-      maxAge: 30 * 24 * 60 * 60, //30 dias
-    });
+      setCookie("4inUserSettings", cookieValue, {
+        path: "/",
+        maxAge: 30 * 24 * 60 * 60, //30 days
+      });
+    }
   };
 
   return (
@@ -57,7 +64,7 @@ export function SelectSize({ size }) {
       </label>
 
       <select
-        defaultValue={cookieSettings?.[currentPath] || size}
+        defaultValue={cookieSettings?.[currentPathKey] || size}
         id="size"
         className="rounded-lg border border-neutral-300 font-medium"
       >
