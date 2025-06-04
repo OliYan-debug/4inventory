@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FolderSync, Rat } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
@@ -12,15 +12,25 @@ import { useTranslation } from "react-i18next";
 export default function Users() {
   const { t } = useTranslation("users");
 
-  let { page } = useParams();
-  const [loading, setLoading] = useState(false);
-  const defaultSort = "id,asc";
-  const [sort, setSort] = useState(defaultSort);
+  const [sort, setSort] = useState("name,asc");
+
   const [users, setUsers] = useState([]);
+
   const [update, setUpdate] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   let count = 0;
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+
+  const urlSort = searchParams.get("sort")?.replace("-", ",");
+
+  useEffect(() => {
+    urlSort && setSort(urlSort);
+  }, [urlSort]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,8 +40,6 @@ export default function Users() {
         const response = await toast.promise(
           api.get("/admin/users", {
             params: {
-              page,
-              size: 10,
               sort,
             },
           }),
@@ -96,7 +104,7 @@ export default function Users() {
     };
 
     fetchData();
-  }, [page, sort, update]);
+  }, [sort, update]);
 
   const updateData = () => {
     update ? setUpdate(false) : setUpdate(true);
@@ -146,7 +154,7 @@ export default function Users() {
 
       <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div>
-          <TableHeader setSort={setSort} columnsDefault={usersColumns} />
+          <TableHeader columnsDefault={usersColumns} />
 
           {loading ? (
             <LoadingSkeleton />
