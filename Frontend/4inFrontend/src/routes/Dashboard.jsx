@@ -98,7 +98,9 @@ export default function Dashboard() {
                   return (
                     <p>
                       {t("loading.errors.token")}{" "}
-                      <span className="text-xs opacity-80">path:/products</span>
+                      <span className="text-xs opacity-80">
+                        path:/dashboard
+                      </span>
                     </p>
                   );
                 }
