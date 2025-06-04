@@ -38,6 +38,8 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const path = location.pathname;
+
   const searchParams = new URLSearchParams(location.search);
 
   const urlSize = searchParams.get("size");
@@ -45,10 +47,60 @@ export default function Dashboard() {
   const urlPage = searchParams.get("page");
 
   useEffect(() => {
-    urlSize && setSize(urlSize);
-    urlSort && setSort(urlSort);
-    urlPage && setPage(urlPage);
-  }, [urlSize, urlSort, urlPage]);
+    let errors = 0;
+
+    const cookieSavedSort = cookieSettings?.dashboardSort;
+
+    if (urlSort) {
+      const currentSortSplit = urlSort.split(",");
+      let currentSortOrderBy = currentSortSplit[0];
+      let currentSortOrder = currentSortSplit[1];
+
+      let currentSortIndex = registersColumns.findIndex(
+        (element) => element.orderBy === currentSortOrderBy,
+      );
+
+      if (
+        (currentSortIndex >= 0 && currentSortOrder === "asc") ||
+        currentSortOrder === "desc"
+      ) {
+        setSort(urlSort);
+      } else {
+        errors++;
+      }
+    } else {
+      if (cookieSavedSort) {
+        setSort(undefined);
+      }
+    }
+
+    const cookieSavedSize = cookieSettings?.dashboardSize;
+
+    if (urlSize) {
+      if (urlSize > 0) {
+        setSize(urlSize);
+      } else {
+        errors++;
+      }
+    } else {
+      if (cookieSavedSize) {
+        setSize(undefined);
+      }
+    }
+
+    if (urlPage) {
+      if (urlPage <= response.totalPages) {
+        setPage(urlPage);
+      } else {
+        errors++;
+      }
+    }
+
+    if (errors > 0) {
+      toast.warning(t("wrongFilter"));
+      navigate(path);
+    }
+  }, [urlSize, urlSort, urlPage, response]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,8 +111,8 @@ export default function Dashboard() {
           api.get("/registry", {
             params: {
               page,
-              size: cookieSettings?.dashboardSize || size,
-              sort: cookieSettings?.dashboardSort || sort,
+              size: size || cookieSettings?.dashboardSize,
+              sort: sort || cookieSettings?.dashboardSort,
             },
           }),
           {
@@ -132,6 +184,57 @@ export default function Dashboard() {
     update ? setUpdate(false) : setUpdate(true);
   };
 
+  const registersColumns = [
+    {
+      label: t("columns.id"),
+      orderBy: "id",
+      sorting: false,
+      order: "neutral",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+    {
+      label: t("columns.name"),
+      orderBy: "item",
+      sorting: false,
+      order: "neutral",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+    {
+      label: t("columns.type"),
+      orderBy: "label",
+      sorting: false,
+      order: "neutral",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+    {
+      label: t("columns.justification"),
+      orderBy: "justification",
+      sorting: false,
+      order: "neutral",
+      isOrderable: true,
+      extendedColumn: true,
+    },
+    {
+      label: t("columns.author"),
+      orderBy: "author",
+      sorting: false,
+      order: "neutral",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+    {
+      label: t("columns.createdAt"),
+      orderBy: "createdAt",
+      sorting: true,
+      order: "desc",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+  ];
+
   useEffect(() => {
     api
       .get("/inventory")
@@ -180,6 +283,7 @@ export default function Dashboard() {
             </div>
 
             <History
+              registersColumns={registersColumns}
               registers={registers}
               loading={loading}
               updateData={updateData}

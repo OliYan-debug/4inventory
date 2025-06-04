@@ -37,6 +37,8 @@ export default function Products() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const path = location.pathname;
+
   const searchParams = new URLSearchParams(location.search);
 
   const urlSize = searchParams.get("size");
@@ -44,10 +46,60 @@ export default function Products() {
   const urlPage = searchParams.get("page");
 
   useEffect(() => {
-    urlSize && setSize(urlSize);
-    urlSort && setSort(urlSort);
-    urlPage && setPage(urlPage);
-  }, [urlSize, urlSort, urlPage]);
+    let errors = 0;
+
+    const cookieSavedSort = cookieSettings?.productsSort;
+
+    if (urlSort) {
+      const currentSortSplit = urlSort.split(",");
+      let currentSortOrderBy = currentSortSplit[0];
+      let currentSortOrder = currentSortSplit[1];
+
+      let currentSortIndex = productsColumns.findIndex(
+        (element) => element.orderBy === currentSortOrderBy,
+      );
+
+      if (
+        (currentSortIndex >= 0 && currentSortOrder === "asc") ||
+        currentSortOrder === "desc"
+      ) {
+        setSort(urlSort);
+      } else {
+        errors++;
+      }
+    } else {
+      if (cookieSavedSort) {
+        setSort(undefined);
+      }
+    }
+
+    const cookieSavedSize = cookieSettings?.productsSize;
+
+    if (urlSize) {
+      if (urlSize > 0) {
+        setSize(urlSize);
+      } else {
+        errors++;
+      }
+    } else {
+      if (cookieSavedSize) {
+        setSize(undefined);
+      }
+    }
+
+    if (urlPage) {
+      if (urlPage <= response.totalPages) {
+        setPage(urlPage);
+      } else {
+        errors++;
+      }
+    }
+
+    if (errors > 0) {
+      toast.warning(t("wrongFilter"));
+      navigate(path);
+    }
+  }, [urlSize, urlSort, urlPage, response]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,8 +110,8 @@ export default function Products() {
           api.get("/inventory", {
             params: {
               page,
-              size: cookieSettings?.productsSize || size,
-              sort: cookieSettings?.productsSort || sort,
+              size: size || cookieSettings?.productsSize,
+              sort: sort || cookieSettings?.productsSort,
             },
           }),
           {
