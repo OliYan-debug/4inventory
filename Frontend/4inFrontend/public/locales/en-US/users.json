@@ -13,6 +13,7 @@
       "generic": "Error when finding. Try again."
     }
   },
+  "wrongFilter": "Oops, wrong url filter, try again",
   "noUsers": "No users found...",
   "columns": {
     "name": "Name",

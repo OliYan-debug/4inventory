@@ -12,25 +12,58 @@ import { useTranslation } from "react-i18next";
 export default function Users() {
   const { t } = useTranslation("users");
 
-  const [sort, setSort] = useState("name,asc");
-
   const [users, setUsers] = useState([]);
 
   const [update, setUpdate] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  let count = 0;
-
   const navigate = useNavigate();
   const location = useLocation();
+
+  const path = location.pathname;
 
   const searchParams = new URLSearchParams(location.search);
 
   const urlSort = searchParams.get("sort")?.replace("-", ",");
 
-  useEffect(() => {
-    urlSort && setSort(urlSort);
-  }, [urlSort]);
+  const defaultParams = {
+    sort: "name,asc",
+  };
+
+  const initialSort = urlSort || defaultParams.sort;
+
+  const [sort, setSort] = useState(initialSort);
+
+  const usersColumns = [
+    {
+      label: t("columns.name"),
+      orderBy: "name",
+      sorting: true,
+      order: "asc",
+      isOrderable: true,
+    },
+    {
+      label: t("columns.user"),
+      orderBy: "username",
+      sorting: false,
+      order: "neutral",
+      isOrderable: true,
+    },
+    {
+      label: t("columns.permission"),
+      orderBy: "role",
+      sorting: false,
+      order: "neutral",
+      isOrderable: true,
+    },
+    {
+      label: t("columns.actions"),
+      orderBy: "",
+      sorting: false,
+      order: "",
+      isOrderable: false,
+    },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,17 +107,6 @@ export default function Users() {
                   );
                 }
 
-                if (data.code === "ERR_BAD_REQUEST") {
-                  return (
-                    <p>
-                      {t("loading.errors.token")}{" "}
-                      <span className="text-xs opacity-80">
-                        path:/admin/users
-                      </span>
-                    </p>
-                  );
-                }
-
                 return <p>{t("loading.errors.generic")}</p>;
               },
             },
@@ -94,10 +116,6 @@ export default function Users() {
         setUsers(response.data.content);
       } catch (error) {
         console.error("Error fetching data:", error);
-
-        if (error.status === 403) {
-          navigate("/logout");
-        }
       }
 
       setLoading(false);
@@ -106,40 +124,38 @@ export default function Users() {
     fetchData();
   }, [sort, update]);
 
+  useEffect(() => {
+    let errors = 0;
+
+    if (urlSort) {
+      const currentSortSplit = urlSort.split(",");
+      let currentSortOrderBy = currentSortSplit[0];
+      let currentSortOrder = currentSortSplit[1];
+
+      let currentSortIndex = usersColumns.findIndex(
+        (element) => element.orderBy === currentSortOrderBy,
+      );
+
+      if (
+        (currentSortIndex >= 0 && currentSortOrder === "asc") ||
+        currentSortOrder === "desc"
+      ) {
+        setSort(urlSort);
+      } else {
+        setSort(defaultParams.sort);
+        errors++;
+      }
+    }
+
+    if (errors > 0) {
+      toast.warning(t("wrongFilter"));
+      navigate(path);
+    }
+  }, [urlSort]);
+
   const updateData = () => {
     update ? setUpdate(false) : setUpdate(true);
   };
-
-  const usersColumns = [
-    {
-      label: t("columns.name"),
-      orderBy: "name",
-      sorting: true,
-      order: "asc",
-      isOrderable: true,
-    },
-    {
-      label: t("columns.user"),
-      orderBy: "username",
-      sorting: false,
-      order: "neutral",
-      isOrderable: true,
-    },
-    {
-      label: t("columns.permission"),
-      orderBy: "role",
-      sorting: false,
-      order: "neutral",
-      isOrderable: true,
-    },
-    {
-      label: t("columns.actions"),
-      orderBy: "",
-      sorting: false,
-      order: "",
-      isOrderable: false,
-    },
-  ];
 
   const Subtitle = () => {
     return (
@@ -177,8 +193,7 @@ export default function Users() {
                 </div>
               ) : (
                 <>
-                  {users.map((user) => {
-                    count++;
+                  {users.map((user, index) => {
                     return (
                       <User
                         key={user.id}
@@ -186,7 +201,7 @@ export default function Users() {
                         name={user.name}
                         username={user.username}
                         permission={user.permission}
-                        count={count}
+                        count={index}
                         updateData={updateData}
                       />
                     );

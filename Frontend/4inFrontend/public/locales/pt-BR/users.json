@@ -13,6 +13,7 @@
       "generic": "Erro ao buscar. Tente novamente."
     }
   },
+  "wrongFilter": "Ops, filtro de url errado, tente novamente",
   "noUsers": "Nenhum usuário encontrado...",
   "columns": {
     "name": "Nome",
