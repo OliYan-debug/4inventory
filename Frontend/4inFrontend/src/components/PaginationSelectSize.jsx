@@ -5,11 +5,17 @@ import { useTranslation } from "react-i18next";
 export function SelectSize({ size }) {
   const { t } = useTranslation("pagination");
 
-  const [cookies, setCookie] = useCookies(["4inUserSettings"]);
-  let cookieSettings = null;
+  const [cookies, setCookie, removeCookie] = useCookies(["4inUserSettings"]);
+
+  let cookieSettings = {};
 
   if (cookies["4inUserSettings"]) {
-    cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+    try {
+      cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+    } catch (error) {
+      console.warn("Invalid cookie:", error);
+      removeCookie("4inUserSettings", undefined, { path: "/" });
+    }
   }
 
   const navigate = useNavigate();
@@ -29,7 +35,7 @@ export function SelectSize({ size }) {
     let newSize = e.target.value;
 
     if (searchParams.has("page")) {
-      searchParams.set("page", 0);
+      searchParams.set("page", 1);
     }
 
     searchParams.set("size", newSize);

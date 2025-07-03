@@ -7,11 +7,17 @@ export function TableHeader({ columnsDefault }) {
   const [columns, setColumns] = useState(columnsDefault);
   const [newSort, setNewSort] = useState(null);
 
-  const [cookies, setCookie] = useCookies(["4inUserSettings"]);
-  let cookieSettings = null;
+  const [cookies, setCookie, removeCookie] = useCookies(["4inUserSettings"]);
+
+  let cookieSettings = {};
 
   if (cookies["4inUserSettings"]) {
-    cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+    try {
+      cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+    } catch (error) {
+      console.warn("Invalid cookie:", error);
+      removeCookie("4inUserSettings", undefined, { path: "/" });
+    }
   }
 
   const navigate = useNavigate();
