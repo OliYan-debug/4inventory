@@ -92,7 +92,7 @@ export default function Search() {
             {items.length === 0 && filteredRoutes.length === 0 ? (
               <>
                 {search !== "" && (
-                  <div className="flex animate-fadeIn flex-col items-center gap-2">
+                  <div className="flex animate-fade-in flex-col items-center gap-2">
                     <Rat size={100} className="text-neutral-700" />
                     <p className="w-52 break-words font-medium text-neutral-600">{`${t("no_items.text")} "${search}"`}</p>
                     <button

@@ -73,7 +73,7 @@ export function Search({ setOpenSearch }) {
   }, [setOpenSearch]);
 
   return (
-    <div className="fixed inset-0 z-50 flex h-screen w-screen animate-fadeIn items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-50 flex h-screen w-screen animate-fade-in items-center justify-center bg-black/50">
       <form
         ref={ref}
         onSubmit={handleSubmit(onSubmit)}
@@ -109,7 +109,7 @@ export function Search({ setOpenSearch }) {
           {items.length === 0 && filteredRoutes.length === 0 ? (
             <>
               {search !== "" && (
-                <div className="mt-4 flex animate-fadeIn flex-col items-center gap-2">
+                <div className="mt-4 flex animate-fade-in flex-col items-center gap-2">
                   <Rat size={100} className="text-neutral-700" />
                   <p className="w-52 break-words font-medium text-neutral-600">{`${t("no_items.text")} "${search}"`}</p>
                   <button

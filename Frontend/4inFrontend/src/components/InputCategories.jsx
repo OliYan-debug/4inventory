@@ -139,7 +139,7 @@ export function InputCategories({
           disabled={maxTagsLimit}
           autoComplete="off"
           style={{ paddingInlineStart: `${tagsListWidth + 16}px` }}
-          className={`focus-visible::border-neutral-500 w-full border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${categoriesSuggestions.length > 0 ? "rounded-t-lg border-b-0" : "rounded-lg"} ${
+          className={`focus-visible::border-neutral-500 w-full border border-neutral-400 px-4 py-2 text-neutral-500 outline-hidden hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${categoriesSuggestions.length > 0 ? "rounded-t-lg border-b-0" : "rounded-lg"} ${
             errors.category &&
             "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
           }`}
@@ -152,7 +152,7 @@ export function InputCategories({
                 <li
                   key={category.id}
                   style={{ backgroundColor: category.color }}
-                  className={`flex items-center gap-px rounded-2xl px-2 py-0.5 text-xs drop-shadow-sm ${getContrastingTextColor(category.color)}`}
+                  className={`flex items-center gap-px rounded-2xl px-2 py-0.5 text-xs drop-shadow-xs ${getContrastingTextColor(category.color)}`}
                 >
                   <span>{category.name}</span>
                   <X

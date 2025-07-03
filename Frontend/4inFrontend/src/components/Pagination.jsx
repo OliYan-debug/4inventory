@@ -59,7 +59,7 @@ export function Pagination({
           type="button"
           key={i}
           aria-current="page"
-          className={`${current ? "relative z-10 inline-flex items-center bg-neutral-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600" : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-neutral-900 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50 focus:z-20 focus:outline-offset-0"}`}
+          className={`${current ? "relative z-10 inline-flex items-center bg-neutral-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600" : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-neutral-900 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50 focus:z-20 focus:outline-offset-0"}`}
         >
           {i}
         </button>,
@@ -111,7 +111,7 @@ export function Pagination({
           <div>
             <nav
               aria-label="Pagination"
-              className="isolate inline-flex -space-x-px rounded-lg shadow-sm"
+              className="isolate inline-flex -space-x-px rounded-lg shadow-xs"
             >
               <button
                 onClick={() => {

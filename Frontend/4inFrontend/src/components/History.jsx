@@ -24,7 +24,7 @@ export function History({ registersColumns, registers, loading, updateData }) {
         ) : (
           <>
             {registers.length <= 0 ? (
-              <div className="mt-10 flex animate-fadeIn flex-col items-center gap-2">
+              <div className="mt-10 flex animate-fade-in flex-col items-center gap-2">
                 <Rat size={100} className="text-neutral-700" />
                 <p className="font-medium text-neutral-600">{t("noItems")}</p>
 

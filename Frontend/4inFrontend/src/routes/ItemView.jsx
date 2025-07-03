@@ -111,7 +111,7 @@ export default function ItemView() {
           ) : (
             <>
               {item.length <= 0 ? (
-                <div className="mt-10 flex animate-fadeIn flex-col items-center gap-2">
+                <div className="mt-10 flex animate-fade-in flex-col items-center gap-2">
                   <Rat size={100} className="text-neutral-700" />
                   <p className="font-medium text-neutral-600">{t("noItem")}</p>
 
@@ -160,7 +160,7 @@ export default function ItemView() {
                           </p>
 
                           {item.description.length > 90 && (
-                            <div className="absolute top-10 z-10 hidden max-w-72 animate-fadeIn justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/description:flex">
+                            <div className="absolute top-10 z-10 hidden max-w-72 animate-fade-in justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/description:flex">
                               <span className="absolute -top-1 block size-2 -translate-y-px rotate-45 border-l border-t border-neutral-500 bg-neutral-400"></span>
                               <p className="text-justify text-xs text-neutral-50">
                                 {item.description}
@@ -180,7 +180,7 @@ export default function ItemView() {
                                     className="rounded-2xl px-2 py-px text-sm"
                                   >
                                     <p
-                                      className={`max-w-32 truncate drop-shadow-sm ${getContrastingTextColor(category.color)}`}
+                                      className={`max-w-32 truncate drop-shadow-xs ${getContrastingTextColor(category.color)}`}
                                     >
                                       {category.name}
                                     </p>

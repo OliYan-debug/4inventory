@@ -25,7 +25,7 @@ export function User({ id, name, username, permission, count, updateData }) {
 
   return (
     <div
-      className={`grid min-w-[840px] animate-fadeIn grid-cols-4 justify-items-center text-wrap ${
+      className={`grid min-w-[840px] animate-fade-in grid-cols-4 justify-items-center text-wrap ${
         count % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >

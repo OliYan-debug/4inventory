@@ -112,7 +112,7 @@ export default function NewCategory() {
               type="text"
               id="name"
               disabled={isSubmitting || maxCategories}
-              className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+              className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-hidden hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
                 errors.name &&
                 "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
               }`}
@@ -135,7 +135,7 @@ export default function NewCategory() {
               type="color"
               id="color"
               disabled={isSubmitting || maxCategories}
-              className={`focus-visible::border-neutral-500 h-10 w-full rounded-lg border border-neutral-400 px-4 py-2 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+              className={`focus-visible::border-neutral-500 h-10 w-full rounded-lg border border-neutral-400 px-4 py-2 outline-hidden hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
                 errors.color &&
                 "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
               }`}

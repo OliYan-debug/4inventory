@@ -138,7 +138,7 @@ export function Category({
     return (
       <div
         ref={ref}
-        className="absolute right-4 top-4 z-30 flex animate-fadeIn flex-col items-center rounded-lg rounded-tr-none border-red-500 bg-neutral-50 p-4 shadow-lg"
+        className="absolute right-4 top-4 z-30 flex animate-fade-in flex-col items-center rounded-lg rounded-tr-none border-red-500 bg-neutral-50 p-4 shadow-lg"
       >
         <span className="absolute -right-1 -top-1 size-3 animate-ping rounded-full bg-red-500 opacity-75"></span>
         <span className="absolute -right-1 -top-1 size-3 rounded-full bg-red-500"></span>
@@ -171,7 +171,7 @@ export function Category({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={`grid h-12 min-w-[400px] animate-fadeIn grid-cols-4 items-center justify-items-center ${
+      className={`grid h-12 min-w-[400px] animate-fade-in grid-cols-4 items-center justify-items-center ${
         count % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >
@@ -194,7 +194,7 @@ export function Category({
             type="text"
             id="name"
             autoFocus
-            className={`w-full rounded-lg border border-neutral-400 bg-transparent px-2 text-neutral-600 outline-none hover:border-neutral-500 focus-visible:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+            className={`w-full rounded-lg border border-neutral-400 bg-transparent px-2 text-neutral-600 outline-hidden hover:border-neutral-500 focus-visible:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
               errors.name &&
               "border-red-600 bg-red-100 text-red-600 hover:border-red-600 focus-visible:border-red-600"
             }`}
@@ -233,7 +233,7 @@ export function Category({
       <div className="col-auto flex items-center gap-2 py-2">
         <button
           type="submit"
-          className={`animate-fadeIn transition hover:opacity-80 disabled:cursor-no-drop disabled:opacity-60 ${editable ? "block" : "hidden"}`}
+          className={`animate-fade-in transition hover:opacity-80 disabled:cursor-no-drop disabled:opacity-60 ${editable ? "block" : "hidden"}`}
         >
           <Check size={18} color="#262626" />
         </button>

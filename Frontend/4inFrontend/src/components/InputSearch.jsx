@@ -104,7 +104,7 @@ export function InputSearch({
           setSearch(e.target.value);
           searchRoutes(e.target.value);
         }}
-        className="h-8 w-full bg-transparent pl-1 pr-11 text-neutral-500 outline-none"
+        className="h-8 w-full bg-transparent pl-1 pr-11 text-neutral-500 outline-hidden"
       />
 
       {search !== "" && (

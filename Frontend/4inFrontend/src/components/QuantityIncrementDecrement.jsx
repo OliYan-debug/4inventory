@@ -56,7 +56,7 @@ export function QuantityIncrementDecrement({
         onMouseUp={stopIncrement}
         onMouseLeave={stopIncrement}
         disabled={quantity <= 0 || disable || disableMinusBtn}
-        className="ml-2 rounded-lg border border-neutral-400 px-3 outline-none transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-neutral-50"
+        className="ml-2 rounded-lg border border-neutral-400 px-3 outline-hidden transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-neutral-50"
       >
         <CircleMinus className="size-5 text-neutral-600" />
       </button>
@@ -67,7 +67,7 @@ export function QuantityIncrementDecrement({
         onMouseUp={stopIncrement}
         onMouseLeave={stopIncrement}
         disabled={disable || disablePlusBtn}
-        className="rounded-lg border border-neutral-400 px-3 outline-none transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-neutral-50"
+        className="rounded-lg border border-neutral-400 px-3 outline-hidden transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-neutral-50"
       >
         <CirclePlus className="size-5 text-neutral-600" />
       </button>

@@ -22,7 +22,7 @@ export function InputConfirmPassword({
       className={`${
         invalidPassword
           ? "hidden"
-          : "md:grid-cols-form-md lg:grid-cols-form-lg flex animate-fadeIn flex-col md:grid md:items-center"
+          : "md:grid-cols-form-md lg:grid-cols-form-lg flex animate-fade-in flex-col md:grid md:items-center"
       }`}
     >
       <div className="relative flex w-full items-center">
@@ -58,7 +58,7 @@ export function InputConfirmPassword({
           id="confirmPass"
           disabled={isSubmitting}
           placeholder={t("confirm_password_placeholder")}
-          className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+          className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-hidden hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
             errors.confirmPass &&
             "border-red-600 text-red-600 hover:border-red-600 focus-visible:border-red-600"
           }`}
