@@ -53,7 +53,9 @@ export function NavBar() {
               className="block pt-10 md:hidden"
             />
           </Link>
-          <span className="mt-px text-xs font-thin text-neutral-200">1.14</span>
+          <span className="mt-px text-xs font-thin text-neutral-200">
+            1.14.2
+          </span>
         </div>
 
         <Menu hiddenNav={hiddenNav} />
