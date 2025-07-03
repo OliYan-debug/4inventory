@@ -16,9 +16,30 @@ export default function Categories() {
   const [loading, setLoading] = useState(false);
   const [activeButton, setActiveButton] = useState(null);
   const [update, setUpdate] = useState(false);
-  let count = 0;
 
   const navigate = useNavigate();
+
+  const categoriesColumns = [
+    {
+      label: t("columns.id"),
+      isOrderable: false,
+    },
+
+    {
+      label: t("columns.name"),
+      isOrderable: false,
+    },
+
+    {
+      label: t("columns.color"),
+      isOrderable: false,
+    },
+
+    {
+      label: t("columns.actions"),
+      isOrderable: false,
+    },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,28 +109,6 @@ export default function Categories() {
     setActiveButton(id);
   };
 
-  const categoriesColumns = [
-    {
-      label: t("columns.id"),
-      isOrderable: false,
-    },
-
-    {
-      label: t("columns.name"),
-      isOrderable: false,
-    },
-
-    {
-      label: t("columns.color"),
-      isOrderable: false,
-    },
-
-    {
-      label: t("columns.actions"),
-      isOrderable: false,
-    },
-  ];
-
   const Subtitle = () => {
     return (
       <p className="mt-1 w-full text-sm text-neutral-500">
@@ -164,8 +163,7 @@ export default function Categories() {
               <>
                 <TableHeader columnsDefault={categoriesColumns} />
 
-                {categories.map((category) => {
-                  count++;
+                {categories.map((category, index) => {
                   return (
                     <Category
                       key={category.id}
@@ -173,7 +171,7 @@ export default function Categories() {
                       name={category.name}
                       color={category.color}
                       updateData={updateData}
-                      count={count}
+                      count={index}
                       activeButton={activeButton}
                       handleButtonClick={handleButtonClick}
                     />

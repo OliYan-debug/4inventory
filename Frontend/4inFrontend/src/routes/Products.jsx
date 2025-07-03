@@ -64,8 +64,6 @@ export default function Products() {
   const [loading, setLoading] = useState(false);
   const [update, setUpdate] = useState(false);
 
-  let count = 0;
-
   const productsColumns = [
     {
       label: t("columns.id"),
@@ -298,8 +296,7 @@ export default function Products() {
                 </div>
               ) : (
                 <>
-                  {items.map((item) => {
-                    count++;
+                  {items.map((item, index) => {
                     return (
                       <Item
                         key={item.id}
@@ -309,7 +306,7 @@ export default function Products() {
                         categories={item.category}
                         quantity={item.quantity}
                         createdAt={item.createdAt}
-                        count={count}
+                        count={index}
                       />
                     );
                   })}

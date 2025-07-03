@@ -7,8 +7,6 @@ import { useTranslation } from "react-i18next";
 export function History({ registersColumns, registers, loading, updateData }) {
   const { t } = useTranslation("history");
 
-  let count = 0;
-
   return (
     <div>
       <div className="flex w-full items-center justify-center gap-1 border-b border-dashed border-neutral-300 pb-2">
@@ -42,8 +40,7 @@ export function History({ registersColumns, registers, loading, updateData }) {
               </div>
             ) : (
               <>
-                {registers.map((registry) => {
-                  count++;
+                {registers.map((registry, index) => {
                   return (
                     <Registry
                       key={registry.id}
@@ -53,7 +50,7 @@ export function History({ registersColumns, registers, loading, updateData }) {
                       justification={registry.justification}
                       author={registry.author}
                       created={registry.createdAt}
-                      count={count}
+                      count={index}
                     />
                   );
                 })}
