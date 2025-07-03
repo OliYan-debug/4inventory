@@ -14,25 +14,18 @@ import { TableHeader } from "../components/TableHeader";
 export default function Products() {
   const { t } = useTranslation("products");
 
-  const [cookies] = useCookies(["4inUserSettings"]);
+  const [cookies, removeCookie] = useCookies(["4inUserSettings"]);
 
-  let cookieSettings = null;
+  let cookieSettings = {};
 
   if (cookies["4inUserSettings"]) {
-    cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+    try {
+      cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+    } catch (error) {
+      console.warn("Invalid cookie:", error);
+      removeCookie("4inUserSettings", undefined, { path: "/" });
+    }
   }
-
-  const [sort, setSort] = useState("id,asc");
-  const [size, setSize] = useState(20);
-  const [page, setPage] = useState(0);
-
-  const [items, setItems] = useState([]);
-  const [response, setResponse] = useState([]);
-
-  const [loading, setLoading] = useState(false);
-  const [update, setUpdate] = useState(false);
-
-  let count = 0;
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,144 +34,37 @@ export default function Products() {
 
   const searchParams = new URLSearchParams(location.search);
 
-  const urlSize = searchParams.get("size");
+  const urlSize = Number(searchParams.get("size"));
   const urlSort = searchParams.get("sort")?.replace("-", ",");
-  const urlPage = searchParams.get("page");
+  const urlPage = Number(searchParams.get("page"));
 
-  useEffect(() => {
-    let errors = 0;
-
-    const cookieSavedSort = cookieSettings?.productsSort;
-
-    if (urlSort) {
-      const currentSortSplit = urlSort.split(",");
-      let currentSortOrderBy = currentSortSplit[0];
-      let currentSortOrder = currentSortSplit[1];
-
-      let currentSortIndex = productsColumns.findIndex(
-        (element) => element.orderBy === currentSortOrderBy,
-      );
-
-      if (
-        (currentSortIndex >= 0 && currentSortOrder === "asc") ||
-        currentSortOrder === "desc"
-      ) {
-        setSort(urlSort);
-      } else {
-        errors++;
-      }
-    } else {
-      if (cookieSavedSort) {
-        setSort(undefined);
-      }
-    }
-
-    const cookieSavedSize = cookieSettings?.productsSize;
-
-    if (urlSize) {
-      if (urlSize > 0) {
-        setSize(urlSize);
-      } else {
-        errors++;
-      }
-    } else {
-      if (cookieSavedSize) {
-        setSize(undefined);
-      }
-    }
-
-    if (urlPage) {
-      if (urlPage <= response.totalPages) {
-        setPage(urlPage);
-      } else {
-        errors++;
-      }
-    }
-
-    if (errors > 0) {
-      toast.warning(t("wrongFilter"));
-      navigate(path);
-    }
-  }, [urlSize, urlSort, urlPage, response]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-
-      try {
-        const response = await toast.promise(
-          api.get("/inventory", {
-            params: {
-              page,
-              size: size || cookieSettings?.productsSize,
-              sort: sort || cookieSettings?.productsSort,
-            },
-          }),
-          {
-            pending: t("loading.finding"),
-            success: {
-              render({ data }) {
-                return (
-                  <p>
-                    {t("loading.success")}{" "}
-                    <span className="font-semibold">
-                      {data.data.totalElements}
-                    </span>
-                  </p>
-                );
-              },
-              toastId: "getItem",
-            },
-            error: {
-              render({ data }) {
-                if (
-                  data.code === "ECONNABORTED" ||
-                  data.code === "ERR_NETWORK"
-                ) {
-                  return (
-                    <p>
-                      {t("loading.errors.network")}{" "}
-                      <span className="text-xs opacity-80">
-                        #timeout exceeded/network error.
-                      </span>
-                    </p>
-                  );
-                }
-
-                if (data.code === "ERR_BAD_REQUEST") {
-                  return (
-                    <p>
-                      {t("loading.errors.token")}{" "}
-                      <span className="text-xs opacity-80">path:/products</span>
-                    </p>
-                  );
-                }
-
-                return <p>{t("loading.errors.generic")}</p>;
-              },
-            },
-          },
-        );
-
-        setItems(response.data.content);
-        setResponse(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-
-        if (error.status === 403) {
-          navigate("/logout");
-        }
-      }
-
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [page, sort, size, update]);
-
-  const updateData = () => {
-    update ? setUpdate(false) : setUpdate(true);
+  const defaultParams = {
+    size: 20,
+    sort: "id,asc",
+    page: 1,
   };
+
+  const initialSize =
+    (urlSize > 0 && urlSize) ||
+    cookieSettings?.productsSize ||
+    defaultParams.size;
+
+  const initialSort =
+    urlSort || cookieSettings?.productsSort || defaultParams.sort;
+
+  const initialPage = (urlPage > 0 && urlPage) || defaultParams.page;
+
+  const [sort, setSort] = useState(initialSort);
+  const [size, setSize] = useState(initialSize);
+  const [page, setPage] = useState(initialPage);
+
+  const [items, setItems] = useState([]);
+  const [response, setResponse] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+  const [update, setUpdate] = useState(false);
+
+  let count = 0;
 
   const productsColumns = [
     {
@@ -230,6 +116,121 @@ export default function Products() {
       extendedColumn: false,
     },
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const response = await toast.promise(
+          api.get("/inventory", {
+            params: {
+              page: page - 1,
+              size,
+              sort,
+            },
+          }),
+          {
+            pending: t("loading.finding"),
+            success: {
+              render({ data }) {
+                return (
+                  <p>
+                    {t("loading.success")}{" "}
+                    <span className="font-semibold">
+                      {data.data.totalElements}
+                    </span>
+                  </p>
+                );
+              },
+              toastId: "getItem",
+            },
+            error: {
+              render({ data }) {
+                if (
+                  data.code === "ECONNABORTED" ||
+                  data.code === "ERR_NETWORK"
+                ) {
+                  return (
+                    <p>
+                      {t("loading.errors.network")}{" "}
+                      <span className="text-xs opacity-80">
+                        #timeout exceeded/network error.
+                      </span>
+                    </p>
+                  );
+                }
+
+                return <p>{t("loading.errors.generic")}</p>;
+              },
+            },
+          },
+        );
+
+        setItems(response.data.content);
+        setResponse(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [page, sort, size, update]);
+
+  useEffect(() => {
+    let errors = 0;
+
+    if (urlSort) {
+      const currentSortSplit = urlSort.split(",");
+      let currentSortOrderBy = currentSortSplit[0];
+      let currentSortOrder = currentSortSplit[1];
+
+      let currentSortIndex = productsColumns.findIndex(
+        (element) => element.orderBy === currentSortOrderBy,
+      );
+
+      if (
+        (currentSortIndex >= 0 && currentSortOrder === "asc") ||
+        currentSortOrder === "desc"
+      ) {
+        setSort(urlSort);
+      } else {
+        setSort(defaultParams.sort);
+        errors++;
+      }
+    }
+
+    if (urlSize) {
+      if (urlSize > 0) {
+        setSize(urlSize);
+      } else {
+        setSize(defaultParams.size);
+        errors++;
+      }
+    }
+
+    if (response?.totalPages == null) return;
+
+    if (urlPage) {
+      if (urlPage <= response.totalPages && urlPage > 0) {
+        setPage(urlPage);
+      } else {
+        setPage(defaultParams.page);
+        errors++;
+      }
+    }
+
+    if (errors > 0) {
+      toast.warning(t("wrongFilter"));
+      navigate(path);
+    }
+  }, [urlSize, urlSort, urlPage, response.totalPages]);
+
+  const updateData = () => {
+    update ? setUpdate(false) : setUpdate(true);
+  };
 
   const Subtitle = () => {
     return (
@@ -322,7 +323,7 @@ export default function Products() {
           <Pagination
             totalElements={response.totalElements}
             totalPages={response.totalPages}
-            pageNumber={response.pageable.pageNumber}
+            pageNumber={response.pageable.pageNumber + 1}
             numberOfElements={response.numberOfElements}
             first={response.first}
             last={response.last}

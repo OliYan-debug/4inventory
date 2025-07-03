@@ -1,29 +1,61 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useCookies } from "react-cookie";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import { ChevronRight } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { Card } from "../components/Card";
 import { History } from "../components/History";
 import { Pagination } from "../components/Pagination";
-import { toast } from "react-toastify";
-import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
   const { t } = useTranslation("dashboard");
 
-  const [cookies] = useCookies(["4inUserSettings"]);
+  const [cookies, removeCookie] = useCookies(["4inUserSettings"]);
 
-  let cookieSettings = null;
+  let cookieSettings = {};
 
   if (cookies["4inUserSettings"]) {
-    cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+    try {
+      cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+    } catch (error) {
+      console.warn("Invalid cookie:", error);
+      removeCookie("4inUserSettings", undefined, { path: "/" });
+    }
   }
 
-  const [sort, setSort] = useState("createdAt,desc");
-  const [size, setSize] = useState(20);
-  const [page, setPage] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const path = location.pathname;
+
+  const searchParams = new URLSearchParams(location.search);
+
+  const urlSize = Number(searchParams.get("size"));
+  const urlSort = searchParams.get("sort")?.replace("-", ",");
+  const urlPage = Number(searchParams.get("page"));
+
+  const defaultParams = {
+    size: 20,
+    sort: "createdAt,desc",
+    page: 1,
+  };
+
+  const initialSize =
+    (urlSize > 0 && urlSize) ||
+    cookieSettings?.dashboardSize ||
+    defaultParams.size;
+
+  const initialSort =
+    urlSort || cookieSettings?.dashboardSort || defaultParams.sort;
+
+  const initialPage = (urlPage > 0 && urlPage) || defaultParams.page;
+
+  const [sort, setSort] = useState(initialSort);
+  const [size, setSize] = useState(initialSize);
+  const [page, setPage] = useState(initialPage);
 
   const [registers, setRegisters] = useState([]);
   const [response, setResponse] = useState([]);
@@ -34,155 +66,6 @@ export default function Dashboard() {
   const [totalItems, setTotalItems] = useState(0);
   const [totalCategories, setTotalCategories] = useState(0);
   const [totalRegistries, setTotalRegistries] = useState(0);
-
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const path = location.pathname;
-
-  const searchParams = new URLSearchParams(location.search);
-
-  const urlSize = searchParams.get("size");
-  const urlSort = searchParams.get("sort")?.replace("-", ",");
-  const urlPage = searchParams.get("page");
-
-  useEffect(() => {
-    let errors = 0;
-
-    const cookieSavedSort = cookieSettings?.dashboardSort;
-
-    if (urlSort) {
-      const currentSortSplit = urlSort.split(",");
-      let currentSortOrderBy = currentSortSplit[0];
-      let currentSortOrder = currentSortSplit[1];
-
-      let currentSortIndex = registersColumns.findIndex(
-        (element) => element.orderBy === currentSortOrderBy,
-      );
-
-      if (
-        (currentSortIndex >= 0 && currentSortOrder === "asc") ||
-        currentSortOrder === "desc"
-      ) {
-        setSort(urlSort);
-      } else {
-        errors++;
-      }
-    } else {
-      if (cookieSavedSort) {
-        setSort(undefined);
-      }
-    }
-
-    const cookieSavedSize = cookieSettings?.dashboardSize;
-
-    if (urlSize) {
-      if (urlSize > 0) {
-        setSize(urlSize);
-      } else {
-        errors++;
-      }
-    } else {
-      if (cookieSavedSize) {
-        setSize(undefined);
-      }
-    }
-
-    if (urlPage) {
-      if (urlPage <= response.totalPages) {
-        setPage(urlPage);
-      } else {
-        errors++;
-      }
-    }
-
-    if (errors > 0) {
-      toast.warning(t("wrongFilter"));
-      navigate(path);
-    }
-  }, [urlSize, urlSort, urlPage, response]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-
-      try {
-        const response = await toast.promise(
-          api.get("/registry", {
-            params: {
-              page,
-              size: size || cookieSettings?.dashboardSize,
-              sort: sort || cookieSettings?.dashboardSort,
-            },
-          }),
-          {
-            pending: t("loading.pending"),
-            success: {
-              render({ data }) {
-                return (
-                  <p>
-                    {t("loading.success")}{" "}
-                    <span className="font-semibold">
-                      {data.data.totalElements}
-                    </span>
-                  </p>
-                );
-              },
-              toastId: "getRegister",
-            },
-            error: {
-              render({ data }) {
-                if (
-                  data.code === "ECONNABORTED" ||
-                  data.code === "ERR_NETWORK"
-                ) {
-                  return (
-                    <p>
-                      {t("loading.errors.network")}{" "}
-                      <span className="text-xs opacity-80">
-                        #timeout exceeded/network error.
-                      </span>
-                    </p>
-                  );
-                }
-
-                if (data.code === "ERR_BAD_REQUEST") {
-                  return (
-                    <p>
-                      {t("loading.errors.token")}{" "}
-                      <span className="text-xs opacity-80">
-                        path:/dashboard
-                      </span>
-                    </p>
-                  );
-                }
-
-                return <p>{t("loading.errors.generic")}</p>;
-              },
-            },
-          },
-        );
-
-        setRegisters(response.data.content);
-        setResponse(response.data);
-        setTotalRegistries(response.data.totalElements);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-
-        if (error.status === 403) {
-          navigate("/logout");
-        }
-      }
-
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [page, sort, size, update]);
-
-  const updateData = () => {
-    update ? setUpdate(false) : setUpdate(true);
-  };
 
   const registersColumns = [
     {
@@ -236,6 +119,118 @@ export default function Dashboard() {
   ];
 
   useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const response = await toast.promise(
+          api.get("/registry", {
+            params: {
+              page: page - 1,
+              size,
+              sort,
+            },
+          }),
+          {
+            pending: t("loading.pending"),
+            success: {
+              render({ data }) {
+                return (
+                  <p>
+                    {t("loading.success")}{" "}
+                    <span className="font-semibold">
+                      {data.data.totalElements}
+                    </span>
+                  </p>
+                );
+              },
+              toastId: "getRegister",
+            },
+            error: {
+              render({ data }) {
+                if (
+                  data.code === "ECONNABORTED" ||
+                  data.code === "ERR_NETWORK"
+                ) {
+                  return (
+                    <p>
+                      {t("loading.errors.network")}{" "}
+                      <span className="text-xs opacity-80">
+                        #timeout exceeded/network error.
+                      </span>
+                    </p>
+                  );
+                }
+
+                return <p>{t("loading.errors.generic")}</p>;
+              },
+            },
+          },
+        );
+
+        setRegisters(response.data.content);
+        setResponse(response.data);
+        setTotalRegistries(response.data.totalElements);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [page, sort, size, update]);
+
+  useEffect(() => {
+    let errors = 0;
+
+    if (urlSort) {
+      const currentSortSplit = urlSort.split(",");
+      let currentSortOrderBy = currentSortSplit[0];
+      let currentSortOrder = currentSortSplit[1];
+
+      let currentSortIndex = registersColumns.findIndex(
+        (element) => element.orderBy === currentSortOrderBy,
+      );
+
+      if (
+        (currentSortIndex >= 0 && currentSortOrder === "asc") ||
+        currentSortOrder === "desc"
+      ) {
+        setSort(urlSort);
+      } else {
+        setSort(defaultParams.sort);
+        errors++;
+      }
+    }
+
+    if (urlSize) {
+      if (urlSize > 0) {
+        setSize(urlSize);
+      } else {
+        setSize(defaultParams.size);
+        errors++;
+      }
+    }
+
+    if (response?.totalPages == null) return;
+
+    if (urlPage) {
+      if (urlPage <= response.totalPages && urlPage > 0) {
+        setPage(urlPage);
+      } else {
+        setPage(defaultParams.page);
+        errors++;
+      }
+    }
+
+    if (errors > 0) {
+      toast.warning(t("wrongFilter"));
+      navigate(path);
+    }
+  }, [urlSize, urlSort, urlPage, response.totalPages]);
+
+  useEffect(() => {
     api
       .get("/inventory")
       .then((response) => {
@@ -256,6 +251,10 @@ export default function Dashboard() {
         console.error("Error fetching data:", error);
       });
   }, []);
+
+  const updateData = () => {
+    update ? setUpdate(false) : setUpdate(true);
+  };
 
   const Subtitle = () => {
     return (
@@ -294,7 +293,7 @@ export default function Dashboard() {
             <Pagination
               totalElements={response.totalElements}
               totalPages={response.totalPages}
-              pageNumber={response.pageable.pageNumber}
+              pageNumber={response.pageable.pageNumber + 1}
               numberOfElements={response.numberOfElements}
               first={response.first}
               last={response.last}
