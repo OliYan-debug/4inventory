@@ -45,9 +45,9 @@ export function Pagination({
     let current = false;
 
     let startPage = Math.max(pageNumber - Math.floor(maxLimit / 2), minLimit);
-    let endPage = Math.min(startPage + maxLimit - 1, totalPages - 1);
+    let endPage = Math.min(startPage + maxLimit - 1, totalPages);
 
-    for (let i = startPage; i <= endPage; i++) {
+    for (let i = startPage + 1; i <= endPage; i++) {
       current = pageNumber === i;
 
       pages.push(
@@ -61,7 +61,7 @@ export function Pagination({
           aria-current="page"
           className={`${current ? "relative z-10 inline-flex items-center bg-neutral-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600" : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-neutral-900 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50 focus:z-20 focus:outline-offset-0"}`}
         >
-          {i + 1}
+          {i}
         </button>,
       );
     }
@@ -115,7 +115,7 @@ export function Pagination({
             >
               <button
                 onClick={() => {
-                  searchParams.set("page", 0);
+                  searchParams.set("page", 1);
                   navigate(`${path}?${searchParams.toString()}`);
                 }}
                 type="button"
@@ -163,7 +163,7 @@ export function Pagination({
 
               <button
                 onClick={() => {
-                  searchParams.set("page", totalPages - 1);
+                  searchParams.set("page", totalPages);
                   navigate(`${path}?${searchParams.toString()}`);
                 }}
                 type="button"
