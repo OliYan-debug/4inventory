@@ -1,32 +1,122 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useCookies } from "react-cookie";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 import { ChevronRight } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { Card } from "../components/Card";
 import { History } from "../components/History";
 import { Pagination } from "../components/Pagination";
-import { toast } from "react-toastify";
-import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
   const { t } = useTranslation("dashboard");
 
-  let { page } = useParams();
-  const [cookies] = useCookies();
+  const [cookies, removeCookie] = useCookies(["4inUserSettings"]);
+
+  let cookieSettings = {};
+
+  if (cookies["4inUserSettings"]) {
+    try {
+      cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+    } catch (error) {
+      console.warn("Invalid cookie:", error);
+      removeCookie("4inUserSettings", undefined, { path: "/" });
+    }
+  }
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const path = location.pathname;
+
+  const searchParams = new URLSearchParams(location.search);
+
+  const urlSize = Number(searchParams.get("size"));
+  const urlSort = searchParams.get("sort")?.replace("-", ",");
+  const urlPage = Number(searchParams.get("page"));
+
+  const defaultParams = {
+    size: 20,
+    sort: "createdAt,desc",
+    page: 1,
+  };
+
+  const initialSize =
+    (urlSize > 0 && urlSize) ||
+    cookieSettings?.dashboardSize ||
+    defaultParams.size;
+
+  const initialSort =
+    urlSort || cookieSettings?.dashboardSort || defaultParams.sort;
+
+  const initialPage = (urlPage > 0 && urlPage) || defaultParams.page;
+
+  const [sort, setSort] = useState(initialSort);
+  const [size, setSize] = useState(initialSize);
+  const [page, setPage] = useState(initialPage);
+
   const [registers, setRegisters] = useState([]);
   const [response, setResponse] = useState([]);
+
   const [loading, setLoading] = useState(false);
-  const [size, setSize] = useState(10);
-  const defaultSort = "createdAt,desc";
-  const [sort, setSort] = useState(defaultSort);
+  const [update, setUpdate] = useState(false);
+
   const [totalItems, setTotalItems] = useState(0);
   const [totalCategories, setTotalCategories] = useState(0);
   const [totalRegistries, setTotalRegistries] = useState(0);
-  const [update, setUpdate] = useState(false);
 
-  const navigate = useNavigate();
+  const registersColumns = [
+    {
+      label: t("columns.id"),
+      orderBy: "id",
+      sorting: false,
+      order: "neutral",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+    {
+      label: t("columns.name"),
+      orderBy: "item",
+      sorting: false,
+      order: "neutral",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+    {
+      label: t("columns.type"),
+      orderBy: "label",
+      sorting: false,
+      order: "neutral",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+    {
+      label: t("columns.justification"),
+      orderBy: "justification",
+      sorting: false,
+      order: "neutral",
+      isOrderable: true,
+      extendedColumn: true,
+    },
+    {
+      label: t("columns.author"),
+      orderBy: "author",
+      sorting: false,
+      order: "neutral",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+    {
+      label: t("columns.createdAt"),
+      orderBy: "createdAt",
+      sorting: true,
+      order: "desc",
+      isOrderable: true,
+      extendedColumn: false,
+    },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,8 +126,8 @@ export default function Dashboard() {
         const response = await toast.promise(
           api.get("/registry", {
             params: {
-              page,
-              size: cookies.paginationSize || 10,
+              page: page - 1,
+              size,
               sort,
             },
           }),
@@ -72,15 +162,6 @@ export default function Dashboard() {
                   );
                 }
 
-                if (data.code === "ERR_BAD_REQUEST") {
-                  return (
-                    <p>
-                      {t("loading.errors.token")}{" "}
-                      <span className="text-xs opacity-80">path:/products</span>
-                    </p>
-                  );
-                }
-
                 return <p>{t("loading.errors.generic")}</p>;
               },
             },
@@ -92,21 +173,62 @@ export default function Dashboard() {
         setTotalRegistries(response.data.totalElements);
       } catch (error) {
         console.error("Error fetching data:", error);
-
-        if (error.status === 403) {
-          navigate("/logout");
-        }
       }
 
       setLoading(false);
     };
 
     fetchData();
-  }, [page, sort, size, cookies.paginationSize, update]);
+  }, [page, sort, size, update]);
 
-  const updateData = () => {
-    update ? setUpdate(false) : setUpdate(true);
-  };
+  useEffect(() => {
+    let errors = 0;
+
+    if (urlSort) {
+      const currentSortSplit = urlSort.split(",");
+      let currentSortOrderBy = currentSortSplit[0];
+      let currentSortOrder = currentSortSplit[1];
+
+      let currentSortIndex = registersColumns.findIndex(
+        (element) => element.orderBy === currentSortOrderBy,
+      );
+
+      if (
+        (currentSortIndex >= 0 && currentSortOrder === "asc") ||
+        currentSortOrder === "desc"
+      ) {
+        setSort(urlSort);
+      } else {
+        setSort(defaultParams.sort);
+        errors++;
+      }
+    }
+
+    if (urlSize) {
+      if (urlSize > 0) {
+        setSize(urlSize);
+      } else {
+        setSize(defaultParams.size);
+        errors++;
+      }
+    }
+
+    if (response?.totalPages == null) return;
+
+    if (urlPage) {
+      if (urlPage <= response.totalPages && urlPage > 0) {
+        setPage(urlPage);
+      } else {
+        setPage(defaultParams.page);
+        errors++;
+      }
+    }
+
+    if (errors > 0) {
+      toast.warning(t("wrongFilter"));
+      navigate(path);
+    }
+  }, [urlSize, urlSort, urlPage, response.totalPages]);
 
   useEffect(() => {
     api
@@ -129,6 +251,10 @@ export default function Dashboard() {
         console.error("Error fetching data:", error);
       });
   }, []);
+
+  const updateData = () => {
+    update ? setUpdate(false) : setUpdate(true);
+  };
 
   const Subtitle = () => {
     return (
@@ -156,8 +282,8 @@ export default function Dashboard() {
             </div>
 
             <History
+              registersColumns={registersColumns}
               registers={registers}
-              setSort={setSort}
               loading={loading}
               updateData={updateData}
             />
@@ -167,12 +293,11 @@ export default function Dashboard() {
             <Pagination
               totalElements={response.totalElements}
               totalPages={response.totalPages}
-              pageNumber={response.pageable.pageNumber}
+              pageNumber={response.pageable.pageNumber + 1}
               numberOfElements={response.numberOfElements}
               first={response.first}
               last={response.last}
-              setSize={setSize}
-              path={"dashboard"}
+              size={size}
             />
           )}
         </div>

@@ -15,9 +15,7 @@ export function MobileHeader() {
             <img src={logo} alt="4inventory" />
           </Link>
 
-          <span className="mt-px text-xs font-thin text-neutral-200">
-            1.13.1
-          </span>
+          <span className="mt-px text-xs font-thin text-neutral-200">1.14</span>
         </div>
       </div>
       <div className="absolute right-8 top-3">

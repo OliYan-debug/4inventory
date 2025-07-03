@@ -4,59 +4,8 @@ import { TableHeader } from "./TableHeader";
 import { LoadingSkeleton } from "./LoadingSkeleton";
 import { useTranslation } from "react-i18next";
 
-export function History({ registers, setSort, loading, updateData }) {
+export function History({ registersColumns, registers, loading, updateData }) {
   const { t } = useTranslation("history");
-
-  const registersColumns = [
-    {
-      label: t("columns.id"),
-      orderBy: "id",
-      sorting: false,
-      order: "neutral",
-      isOrderable: true,
-      extendedColumn: false,
-    },
-    {
-      label: t("columns.name"),
-      orderBy: "item",
-      sorting: false,
-      order: "neutral",
-      isOrderable: true,
-      extendedColumn: false,
-    },
-    {
-      label: t("columns.type"),
-      orderBy: "label",
-      sorting: false,
-      order: "neutral",
-      isOrderable: true,
-      extendedColumn: false,
-    },
-    {
-      label: t("columns.justification"),
-      orderBy: "justification",
-      sorting: false,
-      order: "neutral",
-      isOrderable: true,
-      extendedColumn: true,
-    },
-    {
-      label: t("columns.author"),
-      orderBy: "author",
-      sorting: false,
-      order: "neutral",
-      isOrderable: true,
-      extendedColumn: false,
-    },
-    {
-      label: t("columns.createdAt"),
-      orderBy: "createdAt",
-      sorting: true,
-      order: "desc",
-      isOrderable: true,
-      extendedColumn: false,
-    },
-  ];
 
   let count = 0;
 
@@ -70,7 +19,7 @@ export function History({ registers, setSort, loading, updateData }) {
       </div>
 
       <div>
-        <TableHeader setSort={setSort} columnsDefault={registersColumns} />
+        <TableHeader columnsDefault={registersColumns} />
 
         {loading ? (
           <LoadingSkeleton />

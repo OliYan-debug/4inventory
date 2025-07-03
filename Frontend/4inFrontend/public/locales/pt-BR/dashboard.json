@@ -9,6 +9,14 @@
     "categories": "Categorias",
     "inventory": "Movimentações"
   },
+  "columns": {
+    "id": "ID",
+    "name": "Nome",
+    "type": "Tipo",
+    "justification": "Justificativa",
+    "author": "Autor",
+    "createdAt": "Criado Em"
+  },
   "loading": {
     "pending": "Buscando registros...",
     "success": "Registros encontrados:",
@@ -17,5 +25,6 @@
       "token": "Token inválido, faça login novamente.",
       "generic": "Erro ao buscar. Tente novamente."
     }
-  }
+  },
+  "wrongFilter": "Ops, filtro de url errado, tente novamente"
 }

@@ -1,110 +1,70 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useCookies } from "react-cookie";
+import { toast } from "react-toastify";
 import { FolderSync, PlusCircle, Rat } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { Item } from "../components/Item";
 import { Pagination } from "../components/Pagination";
 import { LoadingSkeleton } from "../components/LoadingSkeleton";
-import { toast } from "react-toastify";
 import { TableHeader } from "../components/TableHeader";
-import { useTranslation } from "react-i18next";
 
 export default function Products() {
   const { t } = useTranslation("products");
 
-  let { page } = useParams();
-  const defaultSort = "id,asc";
-  const [sort, setSort] = useState(defaultSort);
-  const [cookies] = useCookies();
-  const [loading, setLoading] = useState(false);
-  const [items, setItems] = useState([]);
-  const [response, setResponse] = useState([]);
-  const [size, setSize] = useState(10);
-  const [update, setUpdate] = useState(false);
-  let count = 0;
+  const [cookies, removeCookie] = useCookies(["4inUserSettings"]);
+
+  let cookieSettings = {};
+
+  if (cookies["4inUserSettings"]) {
+    try {
+      cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+    } catch (error) {
+      console.warn("Invalid cookie:", error);
+      removeCookie("4inUserSettings", undefined, { path: "/" });
+    }
+  }
 
   const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+  const path = location.pathname;
 
-      try {
-        const response = await toast.promise(
-          api.get("/inventory", {
-            params: {
-              page,
-              size: cookies.paginationSize || 10,
-              sort,
-            },
-          }),
-          {
-            pending: t("loading.finding"),
-            success: {
-              render({ data }) {
-                return (
-                  <p>
-                    {t("loading.success")}{" "}
-                    <span className="font-semibold">
-                      {data.data.totalElements}
-                    </span>
-                  </p>
-                );
-              },
-              toastId: "getItem",
-            },
-            error: {
-              render({ data }) {
-                if (
-                  data.code === "ECONNABORTED" ||
-                  data.code === "ERR_NETWORK"
-                ) {
-                  return (
-                    <p>
-                      {t("loading.errors.network")}{" "}
-                      <span className="text-xs opacity-80">
-                        #timeout exceeded/network error.
-                      </span>
-                    </p>
-                  );
-                }
+  const searchParams = new URLSearchParams(location.search);
 
-                if (data.code === "ERR_BAD_REQUEST") {
-                  return (
-                    <p>
-                      {t("loading.errors.token")}{" "}
-                      <span className="text-xs opacity-80">path:/products</span>
-                    </p>
-                  );
-                }
+  const urlSize = Number(searchParams.get("size"));
+  const urlSort = searchParams.get("sort")?.replace("-", ",");
+  const urlPage = Number(searchParams.get("page"));
 
-                return <p>{t("loading.errors.generic")}</p>;
-              },
-            },
-          },
-        );
-
-        setItems(response.data.content);
-        setResponse(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-
-        if (error.status === 403) {
-          navigate("/logout");
-        }
-      }
-
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [page, sort, size, cookies.paginationSize, update]);
-
-  const updateData = () => {
-    update ? setUpdate(false) : setUpdate(true);
+  const defaultParams = {
+    size: 20,
+    sort: "id,asc",
+    page: 1,
   };
+
+  const initialSize =
+    (urlSize > 0 && urlSize) ||
+    cookieSettings?.productsSize ||
+    defaultParams.size;
+
+  const initialSort =
+    urlSort || cookieSettings?.productsSort || defaultParams.sort;
+
+  const initialPage = (urlPage > 0 && urlPage) || defaultParams.page;
+
+  const [sort, setSort] = useState(initialSort);
+  const [size, setSize] = useState(initialSize);
+  const [page, setPage] = useState(initialPage);
+
+  const [items, setItems] = useState([]);
+  const [response, setResponse] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+  const [update, setUpdate] = useState(false);
+
+  let count = 0;
 
   const productsColumns = [
     {
@@ -157,6 +117,121 @@ export default function Products() {
     },
   ];
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const response = await toast.promise(
+          api.get("/inventory", {
+            params: {
+              page: page - 1,
+              size,
+              sort,
+            },
+          }),
+          {
+            pending: t("loading.finding"),
+            success: {
+              render({ data }) {
+                return (
+                  <p>
+                    {t("loading.success")}{" "}
+                    <span className="font-semibold">
+                      {data.data.totalElements}
+                    </span>
+                  </p>
+                );
+              },
+              toastId: "getItem",
+            },
+            error: {
+              render({ data }) {
+                if (
+                  data.code === "ECONNABORTED" ||
+                  data.code === "ERR_NETWORK"
+                ) {
+                  return (
+                    <p>
+                      {t("loading.errors.network")}{" "}
+                      <span className="text-xs opacity-80">
+                        #timeout exceeded/network error.
+                      </span>
+                    </p>
+                  );
+                }
+
+                return <p>{t("loading.errors.generic")}</p>;
+              },
+            },
+          },
+        );
+
+        setItems(response.data.content);
+        setResponse(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [page, sort, size, update]);
+
+  useEffect(() => {
+    let errors = 0;
+
+    if (urlSort) {
+      const currentSortSplit = urlSort.split(",");
+      let currentSortOrderBy = currentSortSplit[0];
+      let currentSortOrder = currentSortSplit[1];
+
+      let currentSortIndex = productsColumns.findIndex(
+        (element) => element.orderBy === currentSortOrderBy,
+      );
+
+      if (
+        (currentSortIndex >= 0 && currentSortOrder === "asc") ||
+        currentSortOrder === "desc"
+      ) {
+        setSort(urlSort);
+      } else {
+        setSort(defaultParams.sort);
+        errors++;
+      }
+    }
+
+    if (urlSize) {
+      if (urlSize > 0) {
+        setSize(urlSize);
+      } else {
+        setSize(defaultParams.size);
+        errors++;
+      }
+    }
+
+    if (response?.totalPages == null) return;
+
+    if (urlPage) {
+      if (urlPage <= response.totalPages && urlPage > 0) {
+        setPage(urlPage);
+      } else {
+        setPage(defaultParams.page);
+        errors++;
+      }
+    }
+
+    if (errors > 0) {
+      toast.warning(t("wrongFilter"));
+      navigate(path);
+    }
+  }, [urlSize, urlSort, urlPage, response.totalPages]);
+
+  const updateData = () => {
+    update ? setUpdate(false) : setUpdate(true);
+  };
+
   const Subtitle = () => {
     return (
       <p className="text-sm text-neutral-500">
@@ -178,7 +253,7 @@ export default function Products() {
 
       <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div>
-          <TableHeader setSort={setSort} columnsDefault={productsColumns} />
+          <TableHeader columnsDefault={productsColumns} />
 
           {loading ? (
             <LoadingSkeleton />
@@ -187,7 +262,21 @@ export default function Products() {
               {items.length <= 0 ? (
                 <div className="mt-10 flex animate-fadeIn flex-col items-center gap-2">
                   <Rat size={100} className="text-neutral-700" />
-                  <p className="font-medium text-neutral-600">{t("noItems")}</p>
+                  <div className="flex space-x-1">
+                    <p className="font-medium text-neutral-600">
+                      {t("noItems")}
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigate(`/products`);
+                      }}
+                      className="font-bold text-neutral-600 underline hover:no-underline"
+                    >
+                      Clear filters
+                    </button>
+                  </div>
                   <Link
                     to={"/products/new"}
                     className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
@@ -234,12 +323,11 @@ export default function Products() {
           <Pagination
             totalElements={response.totalElements}
             totalPages={response.totalPages}
-            pageNumber={response.pageable.pageNumber}
+            pageNumber={response.pageable.pageNumber + 1}
             numberOfElements={response.numberOfElements}
             first={response.first}
             last={response.last}
-            setSize={setSize}
-            path={"products"}
+            size={size}
           />
         )}
       </div>

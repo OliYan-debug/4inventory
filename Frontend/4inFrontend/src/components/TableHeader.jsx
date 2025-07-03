@@ -1,9 +1,73 @@
 import { ArrowDownNarrowWide, ArrowUpNarrowWide } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import { useLocation, useNavigate } from "react-router";
 
-export function TableHeader({ setSort, columnsDefault }) {
+export function TableHeader({ columnsDefault }) {
   const [columns, setColumns] = useState(columnsDefault);
   const [newSort, setNewSort] = useState(null);
+
+  const [cookies, setCookie, removeCookie] = useCookies(["4inUserSettings"]);
+
+  let cookieSettings = {};
+
+  if (cookies["4inUserSettings"]) {
+    try {
+      cookieSettings = JSON.parse(atob(cookies["4inUserSettings"]));
+    } catch (error) {
+      console.warn("Invalid cookie:", error);
+      removeCookie("4inUserSettings", undefined, { path: "/" });
+    }
+  }
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  const urlSort = searchParams.get("sort")?.replace("-", ",");
+
+  const path = location.pathname;
+
+  const pathsCookieKey = {
+    "/products": "productsSort",
+    "/dashboard": "dashboardSort",
+  };
+
+  const currentPathKey = pathsCookieKey[path];
+
+  useEffect(() => {
+    const cookieSavedSort = cookieSettings?.[currentPathKey];
+
+    let currentSort = urlSort || cookieSavedSort;
+
+    if (currentSort) {
+      const currentSortSplit = currentSort.split(",");
+      let currentSortOrderBy = currentSortSplit[0];
+      let currentSortOrder = currentSortSplit[1];
+
+      let currentSortIndex = columnsDefault.findIndex(
+        (element) => element.orderBy === currentSortOrderBy,
+      );
+
+      setColumns((prevColumns) => {
+        return prevColumns.map((column, index) => {
+          if (index === currentSortIndex) {
+            return {
+              ...column,
+              order: currentSortOrder,
+              sorting: true,
+            };
+          } else {
+            return {
+              ...column,
+              order: "neutral",
+              sorting: false,
+            };
+          }
+        });
+      });
+    }
+  }, []);
 
   const handleSort = (selectedIndex) => {
     setColumns((prevColumns) => {
@@ -13,7 +77,7 @@ export function TableHeader({ setSort, columnsDefault }) {
 
           newOrder = column.order === "asc" ? "desc" : "asc";
 
-          let newSort = `${column.orderBy},${newOrder}`;
+          let newSort = `${column.orderBy}-${newOrder}`;
 
           setNewSort(newSort);
 
@@ -35,7 +99,24 @@ export function TableHeader({ setSort, columnsDefault }) {
 
   useEffect(() => {
     if (newSort) {
-      setSort(newSort);
+      searchParams.set("sort", newSort);
+      navigate(`${path}?${searchParams.toString()}`);
+
+      if (currentPathKey) {
+        const baseSettings = cookieSettings ?? {};
+
+        const newCookieValue = {
+          ...baseSettings,
+          [currentPathKey]: newSort.replace("-", ","),
+        };
+
+        const cookieValue = btoa(JSON.stringify(newCookieValue));
+
+        setCookie("4inUserSettings", cookieValue, {
+          path: "/",
+          maxAge: 30 * 24 * 60 * 60, //30 days
+        });
+      }
     }
   }, [newSort]);
 
