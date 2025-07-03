@@ -13,7 +13,7 @@ export function RouteFound({ name, path, setOpenSearch }) {
       }}
       className="group rounded-lg focus-visible:outline-offset-4 focus-visible:outline-emerald-400"
     >
-      <li className="group flex h-16 w-full animate-fadeIn cursor-pointer flex-row items-center gap-3 rounded-lg bg-neutral-300 px-2 transition hover:bg-emerald-400 group-focus-visible:bg-emerald-400">
+      <li className="group flex h-16 w-full animate-fade-in cursor-pointer flex-row items-center gap-3 rounded-lg bg-neutral-300 px-2 transition hover:bg-emerald-400 group-focus-visible:bg-emerald-400">
         <span className="flex size-8 items-center justify-center rounded-lg border border-neutral-500 group-hover:border-neutral-50 group-focus-visible:border-neutral-50">
           <RouteIcon
             className={

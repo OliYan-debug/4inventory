@@ -9,7 +9,7 @@ export function UserDetails({ user, children }) {
         </span>
       </div>
 
-      <div className="to h-28 w-full rounded-tl-[62px] bg-gradient-to-r from-sky-400 to-emerald-400 shadow-sm"></div>
+      <div className="to h-28 w-full rounded-tl-[62px] bg-linear-to-r from-sky-400 to-emerald-400 shadow-xs"></div>
 
       <div className="mt-10 flex w-full flex-col items-center border-b border-neutral-200 pb-4">
         <h2 className="max-w-full truncate px-2 text-3xl font-bold text-neutral-800">

@@ -113,7 +113,7 @@ export function InputSearchItems({
           onChange={handleSearchProduct}
           disabled={isSearchable}
           placeholder={t("update_item_placeholder")}
-          className={`focus-visible::border-neutral-500 ${items.length > 0 ? "rounded-t-lg border-b-0" : "rounded-lg"} w-full border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+          className={`focus-visible::border-neutral-500 ${items.length > 0 ? "rounded-t-lg border-b-0" : "rounded-lg"} w-full border border-neutral-400 px-4 py-2 text-neutral-500 outline-hidden hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
             errors.item &&
             "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
           }`}

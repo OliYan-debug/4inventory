@@ -32,7 +32,7 @@ export function Item({
 
   return (
     <div
-      className={`relative grid min-h-12 min-w-[840px] animate-fadeIn grid-cols-7 items-center justify-items-center text-wrap text-neutral-500 ${
+      className={`relative grid min-h-12 min-w-[840px] animate-fade-in grid-cols-7 items-center justify-items-center text-wrap text-neutral-500 ${
         count % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >
@@ -79,7 +79,7 @@ export function Item({
         </p>
 
         {description.length > 20 && (
-          <div className="absolute top-10 z-10 hidden max-w-72 animate-fadeIn justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/description:flex">
+          <div className="absolute top-10 z-10 hidden max-w-72 animate-fade-in justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/description:flex">
             <span className="absolute -top-1 block size-2 -translate-y-px rotate-45 border-l border-t border-neutral-500 bg-neutral-400"></span>
             <p className="text-justify text-xs text-neutral-50">
               {description}
@@ -97,7 +97,7 @@ export function Item({
               className="w-32 max-w-32 truncate rounded-2xl px-2 py-0.5 text-center text-xs"
             >
               <p
-                className={`getContrastingTextColor truncate drop-shadow-sm ${getContrastingTextColor(category.color)}`}
+                className={`getContrastingTextColor truncate drop-shadow-xs ${getContrastingTextColor(category.color)}`}
               >
                 {category.name}
               </p>

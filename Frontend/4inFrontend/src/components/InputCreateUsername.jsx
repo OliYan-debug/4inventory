@@ -54,7 +54,7 @@ export function InputCreateUserName({ register, errors, isSubmitting }) {
           id="username"
           disabled={isSubmitting}
           placeholder={t("username_placeholder")}
-          className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+          className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-hidden hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
             errors.username &&
             "border-red-600 text-red-600 hover:border-red-600 focus-visible:border-red-600"
           }`}

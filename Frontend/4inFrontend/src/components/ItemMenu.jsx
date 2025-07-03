@@ -39,7 +39,7 @@ export function ItemMenu({ id, quantity, setItemMenuOpen }) {
   return (
     <div
       ref={ref}
-      className="absolute left-1 top-5 z-10 animate-fadeIn rounded-lg bg-neutral-50 py-2 shadow-lg"
+      className="absolute left-1 top-5 z-10 animate-fade-in rounded-lg bg-neutral-50 py-2 shadow-lg"
     >
       <ul className="flex w-36 flex-col gap-1 text-neutral-600">
         <li className="flex h-7 w-full cursor-pointer items-center px-4 transition hover:bg-neutral-400 hover:font-medium">

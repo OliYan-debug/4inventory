@@ -25,7 +25,7 @@ export function InputJustification({ register, errors, selectedItem, watch }) {
           maxLength={255}
           placeholder={t("justification_placeholder")}
           disabled={selectedItem.length === 0}
-          className={`h-26 focus-visible::border-neutral-500 h-36 w-full resize-none rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-none hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
+          className={`h-26 focus-visible::border-neutral-500 h-36 w-full resize-none rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-hidden hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
             errors.justification &&
             "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
           }`}

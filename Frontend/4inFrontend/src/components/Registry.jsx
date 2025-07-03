@@ -17,7 +17,7 @@ export function Registry({
 }) {
   return (
     <div
-      className={`grid min-w-[840px] animate-fadeIn grid-cols-7 justify-items-center text-wrap ${
+      className={`grid min-w-[840px] animate-fade-in grid-cols-7 justify-items-center text-wrap ${
         count % 2 ? "bg-neutral-100" : "bg-neutral-200"
       }`}
     >
@@ -55,7 +55,7 @@ export function Registry({
             : justification}
         </p>
 
-        <div className="absolute top-10 z-10 hidden max-w-72 animate-fadeIn justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/justification:flex">
+        <div className="absolute top-10 z-10 hidden max-w-72 animate-fade-in justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/justification:flex">
           <span className="absolute -top-1 block size-2 -translate-y-px rotate-45 border-l border-t border-neutral-500 bg-neutral-400"></span>
           <p className="text-justify text-xs text-neutral-50">
             {justification}

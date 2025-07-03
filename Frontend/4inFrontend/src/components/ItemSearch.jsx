@@ -6,7 +6,7 @@ export function ItemSearch({ id, item, handleSelect }) {
       <button
         type="button"
         onClick={() => handleSelect(id)}
-        className="w-full cursor-pointer border-b border-neutral-200 px-4 outline-none transition focus-within:bg-neutral-300 hover:bg-neutral-100"
+        className="w-full cursor-pointer border-b border-neutral-200 px-4 outline-hidden transition focus-within:bg-neutral-300 hover:bg-neutral-100"
       >
         <div className="flex items-center gap-1 py-2 text-neutral-500">
           {item.quantity <= 0 ? (

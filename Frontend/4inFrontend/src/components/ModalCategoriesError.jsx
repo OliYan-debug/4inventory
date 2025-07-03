@@ -6,7 +6,7 @@ export function ModalCategoriesError() {
   const { t } = useTranslation("modal_categories_error");
 
   return (
-    <div className="fixed inset-0 z-50 flex h-screen w-screen animate-fadeIn items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-50 flex h-screen w-screen animate-fade-in items-center justify-center bg-black/50">
       <div className="flex w-[30vw] flex-col items-center rounded-2xl bg-neutral-50 px-8 py-6 text-center">
         <span className="flex size-10 items-center justify-center rounded-full bg-red-600/60">
           <TextSearch size={22} color="#dc2626" />
