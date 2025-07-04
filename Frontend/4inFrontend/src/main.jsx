@@ -36,8 +36,8 @@ export const App = () => {
 
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <CookiesProvider defaultSetOptions={{ path: "/" }}>
+      <CookiesProvider defaultSetOptions={{ path: "/" }}>
+        <AuthProvider>
           <Suspense fallback={<Loading />}>
             <Routes>
               {/* Products routes */}
@@ -348,8 +348,8 @@ export const App = () => {
             </Routes>
             <ToastContainer />
           </Suspense>
-        </CookiesProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </CookiesProvider>
     </BrowserRouter>
   );
 };
