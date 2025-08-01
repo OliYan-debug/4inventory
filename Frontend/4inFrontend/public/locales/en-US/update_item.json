@@ -21,6 +21,6 @@
   "loading": {
     "pending": "Updating item...",
     "success": "Item updated:",
-    "error": "Error when adding. Try again."
+    "error": "Error when updating. Try again."
   }
 }

@@ -1,0 +1,7 @@
+{
+  "actions": {
+    "permission": "Alterar permissão do usuário",
+    "password": "Redefinir a senha do usuário",
+    "delete": "Deletar usuário"
+  }
+}
