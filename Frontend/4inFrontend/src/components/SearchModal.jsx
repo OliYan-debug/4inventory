@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { InputSearch } from "./InputSearch";
 import { api } from "../services/api";
 import { useForm } from "react-hook-form";
+import { Button } from "./Button";
 
 export function Search({ setOpenSearch }) {
   const { t, i18n } = useTranslation("search");
@@ -73,7 +74,7 @@ export function Search({ setOpenSearch }) {
   }, [setOpenSearch]);
 
   return (
-    <div className="fixed inset-0 z-50 flex h-screen w-screen animate-fade-in items-center justify-center bg-black/50">
+    <div className="animate-fade-in fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-black/50">
       <form
         ref={ref}
         onSubmit={handleSubmit(onSubmit)}
@@ -85,7 +86,7 @@ export function Search({ setOpenSearch }) {
             onClick={() => {
               setOpenSearch(false);
             }}
-            className="absolute right-4 flex items-center transition hover:opacity-80"
+            className="absolute right-4 flex cursor-pointer items-center transition hover:opacity-80"
           >
             <kbd className="hidden rounded-lg border border-neutral-400 bg-neutral-500 px-2 py-1.5 text-xs font-semibold text-neutral-200 md:block">
               ESC
@@ -109,16 +110,16 @@ export function Search({ setOpenSearch }) {
           {items.length === 0 && filteredRoutes.length === 0 ? (
             <>
               {search !== "" && (
-                <div className="mt-4 flex animate-fade-in flex-col items-center gap-2">
-                  <Rat size={100} className="text-neutral-700" />
-                  <p className="w-52 break-words font-medium text-neutral-600">{`${t("no_items.text")} "${search}"`}</p>
-                  <button
-                    type="button"
-                    onClick={() => handleResetSearch()}
-                    className="flex rounded-lg bg-neutral-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-neutral-500"
-                  >
-                    {t("no_items.button.clear_and_try_again")}
-                  </button>
+                <div className="animate-fade-in flex flex-col items-center gap-2 text-center text-neutral-500">
+                  <Rat className="size-25 text-neutral-700" />
+
+                  <p className="w-52 font-medium break-words text-neutral-600">{`${t("no_items.text")}: "${search}"`}</p>
+
+                  <div className="w-full px-20">
+                    <Button type="button" onClick={() => handleResetSearch()}>
+                      {t("no_items.button.clear_and_try_again")}
+                    </Button>
+                  </div>
                 </div>
               )}
             </>

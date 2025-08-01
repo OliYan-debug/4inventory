@@ -2,7 +2,7 @@ import { Undo2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 
-export function BackToButton({ itemId, from }) {
+export function BackToButton({ itemId, from, disabled = false }) {
   const { t } = useTranslation("update_item");
   const navigate = useNavigate();
 
@@ -18,10 +18,11 @@ export function BackToButton({ itemId, from }) {
     <button
       onClick={handleBack}
       type="button"
-      className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80"
+      disabled={disabled}
+      className="flex cursor-pointer items-center font-semibold text-neutral-400 hover:underline hover:opacity-80 disabled:cursor-not-allowed disabled:no-underline disabled:hover:opacity-100"
     >
       {from === "item" ? t("buttons.backToItem") : t("buttons.backToProducts")}
-      <Undo2 size={20} className="ms-1 text-neutral-400" />
+      <Undo2 className="ms-1 size-5 text-neutral-400" />
     </button>
   );
 }

@@ -4,6 +4,7 @@ import { api } from "../services/api";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { Button } from "./Button";
 
 export function ModalUserResetPassword({
   id,
@@ -37,7 +38,7 @@ export function ModalUserResetPassword({
                   {t("loading.errors.generic")}
                   <br />
                   <span className="text-xs opacity-80">
-                    {data.response.data.message}
+                    {data?.response?.data?.message}
                   </span>
                 </p>
               );
@@ -57,15 +58,18 @@ export function ModalUserResetPassword({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex h-screen w-screen animate-fade-in items-center justify-center bg-black/50">
+    <div className="animate-fade-in fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-black/50">
       <div className="flex w-4/5 flex-col items-center rounded-2xl bg-neutral-50 px-8 py-6 text-center md:w-[40vw]">
         <span className="flex size-10 items-center justify-center rounded-full bg-blue-600/60">
           <LockOpen size={22} className="text-blue-600" />
         </span>
+
         <h1 className="my-2 text-2xl font-bold text-neutral-800">
           {t("modal.title")}
         </h1>
+
         <span className="font-medium text-blue-700">{name}</span>
+
         <p className="text-sm text-neutral-500">
           {t("modal.text.on_reset")}
           <span className="font-medium">username</span>{" "}
@@ -82,22 +86,18 @@ export function ModalUserResetPassword({
           </div>
         )}
 
-        <div className="mt-4 flex gap-2">
-          <button
-            type="button"
-            onClick={() => setCheckResetOpen(false)}
-            className="flex items-center justify-center rounded-lg border border-neutral-400 px-2 py-1 font-semibold text-neutral-400 transition hover:bg-neutral-200 hover:underline"
-          >
+        <div className="mt-4 flex h-10 w-full gap-2 px-8">
+          <Button type="button" onClick={() => setCheckResetOpen(false)}>
             {t("buttons.cancel")}
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
             onClick={() => handleResetPassword()}
-            className="flex w-32 items-center justify-center rounded-lg bg-blue-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-blue-500 hover:underline"
+            className="bg-blue-400"
           >
             {t("buttons.reset")}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

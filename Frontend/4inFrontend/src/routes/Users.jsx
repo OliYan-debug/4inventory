@@ -8,6 +8,7 @@ import { User } from "../components/User";
 import { toast } from "react-toastify";
 import { TableHeader } from "../components/TableHeader";
 import { useTranslation } from "react-i18next";
+import { Button } from "../components/Button";
 
 export default function Users() {
   const { t } = useTranslation("users");
@@ -170,29 +171,32 @@ export default function Users() {
 
       <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div>
-          <TableHeader columnsDefault={usersColumns} />
-
           {loading ? (
             <LoadingSkeleton />
           ) : (
             <>
               {users.length <= 0 ? (
-                <div className="mt-10 flex animate-fade-in flex-col items-center gap-2">
-                  <Rat size={100} className="text-neutral-700" />
-                  <p className="font-medium text-neutral-600">{t("noUsers")}</p>
+                <div className="animate-fade-in mt-10 flex flex-col items-center gap-2">
+                  <div className="flex w-64 flex-col items-center gap-2 text-neutral-600">
+                    <Rat className="size-25 text-neutral-700" />
 
-                  <button
-                    type="button"
-                    onClick={() => {
-                      updateData();
-                    }}
-                    className="flex items-center gap-1 rounded-lg bg-neutral-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-neutral-500"
-                  >
-                    {t("buttons.retry")} <FolderSync size={16} />
-                  </button>
+                    <span className="font-medium">{t("noUsers")}</span>
+
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        updateData();
+                      }}
+                      className="h-8"
+                    >
+                      {t("buttons.retry")} <FolderSync size={16} />
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <>
+                  <TableHeader columnsDefault={usersColumns} />
+
                   {users.map((user, index) => {
                     return (
                       <User

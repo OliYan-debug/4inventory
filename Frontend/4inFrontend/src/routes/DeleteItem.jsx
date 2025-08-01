@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { ChevronRight, Trash } from "lucide-react";
+import { ChevronRight, Loader2, Trash } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { InputSearchItems } from "../components/InputSearchItems";
 import { InputJustification } from "../components/InputJustification";
 import { useTranslation } from "react-i18next";
 import { BackToButton } from "../components/BackToButton";
+import { Button } from "../components/Button";
 
 export default function DeleteItem() {
   const { t } = useTranslation("delete_item");
@@ -27,8 +28,7 @@ export default function DeleteItem() {
     setValue,
     reset,
     clearErrors,
-    watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
   });
@@ -78,9 +78,7 @@ export default function DeleteItem() {
                 <p>
                   {t("loading.error")}
                   <br />
-                  <span className="text-xs opacity-80">
-                    {data.response.data.message}
-                  </span>
+                  <span className="text-xs opacity-80">{data.message}</span>
                 </p>
               );
             },
@@ -128,11 +126,12 @@ export default function DeleteItem() {
       <div className="flex min-h-screen max-w-full justify-center rounded-2xl bg-neutral-50 p-4">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center gap-2 pt-8 md:w-1/2"
+          className="flex w-full flex-col items-center gap-2 px-10 pt-8 md:w-[40dvw] md:px-0"
         >
           <InputSearchItems
             register={register}
             errors={errors}
+            isSubmitting={isSubmitting}
             clearErrors={clearErrors}
             setValue={setValue}
             reset={reset}
@@ -145,19 +144,26 @@ export default function DeleteItem() {
           <InputJustification
             register={register}
             errors={errors}
+            isSubmitting={isSubmitting}
             selectedItem={selectedItem}
-            watch={watch}
           />
 
-          <button
+          <Button
             type="submit"
-            className="mt-10 flex items-center justify-center rounded-lg bg-red-500 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-red-600 md:w-2/5"
+            disabled={isSubmitting}
+            className="mt-2 bg-red-500"
           >
-            <Trash size={20} color="#fafafa" className="me-2" />
-            {t("buttons.submit")}
-          </button>
+            <span>{t("buttons.submit")}</span>
+            {isSubmitting ? (
+              <span className="flex items-center justify-center">
+                <Loader2 className="size-5 animate-spin" />
+              </span>
+            ) : (
+              <Trash className="size-5" />
+            )}
+          </Button>
 
-          <BackToButton itemId={itemId} from={from} />
+          <BackToButton itemId={itemId} from={from} disabled={isSubmitting} />
         </form>
       </div>
     </div>

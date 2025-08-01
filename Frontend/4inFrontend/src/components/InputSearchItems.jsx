@@ -1,13 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../services/api";
-import { X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import { ItemSearch } from "./ItemSearch";
 import { useTranslation } from "react-i18next";
+import {
+  InputErrors,
+  InputField,
+  InputIcon,
+  InputLabel,
+  InputRoot,
+} from "./Input";
+import { toast } from "react-toastify";
 
 export function InputSearchItems({
   register,
   errors,
+  isSubmitting,
   setValue,
   clearErrors,
   reset,
@@ -25,18 +34,20 @@ export function InputSearchItems({
   const navigate = useNavigate();
   const [items, setItems] = useState([]);
 
-  const handleClickOutside = (event) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      setItems("");
-    }
-  };
-
   useEffect(() => {
     document.addEventListener("click", handleClickOutside, true);
     return () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
   }, []);
+
+  const handleClickOutside = (event) => {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setItems("");
+    }
+  };
+
+  const [loading, setLoading] = useState(false);
 
   const handleSearchProduct = async (event) => {
     let search = event.target.value;
@@ -48,10 +59,14 @@ export function InputSearchItems({
     }
 
     try {
+      setLoading(true);
       const response = await api.get(`/search?s=${search}`);
       setItems(response.data);
     } catch (error) {
+      toast.warn(t("loading.error"), { toastId: "searchItemError" });
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -93,12 +108,12 @@ export function InputSearchItems({
 
   return (
     <div className="relative w-full">
-      <label htmlFor="item" className="text-sm text-neutral-500">
+      <InputLabel htmlFor="item" error={!!errors.item}>
         {t("item_label")}
-      </label>
+      </InputLabel>
 
-      <div className="relative flex items-center">
-        <input
+      <InputRoot disabled={isSubmitting} error={!!errors.item}>
+        <InputField
           defaultValue={itemId ? selectedItem.item : ""}
           {...register("item", {
             required: t("item_required"),
@@ -111,37 +126,40 @@ export function InputSearchItems({
           type="text"
           id="item"
           onChange={handleSearchProduct}
-          disabled={isSearchable}
+          disabled={isSearchable || isSubmitting}
           placeholder={t("update_item_placeholder")}
-          className={`focus-visible::border-neutral-500 ${items.length > 0 ? "rounded-t-lg border-b-0" : "rounded-lg"} w-full border border-neutral-400 px-4 py-2 text-neutral-500 outline-hidden hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
-            errors.item &&
-            "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
-          }`}
         />
 
-        {!Array.isArray(selectedItem) && (
-          <button
-            type="button"
-            className="absolute right-2 hover:opacity-50"
-            onClick={() => {
-              handleClearSearch();
-            }}
-          >
-            <X size={20} color="#737373" />
-          </button>
-        )}
-      </div>
+        <InputIcon>
+          {loading ? (
+            <span className="animate-fade-in">
+              <Loader2 className="size-5 animate-spin text-neutral-500" />
+            </span>
+          ) : (
+            <>
+              {!Array.isArray(selectedItem) && (
+                <button
+                  type="button"
+                  disabled={isSubmitting}
+                  className="flex cursor-pointer hover:opacity-50 disabled:pointer-events-none"
+                  onClick={() => {
+                    handleClearSearch();
+                  }}
+                >
+                  <X className="size-5 text-neutral-500" />
+                </button>
+              )}
+            </>
+          )}
+        </InputIcon>
+      </InputRoot>
 
-      {errors.item && (
-        <p role="alert" className="mt-1 text-center text-xs text-red-600">
-          {errors.item?.message}
-        </p>
-      )}
+      {errors.item && <InputErrors message={errors.item?.message} />}
 
       {items.length > 0 && (
         <div
           ref={ref}
-          className="absolute z-50 max-h-44 w-full overflow-y-auto rounded-b-lg border border-neutral-400 bg-neutral-50 py-2 text-neutral-500 shadow-md transition"
+          className="absolute z-10 max-h-44 w-full overflow-y-auto rounded-lg border border-neutral-400 bg-neutral-50 py-2 text-neutral-500 shadow-md transition"
         >
           {items.length && (
             <ul className="flex w-full flex-col justify-items-center gap-px">

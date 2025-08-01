@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { ChevronRight, CirclePlus, ServerOff, Undo2 } from "lucide-react";
+import { ChevronRight, CirclePlus, Loader2, ServerOff } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { ModalCategoriesError } from "../components/ModalCategoriesError";
@@ -11,6 +11,8 @@ import { InputCategories } from "../components/InputCategories";
 import { InputItemName } from "../components/InputItemName";
 import { InputQuantity } from "../components/InputQuantity";
 import { useTranslation } from "react-i18next";
+import { Button } from "../components/Button";
+import { BackToButton } from "../components/BackToButton";
 
 export default function NewItem() {
   const { t } = useTranslation("new_item");
@@ -81,9 +83,7 @@ export default function NewItem() {
               <p>
                 {t("loading.error")}
                 <br />
-                <span className="text-xs opacity-80">
-                  {data.response.data.message}
-                </span>
+                <span className="text-xs opacity-80">{data.message}</span>
               </p>
             );
           },
@@ -117,7 +117,7 @@ export default function NewItem() {
           <h1 className="text-3xl font-bold text-neutral-800">
             {t("categoriesError.title")}
           </h1>
-          <p className="mb-4 mt-2 text-sm text-neutral-500">
+          <p className="mt-2 mb-4 text-sm text-neutral-500">
             {t("categoriesError.text")}
           </p>
           <span className="mb-6 font-medium text-neutral-600">
@@ -131,9 +131,13 @@ export default function NewItem() {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col items-center gap-2 pt-8 md:w-1/2"
+            className="flex w-full flex-col items-center gap-2 px-10 pt-8 md:w-[40dvw] md:px-0"
           >
-            <InputItemName register={register} errors={errors} />
+            <InputItemName
+              register={register}
+              errors={errors}
+              isSubmitting={isSubmitting}
+            />
 
             <InputCategories
               register={register}
@@ -142,12 +146,13 @@ export default function NewItem() {
               categories={categories}
               selectedCategories={selectedCategories}
               setSelectedCategories={setSelectedCategories}
+              isSubmitting={isSubmitting}
             />
 
             <InputDescription
               register={register}
               errors={errors}
-              watch={watch}
+              isSubmitting={isSubmitting}
             />
 
             <InputQuantity
@@ -159,22 +164,22 @@ export default function NewItem() {
               clearErrors={clearErrors}
             />
 
-            <button
+            <Button
               type="submit"
               disabled={isSubmitting}
-              className="mt-10 flex items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500 disabled:cursor-no-drop disabled:opacity-70 md:w-2/5"
+              className="mt-2 bg-emerald-400"
             >
-              <CirclePlus size={20} color="#fafafa" className="me-2" />
-              {t("buttons.submit")}
-            </button>
+              <span>{t("buttons.submit")}</span>
+              {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <Loader2 className="size-5 animate-spin" />
+                </span>
+              ) : (
+                <CirclePlus className="size-5" />
+              )}
+            </Button>
 
-            <Link
-              to={"/products"}
-              className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80"
-            >
-              {t("buttons.back")}
-              <Undo2 size={20} color="#a3a3a3" className="ms-1" />
-            </Link>
+            <BackToButton disabled={isSubmitting} />
           </form>
         </div>
       )}

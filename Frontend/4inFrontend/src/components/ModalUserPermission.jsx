@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { Button } from "./Button";
 
 export function ModalUserPermission({
   id,
@@ -47,7 +48,7 @@ export function ModalUserPermission({
                   {t("loading.errors.generic")}
                   <br />
                   <span className="text-xs opacity-80">
-                    {data.response.data.message}
+                    {data?.response?.data?.message}
                   </span>
                 </p>
               );
@@ -68,15 +69,18 @@ export function ModalUserPermission({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex h-screen w-screen animate-fade-in items-center justify-center bg-black/50">
+    <div className="animate-fade-in fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-black/50">
       <div className="flex w-4/5 flex-col items-center rounded-2xl bg-neutral-50 px-8 py-6 text-center md:w-[40vw]">
         <span className="flex size-10 items-center justify-center rounded-full bg-green-600/60">
           <ShieldEllipsis size={22} className="text-green-600" />
         </span>
+
         <h1 className="my-2 text-2xl font-bold text-neutral-800">
           {t("modal.title")}
         </h1>
+
         <span className="font-medium text-green-700">{name}</span>
+
         <p className="text-sm text-neutral-500">
           {t("modal.text.currently")}{" "}
           <span className="font-medium">{permission}</span>{" "}
@@ -86,11 +90,13 @@ export function ModalUserPermission({
         <h2 className="mt-4 text-lg font-semibold text-neutral-800">
           {t("modal.subtitle")}
         </h2>
+
         <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4">
           <div className="my-2 flex items-center gap-1">
             <label className="font-medium text-neutral-700" htmlFor="admin">
               {t("form.admin_label")}
             </label>
+
             <input
               {...register("role")}
               defaultChecked={permission === "admin"}
@@ -104,6 +110,7 @@ export function ModalUserPermission({
             <label className="font-medium text-neutral-700" htmlFor="User">
               {t("form.user_label")}
             </label>
+
             <input
               {...register("role")}
               defaultChecked={permission === "user"}
@@ -123,22 +130,18 @@ export function ModalUserPermission({
           </div>
         )}
 
-        <div className="mt-4 flex gap-2">
-          <button
-            type="button"
-            onClick={() => setCheckPermissionOpen(false)}
-            className="flex items-center justify-center rounded-lg border border-neutral-400 px-2 py-1 font-semibold text-neutral-400 transition hover:bg-neutral-200 hover:underline"
-          >
+        <div className="mt-4 flex h-10 w-full gap-2 px-8">
+          <Button type="button" onClick={() => setCheckPermissionOpen(false)}>
             {t("buttons.cancel")}
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
             onClick={handleSubmit(onSubmit)}
-            className="flex w-32 items-center justify-center rounded-lg bg-green-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-green-500 hover:underline"
+            className="bg-green-400"
           >
             {t("buttons.save")}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

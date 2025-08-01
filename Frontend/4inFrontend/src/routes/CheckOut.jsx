@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { ChevronRight, CircleMinus } from "lucide-react";
+import { ChevronRight, CircleMinus, Loader2 } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { InputRemove } from "../components/InputRemove";
@@ -10,6 +10,7 @@ import { InputJustification } from "../components/InputJustification";
 import { InputSearchItems } from "../components/InputSearchItems";
 import { useTranslation } from "react-i18next";
 import { BackToButton } from "../components/BackToButton";
+import { Button } from "../components/Button";
 
 export default function CheckOut() {
   const { t } = useTranslation("checkout");
@@ -30,7 +31,7 @@ export default function CheckOut() {
     reset,
     watch,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
   });
@@ -88,9 +89,7 @@ export default function CheckOut() {
               <p>
                 {t("loading.error")}
                 <br />
-                <span className="text-xs opacity-80">
-                  {data.response.data.message}
-                </span>
+                <span className="text-xs opacity-80">{data.message}</span>
               </p>
             );
           },
@@ -139,11 +138,12 @@ export default function CheckOut() {
       <div className="flex min-h-screen max-w-full justify-center rounded-2xl bg-neutral-50 p-4">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center gap-2 pt-8 md:w-1/2"
+          className="flex w-full flex-col items-center gap-2 px-10 pt-8 md:w-[40dvw] md:px-0"
         >
           <InputSearchItems
             register={register}
             errors={errors}
+            isSubmitting={isSubmitting}
             clearErrors={clearErrors}
             setValue={setValue}
             reset={reset}
@@ -155,6 +155,7 @@ export default function CheckOut() {
 
           <InputRemove
             errors={errors}
+            isSubmitting={isSubmitting}
             selectedItem={selectedItem}
             control={control}
             setValue={setValue}
@@ -165,19 +166,27 @@ export default function CheckOut() {
           <InputJustification
             register={register}
             errors={errors}
+            isSubmitting={isSubmitting}
             selectedItem={selectedItem}
             watch={watch}
           />
 
-          <button
+          <Button
             type="submit"
-            className="mt-10 flex items-center justify-center rounded-lg bg-orange-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-orange-500 md:w-2/5"
+            disabled={isSubmitting}
+            className="mt-2 bg-orange-400"
           >
-            <CircleMinus size={20} color="#fafafa" className="me-2" />
-            {t("buttons.submit")}
-          </button>
+            <span>{t("buttons.submit")}</span>
+            {isSubmitting ? (
+              <span className="flex items-center justify-center">
+                <Loader2 className="size-5 animate-spin" />
+              </span>
+            ) : (
+              <CircleMinus className="size-5" />
+            )}
+          </Button>
 
-          <BackToButton itemId={itemId} from={from} />
+          <BackToButton itemId={itemId} from={from} disabled={isSubmitting} />
         </form>
       </div>
     </div>
