@@ -111,7 +111,7 @@ export default function ItemView() {
           ) : (
             <>
               {item.length <= 0 ? (
-                <div className="mt-10 flex animate-fade-in flex-col items-center gap-2">
+                <div className="animate-fade-in mt-10 flex flex-col items-center gap-2">
                   <Rat size={100} className="text-neutral-700" />
                   <p className="font-medium text-neutral-600">{t("noItem")}</p>
 
@@ -131,7 +131,7 @@ export default function ItemView() {
                           <div className="">
                             <PackageOpen
                               size={32}
-                              className="absolute -left-6 -top-2"
+                              className="absolute -top-2 -left-6"
                             />
                           </div>
                           <span className="flex justify-end text-sm">
@@ -145,7 +145,7 @@ export default function ItemView() {
                         </div>
 
                         <div className="group/description relative flex items-center justify-center">
-                          <p className="max-w-full break-words text-justify text-neutral-500">
+                          <p className="max-w-full text-justify break-words text-neutral-500">
                             {item.description ? (
                               <>
                                 {item.description.length > 90
@@ -160,8 +160,8 @@ export default function ItemView() {
                           </p>
 
                           {item.description.length > 90 && (
-                            <div className="absolute top-10 z-10 hidden max-w-72 animate-fade-in justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/description:flex">
-                              <span className="absolute -top-1 block size-2 -translate-y-px rotate-45 border-l border-t border-neutral-500 bg-neutral-400"></span>
+                            <div className="animate-fade-in absolute top-10 z-10 hidden max-w-72 justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 text-wrap break-all shadow-md group-hover/description:flex">
+                              <span className="absolute -top-1 block size-2 -translate-y-px rotate-45 border-t border-l border-neutral-500 bg-neutral-400"></span>
                               <p className="text-justify text-xs text-neutral-50">
                                 {item.description}
                               </p>

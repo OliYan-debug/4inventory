@@ -2,19 +2,20 @@ import { IdCard, User2Icon } from "lucide-react";
 
 export function UserDetails({ user, children }) {
   return (
-    <div className="justify-top relative flex h-screen w-full flex-col items-center rounded-tl-[62px] bg-neutral-100/40">
-      <div className="absolute top-16 mt-1 flex size-20 items-center justify-center rounded-full border border-neutral-700 bg-neutral-100 font-medium">
+    <div className="relative mt-8 flex w-full flex-col items-center rounded-lg bg-neutral-100/60 pb-8 md:w-[45dvw]">
+      <div className="absolute top-8 mt-1 flex size-20 items-center justify-center rounded-full border border-neutral-700 bg-neutral-100 font-medium md:top-16">
         <span className="text-xl font-bold">
-          <User2Icon size={30} className="text-neutral-700" />
+          <User2Icon className="size-7 text-neutral-700" />
         </span>
       </div>
 
-      <div className="to h-28 w-full rounded-tl-[62px] bg-linear-to-r from-sky-400 to-emerald-400 shadow-xs"></div>
+      <div className="h-20 w-full rounded-t-xl bg-neutral-400 shadow-xs md:h-28"></div>
 
       <div className="mt-10 flex w-full flex-col items-center border-b border-neutral-200 pb-4">
         <h2 className="max-w-full truncate px-2 text-3xl font-bold text-neutral-800">
           {user.name}
         </h2>
+
         <span className="text-base font-semibold text-neutral-500">
           {user.username}
         </span>

@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import { api } from "../services/api";
 import { Link, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { Button } from "./Button";
+import { InputErrors } from "./Input";
 
 export function UpdatePassword({ username }) {
   const { t } = useTranslation("update_password");
@@ -77,7 +79,7 @@ export function UpdatePassword({ username }) {
                 {t("loading.errors.generic")}
                 <br />
                 <span className="text-xs opacity-80">
-                  {data.response.data.message}
+                  {data?.response?.data?.message}
                 </span>
               </p>
             );
@@ -94,10 +96,10 @@ export function UpdatePassword({ username }) {
   };
 
   return (
-    <>
+    <div className="w-full">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mt-4 flex w-80 flex-col items-center gap-8"
+        className="flex w-full flex-col gap-2 px-10 pt-2"
       >
         <h3 className="text-lg font-bold text-neutral-700">{t("title")}</h3>
 
@@ -122,27 +124,43 @@ export function UpdatePassword({ username }) {
           isSubmitting={isSubmitting}
         />
 
-        <div className="flex w-full flex-col items-center">
-          <button
-            type="submit"
-            className="h-10 w-1/2 rounded-full bg-neutral-800 font-medium text-neutral-50 transition hover:underline hover:opacity-90 disabled:cursor-progress disabled:opacity-80 disabled:hover:no-underline disabled:hover:opacity-80"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <span className="flex items-center justify-center">
-                <Loader2 className="animate-spin" color="#ffffff" size={18} />
-              </span>
-            ) : (
-              <span>{t("buttons.submit")}</span>
-            )}
-          </button>
+        <div className="flex flex-col -space-y-2">
+          {errors.password && (
+            <InputErrors message={errors.password?.message} />
+          )}
 
-          <div className="relative mt-8 flex w-1/2 flex-col items-center">
+          {errors.createPassword && (
+            <InputErrors message={errors.createPassword?.message} />
+          )}
+
+          {errors.confirmPass && (
+            <InputErrors message={errors.confirmPass?.message} />
+          )}
+        </div>
+
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="mt-2 bg-neutral-800"
+        >
+          <span>{t("buttons.submit")}</span>
+
+          {isSubmitting && (
+            <span className="flex items-center justify-center">
+              <Loader2 className="size-4 animate-spin" />
+            </span>
+          )}
+        </Button>
+
+        <div className="flex w-full flex-col items-center">
+          <div className="relative mt-4 flex w-full flex-col items-center">
             <span className="w-full border-t border-neutral-400"></span>
+
             <p className="absolute -top-3 bg-neutral-50 px-1 text-neutral-500">
               {t("or")}
             </p>
           </div>
+
           <Link
             to={"/user/profile"}
             className="mt-4 font-bold text-neutral-600 underline hover:text-neutral-700"
@@ -151,6 +169,6 @@ export function UpdatePassword({ username }) {
           </Link>
         </div>
       </form>
-    </>
+    </div>
   );
 }

@@ -72,7 +72,7 @@ export function SelectSize({ size }) {
       <select
         defaultValue={size || cookieSettings?.[currentPathKey]}
         id="size"
-        className="rounded-lg border border-neutral-300 font-medium"
+        className="cursor-pointer rounded-lg border border-neutral-300 font-medium"
       >
         {size && (
           <option className="hidden" value={size}>

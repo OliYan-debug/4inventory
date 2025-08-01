@@ -43,10 +43,10 @@ export default function Profile() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Header title={t("title")} subtitle={Subtitle()} />
 
-      <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 px-4 py-4 md:mb-0 md:overflow-x-hidden md:px-20">
+      <div className="mb-10 flex min-h-screen w-full flex-col items-center rounded-2xl bg-neutral-50 px-4 py-4 md:mb-0 md:px-0">
         <UserDetails user={user}>
           {changePassword ? (
             <UpdatePassword username={user.username} />
