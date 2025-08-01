@@ -10,6 +10,13 @@ export function ButtonChooseLanguage() {
   const [showLanguages, setShowLanguages] = useState(false);
   const ref = useRef();
 
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, []);
+
   function handleShowPopover() {
     !showLanguages && setShowPopover(!showPopover);
   }
@@ -25,18 +32,11 @@ export function ButtonChooseLanguage() {
     }
   };
 
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  }, []);
-
   return (
-    <div className="flex flex-col items-center">
+    <div className="animate-fade-in h-full w-full">
       <button
         type="button"
-        className="mt-4"
+        className="flex h-full w-full cursor-pointer items-center justify-center hover:opacity-60"
         onClick={() => {
           handleShowLanguages();
         }}
@@ -49,14 +49,15 @@ export function ButtonChooseLanguage() {
       >
         <Languages
           data-active={showLanguages}
-          className="size-5 text-neutral-50 transition hover:opacity-60 data-[active=true]:opacity-60 md:size-6"
+          className="size-5 text-neutral-50 transition data-[active=true]:opacity-60"
         />
       </button>
 
       <div className="relative flex justify-center">
         {showPopover && (
-          <div className="absolute mt-2 hidden animate-fade-in justify-center md:flex">
-            <div className="absolute -top-1 block size-2 rotate-45 bg-neutral-500"></div>
+          <div className="animate-fade-in absolute z-50 mt-1.5 hidden justify-center md:flex">
+            <div className="absolute -top-1 block size-2 rotate-45 bg-neutral-500" />
+
             <span className="w-28 rounded-lg bg-neutral-500 py-px text-center text-xs text-neutral-50">
               {t("change")}
             </span>
@@ -66,9 +67,10 @@ export function ButtonChooseLanguage() {
         {showLanguages && (
           <div
             ref={ref}
-            className="absolute z-10 mt-2 flex animate-fade-in justify-center"
+            className="animate-fade-in absolute z-10 mt-1.5 flex justify-center"
           >
-            <div className="absolute -top-1 block size-2 rotate-45 bg-neutral-500"></div>
+            <div className="absolute -top-1 block size-2 rotate-45 bg-neutral-500" />
+
             <ul className="flex w-24 flex-col items-center gap-2 rounded-lg bg-neutral-500 p-2 text-sm">
               <li
                 data-active={currentLanguage === "en-US"}
@@ -80,6 +82,7 @@ export function ButtonChooseLanguage() {
               >
                 {t("en_us")}
               </li>
+
               <li
                 data-active={currentLanguage === "pt-BR"}
                 onClick={() => {
