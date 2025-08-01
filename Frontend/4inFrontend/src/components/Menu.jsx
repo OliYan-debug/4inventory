@@ -143,7 +143,7 @@ export function Menu({ hiddenNav }) {
   return (
     <>
       <ul
-        className={`flex h-14 w-full justify-evenly sm:mt-2 md:mt-4 md:h-auto md:flex-col md:justify-normal md:py-4 ${hiddenNav ? "md:gap-1" : "md:gap-0"}`}
+        className={`flex h-14 w-full justify-evenly sm:mt-2 md:mt-4 md:h-auto md:flex-col md:justify-normal md:py-4 ${hiddenNav ? "md:gap-1" : "animate-fade-in md:gap-0"}`}
       >
         <MenuButton
           label={t("dashboard")}

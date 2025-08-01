@@ -1,41 +1,29 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import logo from "../assets/logo.svg";
 import logoMin from "../assets/logoMin.svg";
 import { Menu } from "./Menu";
-import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { Avatar } from "./Avatar";
-import { ButtonChooseLanguage } from "./ButtonChooseLanguage";
 
 export function NavBar() {
   const [hiddenNav, setHiddenNav] = useState(false);
 
   function handleHiddenShowNavbar() {
-    hiddenNav ? setHiddenNav(false) : setHiddenNav(true);
+    setHiddenNav(!hiddenNav);
   }
 
   return (
     <nav
-      className={`fixed bottom-0 left-0 right-0 z-50 flex h-auto w-full bg-neutral-800 text-neutral-50 transition-all duration-500 md:relative md:mr-4 md:rounded-2xl ${hiddenNav ? "md:w-20" : "w-[14vw] md:w-[38vw] lg:w-[24vw] 2xl:w-[20vw]"}`}
+      className={`fixed right-0 bottom-0 left-0 z-10 flex h-auto w-full bg-neutral-800 text-neutral-50 transition-all duration-500 md:relative md:mr-4 md:rounded-2xl ${hiddenNav ? "md:w-20" : "w-[14vw] md:w-[38vw] lg:w-[24vw] 2xl:w-[20vw]"}`}
     >
       <div className="absolute flex w-full justify-end p-2">
         <button
+          onClick={handleHiddenShowNavbar}
           type="button"
-          className="hidden transition hover:opacity-50 md:block"
+          className="hidden size-6 cursor-pointer text-neutral-50 transition hover:opacity-50 md:flex"
         >
-          {hiddenNav ? (
-            <ChevronsRight
-              size={24}
-              color="#fafafa"
-              onClick={handleHiddenShowNavbar}
-            />
-          ) : (
-            <ChevronsLeft
-              size={24}
-              color="#fafafa"
-              onClick={handleHiddenShowNavbar}
-            />
-          )}
+          {hiddenNav ? <ChevronsRight /> : <ChevronsLeft />}
         </button>
       </div>
 
@@ -45,26 +33,24 @@ export function NavBar() {
             <img
               src={hiddenNav ? logoMin : logo}
               alt="4inventory"
-              className={`hidden pt-10 md:block ${!hiddenNav && "md:w-[18vw] lg:w-[14vw]"}`}
+              className={`hidden pt-10 md:block ${!hiddenNav && "animate-fade-in md:w-[18vw] lg:w-[14vw]"}`}
             />
+
             <img
               src={logoMin}
               alt="4inventory"
               className="block pt-10 md:hidden"
             />
           </Link>
-          <span className="mt-px text-xs font-thin text-neutral-200">
-            1.14.2
+
+          <span className="animate-fade-in mt-px text-xs font-thin text-neutral-200">
+            1.20.0
           </span>
         </div>
 
         <Menu hiddenNav={hiddenNav} />
 
         <Avatar hiddenNav={hiddenNav} />
-
-        <div className="mt-2 hidden md:block">
-          <ButtonChooseLanguage />
-        </div>
       </div>
     </nav>
   );
