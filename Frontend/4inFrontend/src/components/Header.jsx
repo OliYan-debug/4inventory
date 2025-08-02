@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { FolderSearch, SearchIcon } from "lucide-react";
+import { LogOut, SearchIcon } from "lucide-react";
 import { Search } from "./SearchModal";
-import { useTranslation } from "react-i18next";
+import { Button } from "./Button";
+import { LogoutButton } from "./LogoutButton";
+import { ButtonChooseLanguage } from "./ButtonChooseLanguage";
 
 export function Header({ title, subtitle, children }) {
-  const { t } = useTranslation("search");
-
   const [openSearch, setOpenSearch] = useState(false);
 
   //open search shortcut key
@@ -25,7 +25,7 @@ export function Header({ title, subtitle, children }) {
   }, []);
 
   return (
-    <div className="flex max-w-full flex-col items-center justify-between rounded-2xl bg-neutral-50 p-4 md:flex-row">
+    <div className="z-30 flex max-w-full flex-col items-center justify-between rounded-2xl bg-neutral-50 p-4 md:flex-row">
       <div className="mb-1 flex items-center gap-3">
         <div className="flex flex-col items-center md:items-start">
           <h1 className="w-full text-3xl font-bold text-neutral-800">
@@ -33,34 +33,36 @@ export function Header({ title, subtitle, children }) {
           </h1>
           {subtitle}
         </div>
+
         {children}
       </div>
 
-      <form className="mt-0 flex gap-2 sm:mt-2">
-        <div className="relative flex items-center">
+      <div className="mt-0 flex items-center gap-2 px-2 sm:mt-2">
+        <button
+          onClick={() => setOpenSearch(true)}
+          className="relative flex h-8 w-24 cursor-pointer items-center rounded-lg border border-neutral-400 md:w-22"
+        >
           <div className="pointer-events-none absolute ml-2">
-            <SearchIcon size={20} color="#a3a3a3" />
+            <SearchIcon className="size-4 text-neutral-500" />
           </div>
-          <input
-            type="text"
-            placeholder={t("form.item_placeholder")}
-            onClick={() => setOpenSearch(true)}
-            className="h-5 w-full rounded-lg border border-neutral-400 py-4 pl-8 pr-4 outline-hidden transition-all hover:border-neutral-600 focus-visible:border-neutral-600 lg:w-72"
-          />
-          <kbd className="absolute right-1 hidden rounded-lg border border-neutral-400 bg-neutral-500 px-1.5 py-1 text-xs font-semibold text-neutral-200 md:block">
-            Ctrl + K
+
+          <kbd className="absolute right-1 hidden rounded-full border border-neutral-400 bg-neutral-500 px-1.5 py-px text-xs font-semibold text-neutral-200 md:block">
+            Ctrl K
           </kbd>
+        </button>
+
+        <div className="h-8 w-14 rounded-lg bg-neutral-500">
+          <ButtonChooseLanguage />
         </div>
 
-        <button
-          type="button"
-          onClick={() => setOpenSearch(true)}
-          className="flex items-center justify-center rounded-lg bg-sky-400 px-4 font-semibold text-neutral-50 transition hover:bg-sky-500"
-        >
-          <span className="hidden md:block">{t("buttons.submit")}</span>
-          <FolderSearch size={20} color="#fafafa" className="ms-0 md:ms-2" />
-        </button>
-      </form>
+        <div className="w-24">
+          <LogoutButton>
+            <Button className="h-8">
+              Logout <LogOut className="size-4" />
+            </Button>
+          </LogoutButton>
+        </div>
+      </div>
 
       {openSearch && <Search setOpenSearch={setOpenSearch} />}
     </div>

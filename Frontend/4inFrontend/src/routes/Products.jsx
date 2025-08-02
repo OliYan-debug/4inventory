@@ -10,6 +10,7 @@ import { Item } from "../components/Item";
 import { Pagination } from "../components/Pagination";
 import { LoadingSkeleton } from "../components/LoadingSkeleton";
 import { TableHeader } from "../components/TableHeader";
+import { Button } from "../components/Button";
 
 export default function Products() {
   const { t } = useTranslation("products");
@@ -241,61 +242,54 @@ export default function Products() {
   return (
     <div className="flex flex-col gap-4">
       <Header title={t("title")} subtitle={Subtitle()}>
-        <Link
-          to={"/products/new"}
-          className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
-        >
-          {t("buttons.new")} <PlusCircle size={16} />
-        </Link>
+        <div className="w-16">
+          <Button className="h-6 border border-emerald-500 bg-transparent text-xs text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50">
+            <Link to={"/products/new"} className="flex items-center gap-1">
+              {t("buttons.new")} <PlusCircle className="size-4" />
+            </Link>
+          </Button>
+        </div>
       </Header>
 
       <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div>
-          <TableHeader columnsDefault={productsColumns} />
-
           {loading ? (
             <LoadingSkeleton />
           ) : (
             <>
               {items.length <= 0 ? (
-                <div className="mt-10 flex animate-fade-in flex-col items-center gap-2">
-                  <Rat size={100} className="text-neutral-700" />
-                  <div className="flex space-x-1">
-                    <p className="font-medium text-neutral-600">
-                      {t("noItems")}
-                    </p>
+                <div className="animate-fade-in mt-10 flex flex-col items-center gap-2">
+                  <div className="flex w-64 flex-col items-center gap-2 text-neutral-600">
+                    <Rat className="size-25 text-neutral-700" />
 
-                    <button
+                    <span className="font-medium">{t("noItems")}</span>
+
+                    <Button className="h-8 border border-emerald-500 bg-transparent text-xs text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50">
+                      <Link
+                        to={"/products/new"}
+                        className="flex items-center gap-1"
+                      >
+                        {t("buttons.tryAdd")} <PlusCircle size={16} />
+                      </Link>
+                    </Button>
+
+                    <span>{t("or")}</span>
+
+                    <Button
                       type="button"
                       onClick={() => {
-                        navigate(`/products`);
+                        updateData();
                       }}
-                      className="font-bold text-neutral-600 underline hover:no-underline"
+                      className="h-8"
                     >
-                      Clear filters
-                    </button>
+                      {t("buttons.retry")} <FolderSync size={16} />
+                    </Button>
                   </div>
-                  <Link
-                    to={"/products/new"}
-                    className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
-                  >
-                    {t("buttons.tryAdd")} <PlusCircle size={16} />
-                  </Link>
-
-                  <p className="text-neutral-600">{t("or")}</p>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      updateData();
-                    }}
-                    className="flex items-center gap-1 rounded-lg bg-neutral-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-neutral-500"
-                  >
-                    {t("buttons.retry")} <FolderSync size={16} />
-                  </button>
                 </div>
               ) : (
                 <>
+                  <TableHeader columnsDefault={productsColumns} />
+
                   {items.map((item, index) => {
                     return (
                       <Item

@@ -11,9 +11,16 @@ export function QuantityIncrementDecrement({
 }) {
   const intervalRef = useRef(null);
 
-  const quantity = Number(watch("quantity"));
+  let newQuantity = Number(watch("quantity"));
+  let quantity = !Number.isNaN(newQuantity) ? newQuantity : 0;
 
   const decrementQtd = () => {
+    let newQuantity = Number(watch("quantity"));
+
+    if (Number.isNaN(newQuantity)) {
+      return;
+    }
+
     setValue("quantity", Number(watch("quantity")) - 1);
 
     intervalRef.current = setInterval(() => {
@@ -26,7 +33,9 @@ export function QuantityIncrementDecrement({
   };
 
   const incrementQtd = () => {
-    if (Number(watch("quantity")) < 0) {
+    let newQuantity = Number(watch("quantity"));
+
+    if (Number.isNaN(newQuantity) || newQuantity < 0) {
       setValue("quantity", 0);
       clearErrors("quantity");
     }
@@ -56,7 +65,7 @@ export function QuantityIncrementDecrement({
         onMouseUp={stopIncrement}
         onMouseLeave={stopIncrement}
         disabled={quantity <= 0 || disable || disableMinusBtn}
-        className="ml-2 rounded-lg border border-neutral-400 px-3 outline-hidden transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-neutral-50"
+        className="flex w-full cursor-pointer items-center justify-center rounded-lg border border-neutral-400 px-3 outline-hidden transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:bg-neutral-100/50 disabled:opacity-60 disabled:hover:bg-neutral-100/50"
       >
         <CircleMinus className="size-5 text-neutral-600" />
       </button>
@@ -67,7 +76,7 @@ export function QuantityIncrementDecrement({
         onMouseUp={stopIncrement}
         onMouseLeave={stopIncrement}
         disabled={disable || disablePlusBtn}
-        className="rounded-lg border border-neutral-400 px-3 outline-hidden transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-neutral-50"
+        className="flex w-full cursor-pointer items-center justify-center rounded-lg border border-neutral-400 px-3 outline-hidden transition hover:bg-neutral-200 disabled:cursor-not-allowed disabled:bg-neutral-100/50 disabled:opacity-60 disabled:hover:bg-neutral-100/50"
       >
         <CirclePlus className="size-5 text-neutral-600" />
       </button>

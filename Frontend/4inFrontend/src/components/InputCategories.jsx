@@ -2,24 +2,56 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDown, X } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { getContrastingTextColor } from "../utils/getContrast";
+import {
+  InputErrors,
+  InputField,
+  InputIcon,
+  InputLabel,
+  InputRoot,
+} from "./Input";
 
 export function InputCategories({
   register,
   errors,
+  isSubmitting,
   resetField,
   categories,
   selectedCategories,
   setSelectedCategories,
+  selectedItem,
 }) {
   const { t } = useTranslation("input_category");
 
   const ref = useRef(null);
   const [categoriesSuggestions, setCategoriesSuggestions] = useState([]);
-  const tagsLimit = 2;
   const [maxTagsLimit, setMaxTagsLimit] = useState(false);
+  const tagsLimit = 2;
+
+  //Change input padding when adding/removing tags
+  const selectedTagsList = useRef(null);
+  const [tagsListWidth, setTagsListWidth] = useState(0);
 
   useEffect(() => {
     setMaxTagsLimit(selectedCategories.length >= tagsLimit);
+  }, [selectedCategories]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (selectedCategories.length === 0) {
+      setTagsListWidth(0);
+      return;
+    }
+
+    if (selectedTagsList.current) {
+      const { offsetWidth } = selectedTagsList.current;
+      setTagsListWidth(offsetWidth);
+    }
   }, [selectedCategories]);
 
   const handleGetCategories = () => {
@@ -80,47 +112,23 @@ export function InputCategories({
     );
   };
 
-  //Change input padding when adding/removing tags
-  const selectedTagsList = useRef(null);
-  const [tagsListWidth, setTagsListWidth] = useState(0);
-
-  useEffect(() => {
-    if (selectedCategories.length === 0) {
-      setTagsListWidth(0);
-      return;
-    }
-
-    if (selectedTagsList.current) {
-      const { offsetWidth } = selectedTagsList.current;
-      setTagsListWidth(offsetWidth);
-    }
-  }, [selectedCategories]);
-
   const handleClickOutside = (event) => {
     if (ref.current && !ref.current.contains(event.target)) {
       setCategoriesSuggestions([]);
     }
   };
 
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  }, []);
-
   return (
     <div className="relative w-full">
-      <label htmlFor="item" className="text-sm text-neutral-500">
+      <InputLabel htmlFor="item" error={!!errors.category}>
         {t("category_label")}
-      </label>
-      <div className="relative flex items-center">
-        <ChevronDown
-          size={22}
-          onClick={handleGetCategories}
-          className="absolute right-2 cursor-pointer text-neutral-500 hover:opacity-60"
-        />
-        <input
+      </InputLabel>
+
+      <InputRoot
+        disabled={isSubmitting || selectedItem?.length <= 0}
+        error={!!errors.category}
+      >
+        <InputField
           {...register("category", {
             maxLength: {
               value: 255,
@@ -136,43 +144,56 @@ export function InputCategories({
           onChange={handleSearchCategories}
           onClick={handleGetCategories}
           onKeyDown={handleKeyPress}
-          disabled={maxTagsLimit}
+          disabled={isSubmitting || maxTagsLimit || selectedItem?.length <= 0}
           autoComplete="off"
-          style={{ paddingInlineStart: `${tagsListWidth + 16}px` }}
-          className={`focus-visible::border-neutral-500 w-full border border-neutral-400 px-4 py-2 text-neutral-500 outline-hidden hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${categoriesSuggestions.length > 0 ? "rounded-t-lg border-b-0" : "rounded-lg"} ${
-            errors.category &&
-            "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
-          }`}
+          style={{
+            paddingInlineStart:
+              selectedCategories.length > 0 ? `${tagsListWidth + 4}px` : "",
+          }}
         />
 
+        <InputIcon>
+          <button
+            type="button"
+            disabled={isSubmitting || maxTagsLimit || selectedItem?.length <= 0}
+            onClick={handleGetCategories}
+            className="flex cursor-pointer hover:opacity-60 disabled:cursor-not-allowed disabled:hover:opacity-100"
+          >
+            <ChevronDown className="size-5" />
+          </button>
+        </InputIcon>
+
         {selectedCategories.length > 0 && (
-          <ul ref={selectedTagsList} className="absolute mx-2 flex gap-1">
+          <ul ref={selectedTagsList} className="absolute flex max-w-1/3 gap-1">
             {selectedCategories.map((category) => {
               return (
                 <li
                   key={category.id}
                   style={{ backgroundColor: category.color }}
-                  className={`flex items-center gap-px rounded-2xl px-2 py-0.5 text-xs drop-shadow-xs ${getContrastingTextColor(category.color)}`}
+                  className={`flex max-w-full items-center gap-px rounded-2xl px-2 py-0.5 text-xs drop-shadow-xs ${getContrastingTextColor(category.color)}`}
                 >
-                  <span>{category.name}</span>
-                  <X
+                  <span className="truncate">{category.name}</span>
+                  <button
+                    type="button"
                     onClick={() => {
                       handleRemoveCategory(category.id);
                     }}
-                    size={12}
-                    className="mt-px cursor-pointer transition hover:opacity-80"
-                  />
+                    disabled={isSubmitting}
+                    className="mt-px cursor-pointer transition hover:opacity-80 disabled:pointer-events-none"
+                  >
+                    <X className="size-3" />
+                  </button>
                 </li>
               );
             })}
           </ul>
         )}
-      </div>
+      </InputRoot>
 
       {categoriesSuggestions.length > 0 && (
         <div
           ref={ref}
-          className="absolute z-50 max-h-36 w-full overflow-y-auto rounded-b-lg border border-neutral-400 bg-neutral-50 py-2 text-neutral-500 shadow-md transition"
+          className="absolute z-50 max-h-36 w-full overflow-y-auto rounded-lg border border-neutral-400 bg-neutral-50 py-2 text-neutral-500 shadow-md transition"
         >
           {categoriesSuggestions.length > 0 && (
             <ul className="flex w-full flex-col justify-items-center gap-px">
@@ -198,11 +219,7 @@ export function InputCategories({
         </div>
       )}
 
-      {errors.category && (
-        <p role="alert" className="mt-1 text-center text-xs text-red-600">
-          {errors.category?.message}
-        </p>
-      )}
+      {errors.category && <InputErrors message={errors.category?.message} />}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ChevronRight, CircleCheck, ServerOff } from "lucide-react";
+import { ChevronRight, CircleCheck, Loader2, ServerOff } from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { ModalCategoriesError } from "../components/ModalCategoriesError";
@@ -11,17 +11,18 @@ import { InputSearchItems } from "../components/InputSearchItems";
 import { InputDescription } from "../components/InputDescription";
 import { useTranslation } from "react-i18next";
 import { BackToButton } from "../components/BackToButton";
+import { Button } from "../components/Button";
 
 export default function UpdateItem() {
   const { t } = useTranslation("update_item");
 
-  let { itemId } = useParams();
-  const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [getCategoriesError, setGetCategoriesError] = useState(false);
   const [selectedItem, setSelectedItem] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
 
+  let { itemId } = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const from = searchParams.get("from");
@@ -34,7 +35,6 @@ export default function UpdateItem() {
     setValue,
     setError,
     clearErrors,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
@@ -118,9 +118,7 @@ export default function UpdateItem() {
               <p>
                 {t("loading.error")}
                 <br />
-                <span className="text-xs opacity-80">
-                  {data.response.data.message}
-                </span>
+                <span className="text-xs opacity-80">{data.message}</span>
               </p>
             );
           },
@@ -169,7 +167,7 @@ export default function UpdateItem() {
           <h1 className="text-3xl font-bold text-neutral-800">
             {t("categoriesError.title")}
           </h1>
-          <p className="mb-4 mt-2 text-sm text-neutral-500">
+          <p className="mt-2 mb-4 text-sm text-neutral-500">
             {t("categoriesError.text")}
           </p>
           <span className="mb-6 font-medium text-neutral-600">
@@ -183,11 +181,12 @@ export default function UpdateItem() {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col items-center gap-2 pt-8 md:w-1/2"
+            className="flex w-full flex-col items-center gap-2 px-10 pt-8 md:w-[40dvw] md:px-0"
           >
             <InputSearchItems
               register={register}
               errors={errors}
+              isSubmitting={isSubmitting}
               clearErrors={clearErrors}
               setValue={setValue}
               reset={reset}
@@ -201,8 +200,10 @@ export default function UpdateItem() {
               itemId={itemId}
               register={register}
               errors={errors}
+              isSubmitting={isSubmitting}
               resetField={resetField}
               categories={categories}
+              selectedItem={selectedItem}
               selectedCategories={selectedCategories}
               setSelectedCategories={setSelectedCategories}
             />
@@ -210,21 +211,27 @@ export default function UpdateItem() {
             <InputDescription
               register={register}
               errors={errors}
-              watch={watch}
+              isSubmitting={isSubmitting}
               itemId={itemId}
               selectedItem={selectedItem}
             />
 
-            <button
+            <Button
               type="submit"
               disabled={isSubmitting}
-              className="mt-10 flex items-center justify-center rounded-lg bg-indigo-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-indigo-500 disabled:cursor-no-drop disabled:opacity-70 md:w-2/5"
+              className="mt-2 bg-indigo-400"
             >
-              <CircleCheck size={20} className="me-2 text-neutral-50" />
-              {t("buttons.submit")}
-            </button>
+              <span>{t("buttons.submit")}</span>
+              {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <Loader2 className="size-5 animate-spin" />
+                </span>
+              ) : (
+                <CircleCheck className="size-5" />
+              )}
+            </Button>
 
-            <BackToButton itemId={itemId} from={from} />
+            <BackToButton itemId={itemId} from={from} disabled={isSubmitting} />
           </form>
         </div>
       )}

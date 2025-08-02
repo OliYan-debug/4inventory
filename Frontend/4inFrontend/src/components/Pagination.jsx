@@ -59,7 +59,7 @@ export function Pagination({
           type="button"
           key={i}
           aria-current="page"
-          className={`${current ? "relative z-10 inline-flex items-center bg-neutral-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600" : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-neutral-900 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50 focus:z-20 focus:outline-offset-0"}`}
+          className={`cursor-pointer ${current ? "relative z-10 inline-flex items-center bg-neutral-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600 focus-visible:outline-solid" : "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-neutral-900 ring-1 ring-neutral-300 ring-inset hover:bg-neutral-50 focus:z-20 focus:outline-offset-0"}`}
         >
           {i}
         </button>,
@@ -77,7 +77,7 @@ export function Pagination({
             navigate(`${path}?${searchParams.toString()}`);
           }}
           type="button"
-          className={`relative inline-flex items-center rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 ${first && "pointer-events-none opacity-70"}`}
+          className={`relative inline-flex cursor-pointer items-center rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 ${first && "pointer-events-none opacity-70"}`}
         >
           {t("buttons.previous")}
         </button>
@@ -90,7 +90,7 @@ export function Pagination({
             navigate(`${path}?${searchParams.toString()}`);
           }}
           type="button"
-          className={`relative ml-3 inline-flex items-center rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 ${last && "pointer-events-none opacity-70"}`}
+          className={`relative ml-3 inline-flex cursor-pointer items-center rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 ${last && "pointer-events-none opacity-70"}`}
         >
           {t("buttons.next")}
         </button>
@@ -119,7 +119,7 @@ export function Pagination({
                   navigate(`${path}?${searchParams.toString()}`);
                 }}
                 type="button"
-                className={`relative inline-flex items-center rounded-l-lg px-2 py-2 text-neutral-400 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50 focus:z-20 focus:outline-offset-0 ${first && "pointer-events-none opacity-70"}`}
+                className={`relative inline-flex cursor-pointer items-center rounded-l-lg px-2 py-2 text-neutral-400 ring-1 ring-neutral-300 ring-inset hover:bg-neutral-50 focus:z-20 focus:outline-offset-0 ${first && "pointer-events-none opacity-70"}`}
               >
                 <span className="sr-only">{t("totalItems.first")}</span>
                 <ChevronsLeft aria-hidden="true" className="h-5 w-5" />
@@ -131,7 +131,7 @@ export function Pagination({
                   navigate(`${path}?${searchParams.toString()}`);
                 }}
                 type="button"
-                className={`relative inline-flex items-center px-2 py-2 text-neutral-400 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50 focus:z-20 focus:outline-offset-0 ${first && "pointer-events-none opacity-70"}`}
+                className={`relative inline-flex cursor-pointer items-center px-2 py-2 text-neutral-400 ring-1 ring-neutral-300 ring-inset hover:bg-neutral-50 focus:z-20 focus:outline-offset-0 ${first && "pointer-events-none opacity-70"}`}
               >
                 <span className="sr-only"> {t("totalItems.previous")}</span>
                 <ChevronLeft aria-hidden="true" className="h-5 w-5" />
@@ -142,7 +142,7 @@ export function Pagination({
               {totalPages > maxLimit && (
                 <>
                   {hiddenMoreNumbers && (
-                    <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-neutral-700 ring-1 ring-inset ring-neutral-300 focus:outline-offset-0">
+                    <span className="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-neutral-700 ring-1 ring-neutral-300 ring-inset focus:outline-offset-0">
                       ...
                     </span>
                   )}
@@ -155,7 +155,7 @@ export function Pagination({
                   navigate(`${path}?${searchParams.toString()}`);
                 }}
                 type="button"
-                className={`relative inline-flex items-center px-2 py-2 text-neutral-400 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50 focus:z-20 focus:outline-offset-0 ${last && "pointer-events-none opacity-70"}`}
+                className={`relative inline-flex cursor-pointer items-center px-2 py-2 text-neutral-400 ring-1 ring-neutral-300 ring-inset hover:bg-neutral-50 focus:z-20 focus:outline-offset-0 ${last && "pointer-events-none opacity-70"}`}
               >
                 <span className="sr-only"> {t("totalItems.next")}</span>
                 <ChevronRight aria-hidden="true" className="h-5 w-5" />
@@ -167,7 +167,7 @@ export function Pagination({
                   navigate(`${path}?${searchParams.toString()}`);
                 }}
                 type="button"
-                className={`relative inline-flex items-center rounded-r-lg px-2 py-2 text-neutral-400 ring-1 ring-inset ring-neutral-300 hover:bg-neutral-50 focus:z-20 focus:outline-offset-0 ${last && "pointer-events-none opacity-70"}`}
+                className={`relative inline-flex cursor-pointer items-center rounded-r-lg px-2 py-2 text-neutral-400 ring-1 ring-neutral-300 ring-inset hover:bg-neutral-50 focus:z-20 focus:outline-offset-0 ${last && "pointer-events-none opacity-70"}`}
               >
                 <span className="sr-only">{t("totalItems.last")}</span>
                 <ChevronsRight aria-hidden="true" className="h-5 w-5" />

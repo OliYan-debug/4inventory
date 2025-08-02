@@ -3,6 +3,7 @@ import { Registry } from "./Registry";
 import { TableHeader } from "./TableHeader";
 import { LoadingSkeleton } from "./LoadingSkeleton";
 import { useTranslation } from "react-i18next";
+import { Button } from "./Button";
 
 export function History({ registersColumns, registers, loading, updateData }) {
   const { t } = useTranslation("history");
@@ -17,29 +18,32 @@ export function History({ registersColumns, registers, loading, updateData }) {
       </div>
 
       <div>
-        <TableHeader columnsDefault={registersColumns} />
-
         {loading ? (
           <LoadingSkeleton />
         ) : (
           <>
             {registers.length <= 0 ? (
-              <div className="mt-10 flex animate-fade-in flex-col items-center gap-2">
-                <Rat size={100} className="text-neutral-700" />
-                <p className="font-medium text-neutral-600">{t("noItems")}</p>
+              <div className="animate-fade-in mt-10 flex flex-col items-center gap-2">
+                <div className="flex w-64 flex-col items-center gap-2 text-neutral-600">
+                  <Rat className="size-25 text-neutral-700" />
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    updateData();
-                  }}
-                  className="flex items-center gap-1 rounded-lg bg-neutral-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-neutral-500"
-                >
-                  {t("buttons.retry")} <FolderSync size={16} />
-                </button>
+                  <span className="font-medium">{t("noItems")}</span>
+
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      updateData();
+                    }}
+                    className="h-8"
+                  >
+                    {t("buttons.retry")} <FolderSync size={16} />
+                  </Button>
+                </div>
               </div>
             ) : (
               <>
+                <TableHeader columnsDefault={registersColumns} />
+
                 {registers.map((registry, index) => {
                   return (
                     <Registry

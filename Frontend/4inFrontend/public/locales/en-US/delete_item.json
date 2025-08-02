@@ -12,6 +12,6 @@
   "loading": {
     "pending": "Deleting item...",
     "success": "Item deleted.",
-    "error": "Error when adding. Try again."
+    "error": "Error when deleting. Try again."
   }
 }

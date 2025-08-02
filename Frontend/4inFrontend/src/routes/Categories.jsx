@@ -8,6 +8,7 @@ import { Category } from "../components/Category";
 import { toast } from "react-toastify";
 import { TableHeader } from "../components/TableHeader";
 import { useTranslation } from "react-i18next";
+import { Button } from "../components/Button";
 
 export default function Categories() {
   const { t } = useTranslation("categories");
@@ -102,7 +103,7 @@ export default function Categories() {
   }, [update]);
 
   const updateData = () => {
-    update ? setUpdate(false) : setUpdate(true);
+    setUpdate(!update);
   };
 
   const handleButtonClick = (id) => {
@@ -120,12 +121,13 @@ export default function Categories() {
   return (
     <div className="flex flex-col gap-4">
       <Header title={t("title")} subtitle={Subtitle()}>
-        <Link
-          to={"/categories/new"}
-          className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
-        >
-          {t("buttons.new")} <PlusCircle size={16} />
-        </Link>
+        <div className="w-16">
+          <Button className="h-6 border border-emerald-500 bg-transparent text-xs text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50">
+            <Link to={"/categories/new"} className="flex items-center gap-1">
+              {t("buttons.new")} <PlusCircle className="size-4" />
+            </Link>
+          </Button>
+        </div>
       </Header>
 
       <div className="min-h-screen w-full overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:overflow-x-hidden">
@@ -134,30 +136,33 @@ export default function Categories() {
         ) : (
           <>
             {categories.length <= 0 ? (
-              <div className="mt-10 flex animate-fade-in flex-col items-center gap-2">
-                <Rat size={100} className="text-neutral-700" />
-                <p className="font-medium text-neutral-600">
-                  {t("noCategories")}
-                </p>
+              <div className="animate-fade-in mt-10 flex flex-col items-center gap-2">
+                <div className="flex w-64 flex-col items-center gap-2 text-neutral-600">
+                  <Rat className="size-25 text-neutral-700" />
 
-                <Link
-                  to={"/categories/new"}
-                  className="flex items-center gap-1 rounded-lg border border-emerald-500 px-2 py-1 text-sm font-medium text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50"
-                >
-                  {t("buttons.tryAdd")} <PlusCircle size={16} />
-                </Link>
+                  <span className="font-medium">{t("noCategories")}</span>
 
-                <p className="text-neutral-600">{t("or")}</p>
+                  <Button className="h-8 border border-emerald-500 bg-transparent text-xs text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50">
+                    <Link
+                      to={"/categories/new"}
+                      className="flex items-center gap-1"
+                    >
+                      {t("buttons.tryAdd")} <PlusCircle size={16} />
+                    </Link>
+                  </Button>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    updateData();
-                  }}
-                  className="flex items-center gap-1 rounded-lg bg-neutral-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-neutral-500"
-                >
-                  {t("buttons.tryAgain")} <FolderSync size={16} />
-                </button>
+                  <span>{t("or")}</span>
+
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      updateData();
+                    }}
+                    className="h-8"
+                  >
+                    {t("buttons.tryAgain")} <FolderSync size={16} />
+                  </Button>
+                </div>
               </div>
             ) : (
               <>

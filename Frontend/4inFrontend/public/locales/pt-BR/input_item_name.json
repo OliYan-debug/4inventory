@@ -3,5 +3,8 @@
   "item_required": "Nome do item é obrigatório",
   "item_max_length": "O número máximo de caracteres foi excedido",
   "item_placeholder": "Nome do item",
-  "update_item_placeholder": "Buscar items"
+  "update_item_placeholder": "Buscar items",
+  "loading": {
+    "error": "Erro ao encontrar o nome do item. Por favor, tente novamente."
+  }
 }

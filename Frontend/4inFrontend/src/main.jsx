@@ -346,7 +346,7 @@ export const App = () => {
 
               <Route path="*" element={<NotFound />} />
             </Routes>
-            <ToastContainer />
+            <ToastContainer draggable autoClose={2000} closeOnClick />
           </Suspense>
         </AuthProvider>
       </CookiesProvider>

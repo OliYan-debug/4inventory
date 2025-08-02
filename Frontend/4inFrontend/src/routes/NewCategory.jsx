@@ -7,18 +7,24 @@ import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { ModalMaxCategoriesError } from "../components/ModalMaxCategoriesError";
 import { useTranslation } from "react-i18next";
+import { Button } from "../components/Button";
+import { InputCategoryName } from "../components/InputCategoryName";
+import { InputCategoryColor } from "../components/InputCategoryColor";
 
 export default function NewCategory() {
   const { t } = useTranslation("new_category");
 
   const [categories, setCategories] = useState([]);
-  const [update, setUpdate] = useState(false);
   const [maxCategories, setMaxCategories] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [updateColor, setUpdateColor] = useState(false);
 
   const {
     register,
     handleSubmit,
     reset,
+    getValues,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
@@ -37,6 +43,10 @@ export default function NewCategory() {
 
     setMaxCategories(categories.length >= 10);
   }, [categories.length, update]);
+
+  function updateRandomColor() {
+    setUpdateColor(!updateColor);
+  }
 
   const onSubmit = async (data) => {
     try {
@@ -58,7 +68,7 @@ export default function NewCategory() {
               <p>
                 {t("loading.error")} <br />
                 <span className="text-xs opacity-80">
-                  {data.response.data.message}
+                  {data?.response?.data?.message}
                 </span>
               </p>
             );
@@ -67,6 +77,7 @@ export default function NewCategory() {
       });
       reset();
       setUpdate(true);
+      updateRandomColor();
     } catch (error) {
       console.error(error);
     }
@@ -93,76 +104,42 @@ export default function NewCategory() {
       <div className="flex min-h-screen max-w-full justify-center rounded-2xl bg-neutral-50 p-4">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center gap-2 pt-8 md:w-1/2"
+          className="flex w-full flex-col items-center gap-2 px-10 pt-8 md:w-[40dvw] md:px-0"
         >
-          <div className="w-full">
-            <label htmlFor="name" className="text-sm text-neutral-500">
-              {t("form.labels.name")}
-            </label>
-            <input
-              defaultValue=""
-              {...register("name", {
-                required: t("form.name_required"),
-                maxLength: {
-                  value: 20,
-                  message: t("form.maxLength"),
-                },
-              })}
-              aria-invalid={errors.name ? "true" : "false"}
-              type="text"
-              id="name"
-              disabled={isSubmitting || maxCategories}
-              className={`focus-visible::border-neutral-500 w-full rounded-lg border border-neutral-400 px-4 py-2 text-neutral-500 outline-hidden hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
-                errors.name &&
-                "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
-              }`}
-            />
-            {errors.name && (
-              <p role="alert" className="mt-1 text-center text-xs text-red-600">
-                {errors.name?.message}
-              </p>
-            )}
-          </div>
+          <InputCategoryName
+            register={register}
+            errors={errors}
+            isSubmitting={isSubmitting}
+            maxCategories={maxCategories}
+          />
 
-          <div className="w-full">
-            <label htmlFor="color" className="text-sm text-neutral-500">
-              {t("form.labels.color")}
-            </label>
-            <input
-              defaultValue="#fafafa"
-              {...register("color")}
-              aria-invalid={errors.color ? "true" : "false"}
-              type="color"
-              id="color"
-              disabled={isSubmitting || maxCategories}
-              className={`focus-visible::border-neutral-500 h-10 w-full rounded-lg border border-neutral-400 px-4 py-2 outline-hidden hover:border-neutral-500 disabled:cursor-no-drop disabled:text-opacity-60 disabled:hover:border-neutral-400 ${
-                errors.color &&
-                "focus-visible::border-red-600 border-red-600 bg-red-100 text-red-600 hover:border-red-600"
-              }`}
-            />
-            {errors.color && (
-              <p role="alert" className="mt-1 text-center text-xs text-red-600">
-                {errors.color?.message}
-              </p>
-            )}
-          </div>
+          <InputCategoryColor
+            register={register}
+            errors={errors}
+            isSubmitting={isSubmitting}
+            getValues={getValues}
+            setValue={setValue}
+            maxCategories={maxCategories}
+            updateRandomColor={updateRandomColor}
+            updateColor={updateColor}
+          />
 
-          <button
+          <Button
             type="submit"
             disabled={isSubmitting || maxCategories}
-            className="mt-10 flex items-center justify-center rounded-lg bg-emerald-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-emerald-500 disabled:cursor-no-drop disabled:opacity-70 md:w-2/5"
+            className="mt-2 bg-emerald-400"
           >
-            <CirclePlus size={20} color="#fafafa" className="me-2" />
             {t("buttons.submit")}
-          </button>
+            <CirclePlus className="size-5" />
+          </Button>
 
           <Link
             to={"/categories"}
-            disabled={isSubmitting || maxCategories}
-            className="flex items-center font-semibold text-neutral-400 hover:underline hover:opacity-80 disabled:cursor-no-drop disabled:opacity-70"
+            data-disabled={isSubmitting}
+            className="flex cursor-pointer items-center font-semibold text-neutral-400 hover:underline hover:opacity-80 data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-70"
           >
             {t("buttons.back")}
-            <Undo2 size={20} color="#a3a3a3" className="ms-1" />
+            <Undo2 className="ms-1 size-5 text-neutral-400" />
           </Link>
         </form>
       </div>

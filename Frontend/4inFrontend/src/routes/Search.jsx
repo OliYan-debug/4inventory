@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { ChevronRight, LucidePackageSearch, Rat, Undo2 } from "lucide-react";
+import {
+  ChevronRight,
+  Loader2,
+  LucidePackageSearch,
+  Rat,
+  Undo2,
+} from "lucide-react";
 import { api } from "../services/api";
 import { Header } from "../components/Header";
 import { ItemFound } from "../components/ItemFound";
 import { RouteFound } from "../components/RouteFound";
 import { useTranslation } from "react-i18next";
 import { InputSearch } from "../components/InputSearch";
+import { Button } from "../components/Button";
 
 export default function Search() {
   const { t, i18n } = useTranslation("search");
@@ -17,7 +24,13 @@ export default function Search() {
   const [filteredRoutes, setFilteredRoutes] = useState([]);
   const [search, setSearch] = useState("");
 
-  const { register, handleSubmit, reset, setFocus } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setFocus,
+    formState: { isSubmitting },
+  } = useForm({
     mode: "onChange",
   });
 
@@ -78,30 +91,38 @@ export default function Search() {
                 handleResetSearch={handleResetSearch}
               />
             </div>
-            <button
-              type="submit"
-              className="hidden items-center justify-center rounded-lg bg-sky-400 px-4 py-2 font-semibold text-neutral-50 transition hover:bg-sky-500 md:flex md:w-2/5"
-            >
-              <LucidePackageSearch size={20} color="#fafafa" className="me-2" />
 
-              {t("buttons.submit")}
-            </button>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="mt-2 hidden bg-sky-400 md:flex md:w-2/5"
+            >
+              <span>{t("buttons.submit")}</span>
+              {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <Loader2 className="size-5 animate-spin" />
+                </span>
+              ) : (
+                <LucidePackageSearch className="size-5" />
+              )}
+            </Button>
           </div>
 
           <div className="mt-2 w-full border-t border-neutral-300">
             {items.length === 0 && filteredRoutes.length === 0 ? (
               <>
                 {search !== "" && (
-                  <div className="flex animate-fade-in flex-col items-center gap-2">
-                    <Rat size={100} className="text-neutral-700" />
-                    <p className="w-52 break-words font-medium text-neutral-600">{`${t("no_items.text")} "${search}"`}</p>
-                    <button
-                      type="button"
-                      onClick={() => handleResetSearch()}
-                      className="flex rounded-lg bg-neutral-400 px-2 py-1 font-semibold text-neutral-50 transition hover:bg-neutral-500"
-                    >
-                      {t("no_items.button.clear_and_try_again")}
-                    </button>
+                  <div className="animate-fade-in flex flex-col items-center gap-2 text-center text-neutral-500">
+                    <Rat className="size-25 text-neutral-700" />
+
+                    <p className="w-52 font-medium break-words text-neutral-600">{`${t("no_items.text")}: "${search}"`}</p>
+
+                    <div className="w-full px-8">
+                      <Button type="button" onClick={() => handleResetSearch()}>
+                        {t("no_items.button.clear_and_try_again")}
+                      </Button>
+                    </div>
+
                     <p>{t("no_items.or")}</p>
                   </div>
                 )}
