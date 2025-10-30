@@ -1,8 +1,9 @@
 import { Navigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import useAuth from "../hooks/useAuth";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
+
+import useAuth from "@/hooks/useAuth";
 
 const ProtectedRoute = ({ children, roles }) => {
   const [cookies] = useCookies(["4inventory.token"]);
