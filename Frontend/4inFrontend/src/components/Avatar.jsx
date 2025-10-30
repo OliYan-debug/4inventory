@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { Loader2, LogOut } from "lucide-react";
-import useAuth from "../hooks/useAuth";
+
+import useAuth from "@/hooks/useAuth";
 import { LogoutButton } from "./LogoutButton";
 
 export function Avatar({ hiddenNav = false }) {

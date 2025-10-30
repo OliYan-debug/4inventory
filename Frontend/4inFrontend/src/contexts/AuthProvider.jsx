@@ -2,9 +2,10 @@ import { createContext, useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { api } from "../services/api";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+
+import { api } from "@/services/api";
 
 export const AuthContext = createContext();
 

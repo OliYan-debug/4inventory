@@ -1,7 +1,8 @@
 import { useState } from "react";
-import useAuth from "../hooks/useAuth";
 import { Rat } from "lucide-react";
 import { useTranslation } from "react-i18next";
+
+import useAuth from "@/hooks/useAuth";
 
 export function LogoutButton({ children }) {
   const { t } = useTranslation("logout_button");
