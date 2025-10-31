@@ -16,7 +16,7 @@ export function NavBar() {
 
   return (
     <nav
-      className={`fixed right-0 bottom-0 left-0 z-10 flex h-auto w-full bg-neutral-800 text-neutral-50 transition-all duration-500 md:relative md:mr-4 md:rounded-2xl ${hiddenNav ? "md:w-20" : "w-[14vw] md:w-[38vw] lg:w-[24vw] 2xl:w-[20vw]"}`}
+      className={`fixed right-0 bottom-0 left-0 z-10 flex h-auto w-full bg-neutral-800 text-neutral-50 transition-all duration-500 md:relative md:mr-4 md:h-full md:rounded-2xl md:pb-8 ${hiddenNav ? "md:w-20" : "w-[14vw] md:w-[38vw] lg:w-[24vw] 2xl:w-[20vw]"}`}
     >
       <div className="absolute flex w-full justify-end p-2">
         <button

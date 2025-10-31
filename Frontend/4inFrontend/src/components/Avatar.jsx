@@ -25,9 +25,9 @@ export function Avatar({ hiddenNav = false }) {
 
   return (
     <div
-      className={`mt-4 hidden w-3/4 items-center justify-center gap-2 border-t pt-2 md:flex ${hiddenNav ? "flex-col" : "animate-fade-in flex-row"}`}
+      className={`mt-2 hidden w-3/4 items-center justify-center gap-2 md:flex ${hiddenNav ? "flex-col" : "animate-fade-in flex-row"}`}
     >
-      <div className="flex size-12 min-w-12 items-center justify-center rounded-full border border-neutral-50 bg-neutral-500 font-medium">
+      <div className="flex size-10 min-w-10 items-center justify-center rounded-full border border-neutral-50 bg-neutral-500 font-medium">
         {!user ? (
           <span className="flex items-center justify-center">
             <Loader2 className="animate-spin" size={18} />
@@ -45,7 +45,7 @@ export function Avatar({ hiddenNav = false }) {
                 <div className="mb-1 flex h-4 w-20 animate-pulse rounded-lg bg-neutral-300"></div>
               </>
             ) : (
-              <p className="max-w-28 truncate text-base font-medium">
+              <p className="max-w-28 truncate text-base/4 font-medium">
                 {user.name}
               </p>
             )}
@@ -57,7 +57,7 @@ export function Avatar({ hiddenNav = false }) {
                 <div className="flex h-3 w-14 animate-pulse rounded-lg bg-neutral-300"></div>
               </>
             ) : (
-              <span className="under text-xs font-thin">{user.sub}</span>
+              <span className="text-sm font-thin">{user.sub}</span>
             )}
           </div>
         </div>
@@ -65,7 +65,7 @@ export function Avatar({ hiddenNav = false }) {
 
       <div>
         <LogoutButton>
-          <LogOut className="size-5 transition hover:opacity-70" />
+          <LogOut className="size-4 transition hover:opacity-70" />
         </LogoutButton>
       </div>
     </div>
