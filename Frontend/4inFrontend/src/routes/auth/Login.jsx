@@ -61,7 +61,7 @@ export default function Login() {
 
   return (
     <Suspense fallback={<Loading />}>
-      <div className="m-0 h-dvh w-screen bg-neutral-300 bg-[url(./src/assets/wave_background.svg)] bg-cover bg-no-repeat p-4 md:h-screen">
+      <div className="m-0 h-dvh w-screen bg-neutral-300 bg-[url(@/assets/waveBackground.svg)] bg-cover bg-no-repeat p-4 md:h-screen">
         <div className="flex h-full w-full flex-col-reverse gap-4 rounded-lg bg-neutral-50 md:flex-row md:items-center md:p-20">
           <div className="flex h-full w-full flex-col justify-start px-10 py-5 md:justify-center md:pe-10">
             <div>
