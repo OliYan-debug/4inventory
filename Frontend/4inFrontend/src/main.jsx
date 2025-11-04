@@ -32,6 +32,7 @@ import Categories from "./routes/categories/Categories";
 import NewCategory from "./routes/categories/NewCategory";
 
 import Profile from "./routes/profile/Profile";
+import Backup from "./routes/backup/Backup";
 
 import Users from "./routes/users/Users";
 
@@ -268,7 +269,7 @@ export const App = () => {
 
             {/* Admin routes */}
             <Route
-              path="/admin/users"
+              path="/admin"
               element={<Root />}
               errorElement={<ErrorPage />}
             >
@@ -287,6 +288,26 @@ export const App = () => {
                   <ProtectedRoute roles={["ADMIN"]}>
                     <PageTitle title={`4Inventory | ${t("users")}`} />
                     <Users />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/admin/backup"
+                element={
+                  <ProtectedRoute roles={["ADMIN"]}>
+                    <PageTitle title={`4Inventory | Backup`} />
+                    <Backup />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/admin/backup/:tab"
+                element={
+                  <ProtectedRoute roles={["ADMIN"]}>
+                    <PageTitle title={`4Inventory | Backup`} />
+                    <Backup />
                   </ProtectedRoute>
                 }
               />
