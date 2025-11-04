@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import {
   ChartColumnBig,
+  Database,
   Folder,
   FolderInput,
   FolderOpen,
@@ -125,6 +126,13 @@ export function Menu({ hiddenNav }) {
       path: "/admin/users",
       label: t("links.users"),
       Icon: UserPen,
+      active: true,
+      role: "ADMIN",
+    },
+    {
+      path: "/admin/backup",
+      label: "Backup",
+      Icon: Database,
       active: true,
       role: "ADMIN",
     },
