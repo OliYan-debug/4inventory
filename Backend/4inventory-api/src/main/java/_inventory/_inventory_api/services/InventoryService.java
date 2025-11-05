@@ -54,7 +54,7 @@ public class InventoryService {
         inventoryItem.setQuantity(item.getQuantity() == null ? 0 : item.getQuantity());
         inventoryItem.setCategory(item.getCategory() == null ? Set.of() : item.getCategory());
         var savedItem = inventoryRepo.save(inventoryItem);
-        registryRepository.save(new Registry(savedItem.getId(), savedItem.getItem(), RegistryLabel.ADD, "Add a item", recoverUsername()));
+        registryRepository.save(new Registry(savedItem.getId(), savedItem.getItem(), RegistryLabel.ADD, "Add a item", null, savedItem.getItem(), recoverUsername()));
         return savedItem;
     }
 
@@ -65,7 +65,7 @@ public class InventoryService {
             if (item.justification() == null || item.justification().isEmpty())
                 throw new JustificationNotFoundException();
             var itemDB = optionalItem.get();
-            registryRepository.save(new Registry(itemDB.getId(), itemDB.getItem(),RegistryLabel.REMOVE, item.justification(), recoverUsername()));
+            registryRepository.save(new Registry(itemDB.getId(), itemDB.getItem(),RegistryLabel.REMOVE, item.justification(), itemDB.toString(), null, recoverUsername()));
             inventoryRepo.deleteById(itemId);
             return "Item " + itemId + " deleted";
         }
@@ -75,9 +75,11 @@ public class InventoryService {
     public InventoryItem updateItem(InventoryItem itemUpdate) {
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemUpdate.getId());
         if (optionalItem.isPresent()) {
-            var itemDB = getUpdateItem(optionalItem.get(), itemUpdate);
+            var item = optionalItem.get();
+            var itemString = item.toString();
+            var itemDB = getUpdateItem(item, itemUpdate);
             var updatedItem = inventoryRepo.save(itemDB);
-            registryRepository.save(new Registry(updatedItem.getId(), updatedItem.getItem(), RegistryLabel.UPDATE, "Update a item", recoverUsername()));
+            registryRepository.save(new Registry(updatedItem.getId(), updatedItem.getItem(), RegistryLabel.UPDATE, "Update a item", itemString, updatedItem.toString(),  recoverUsername()));
             return updatedItem;
         }
         throw new ItemIdNotFoundException(itemUpdate.getId());
@@ -101,12 +103,13 @@ public class InventoryService {
             if (itemAndRegistryDTO.quantity() < 0)
                 throw new InvalidQuantityException("Item quantity must be greater than 0");
             InventoryItem inventoryItem = optionalItem.get();
+            int previousQuantity = inventoryItem.getQuantity();
             var label = itemAndRegistryDTO.quantity() > inventoryItem.getQuantity() ? RegistryLabel.CHECK_IN : RegistryLabel.CHECK_OUT;
             inventoryItem.setQuantity(itemAndRegistryDTO.quantity());
             var itemSaved = inventoryRepo.save(inventoryItem);
             if (itemAndRegistryDTO.justification() == null || itemAndRegistryDTO.justification().isEmpty())
                 throw new JustificationNotFoundException();
-            registryRepository.save(new Registry(itemSaved.getId(), itemSaved.getItem(), label, itemAndRegistryDTO.justification(), recoverUsername()));
+            registryRepository.save(new Registry(itemSaved.getId(), itemSaved.getItem(), label, itemAndRegistryDTO.justification(), String.valueOf(previousQuantity), String.valueOf(itemSaved.getQuantity()), recoverUsername()));
             return itemSaved;
         }
         throw new ItemIdNotFoundException(itemAndRegistryDTO.id());
