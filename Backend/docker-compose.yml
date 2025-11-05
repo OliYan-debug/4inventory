@@ -10,7 +10,7 @@ services:
     depends_on: 
       - db
   db:
-    image: postgres
+    image: postgres:17-alpine
     restart: always
     shm_size: 128mb
     env_file: ".env"
