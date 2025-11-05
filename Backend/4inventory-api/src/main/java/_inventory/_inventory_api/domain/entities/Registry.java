@@ -22,14 +22,22 @@ public class Registry {
     @Column(nullable = false)
     private String justification;
     private String author;
+    @Column(name = "previous_state")
+    @Lob
+    private String previousState;
+    @Column(name = "actual_state")
+    @Lob
+    private String actualState;
     private LocalDateTime createdAt;
 
-    public Registry(Long itemId, String item, RegistryLabel label, String justification, String author) {
+    public Registry(Long itemId, String item, RegistryLabel label, String justification, String previousState, String actualState, String author) {
         this.itemId = itemId;
         this.item = item;
         this.label = label;
         this.justification = justification;
         this.author = author;
+        this.previousState = previousState;
+        this.actualState = actualState;
     }
 
     @PrePersist
