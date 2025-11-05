@@ -8,11 +8,11 @@ COPY 4inventory-api/src ./src
 
 RUN mvn clean package -DskipTests
 
-FROM openjdk:21-jdk-slim
+FROM amazoncorretto:21-alpine-jdk
 
 WORKDIR /app
 
-COPY --from=build /app/target/4inventory-api-1.0.0.jar /app/app.jar
+COPY --from=build /app/target/4inventory-api-latest.jar /app/app.jar
 
 EXPOSE 5000
 
