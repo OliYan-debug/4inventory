@@ -50,8 +50,6 @@ export function UploadBackup() {
     setIsDragging(false);
   };
 
-  // const [processedData, setProcessedData] = useState(null);
-
   async function processFileData() {
     if (!selectedFile) return;
 
@@ -61,12 +59,14 @@ export function UploadBackup() {
       return data;
     } catch (error) {
       console.error("Erro ao ler o arquivo JSON:", error);
-      setInvalidFile();
+      setInvalidFile(true);
     }
   }
 
   async function onSubmit() {
     const data = await processFileData();
+
+    if (!data) return;
 
     try {
       await toast.promise(api.post("/backup", data), {
@@ -168,7 +168,6 @@ export function UploadBackup() {
             accept=".json"
             onChange={(event) => {
               onFileSelected(event);
-
               event.target.value = "";
             }}
           />
@@ -177,6 +176,7 @@ export function UploadBackup() {
 
       <Button
         className="w-64 bg-sky-400"
+        disabled={!selectedFile}
         onClick={async () => await onSubmit()}
       >
         Upload <UploadIcon className="size-4" />
