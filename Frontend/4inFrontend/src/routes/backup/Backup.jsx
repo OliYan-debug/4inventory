@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Header } from "@/components/header/Header";
 import { Button } from "@/components/Button";
@@ -7,6 +8,8 @@ import { DownloadBackup } from "./components/DownloadBackup";
 import { UploadBackup } from "./components/UploadBackup";
 
 export default function Backup() {
+  const { t } = useTranslation("backup");
+
   let { tab } = useParams();
   const navigate = useNavigate();
 
@@ -17,7 +20,7 @@ export default function Backup() {
   }, [tab]);
 
   const Subtitle = () => {
-    return <p className="text-sm text-neutral-500">Backup and Recovery</p>;
+    return <p className="text-sm text-neutral-500">{t("title")}</p>;
   };
   return (
     <div className="flex flex-col gap-4">
@@ -27,10 +30,10 @@ export default function Backup() {
         <div className="flex w-full flex-col items-center justify-center gap-4 px-8">
           <div className="flex flex-col items-center">
             <h3 className="flex items-center gap-1 text-2xl font-semibold text-neutral-800">
-              Backup and Recovery
+              {t("title")}
             </h3>
 
-            <span className="text-neutral-500">Select what you want to do</span>
+            <span className="text-neutral-500">{t("subtitle")}</span>
           </div>
 
           <div className="flex w-full flex-col items-center gap-3">
@@ -50,7 +53,7 @@ export default function Backup() {
                 className="h-8 w-32 rounded-full bg-transparent text-neutral-500 underline-offset-2 data-[active=true]:bg-neutral-300 data-[active=true]:underline"
                 onClick={() => navigate("/admin/backup/recovery")}
               >
-                Recovery
+                {t("buttons.recovery")}
               </Button>
             </div>
 

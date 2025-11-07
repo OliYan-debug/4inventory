@@ -1,11 +1,14 @@
-import { FileIcon, FileX, UploadIcon, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { FileIcon, FileX, UploadIcon, X } from "lucide-react";
+import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/Button";
 import { api } from "@/services/api";
-import { toast } from "react-toastify";
 
 export function UploadBackup() {
+  const { t } = useTranslation("backup");
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [invalidFile, setInvalidFile] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -58,7 +61,7 @@ export function UploadBackup() {
       const data = JSON.parse(text);
       return data;
     } catch (error) {
-      console.error("Erro ao ler o arquivo JSON:", error);
+      console.error("Error to read the JSON File:", error);
       setInvalidFile(true);
     }
   }
@@ -70,26 +73,12 @@ export function UploadBackup() {
 
     try {
       await toast.promise(api.post("/backup", data), {
-        pending: "loading.pending",
-        success: {
-          render() {
-            return <p>{"loading.success"}</p>;
-          },
-        },
-        error: {
-          render({ data }) {
-            return (
-              <p>
-                {"loading.error"}
-                <br />
-                <span className="text-xs opacity-80">{data.message}</span>
-              </p>
-            );
-          },
-        },
+        pending: t("upload.loading.pending"),
+        success: t("upload.loading.success"),
+        error: t("upload.loading.errors.generic"),
       });
     } catch (error) {
-      console.error(error);
+      console.error("Error when uploading:", error);
 
       setInvalidFile(true);
       setSelectedFile(null);
@@ -114,14 +103,14 @@ export function UploadBackup() {
 
   return (
     <div className="animate-fade-in flex w-full flex-col items-center gap-4">
-      <span className="font-medium">Upload the backup file</span>
+      <span className="font-medium">{t("upload.title")}</span>
 
       <div className="relative w-full max-w-2xl">
         {selectedFile && (
           <Button
             type="button"
             onClick={() => handleRemoveFile()}
-            title="Remove"
+            title={t("upload.buttons.remove")}
             className="absolute top-0 right-0 z-10 m-2 flex size-6 rounded-full"
           >
             <X className="text-content-inverse size-4" />
@@ -152,11 +141,11 @@ export function UploadBackup() {
             </span>
           ) : !invalidFile ? (
             <span className="text-center text-neutral-500">
-              Drop the backup file here, or click to browse
+              {t("upload.dropArea.description")}
             </span>
           ) : (
             <span className="text-center text-red-400">
-              Invalid backup file. Only accept json file
+              {t("upload.dropArea.error")}
             </span>
           )}
 
@@ -179,7 +168,7 @@ export function UploadBackup() {
         disabled={!selectedFile}
         onClick={async () => await onSubmit()}
       >
-        Upload <UploadIcon className="size-4" />
+        {t("upload.buttons.upload")} <UploadIcon className="size-4" />
       </Button>
     </div>
   );

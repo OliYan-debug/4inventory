@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import {
   Braces,
   DatabaseBackup,
@@ -13,6 +14,8 @@ import { Button } from "@/components/Button";
 import { api } from "@/services/api";
 
 export function DownloadBackup() {
+  const { t } = useTranslation("backup");
+
   const navigate = useNavigate();
 
   const [blob, setBlob] = useState(null);
@@ -24,24 +27,14 @@ export function DownloadBackup() {
 
     try {
       const response = await toast.promise(api.get(`/backup`), {
-        pending: "Loading",
-        success: {
-          render({ data }) {
-            return (
-              <p>
-                Success{" "}
-                <span className="font-semibold">{data.data.totalElements}</span>
-              </p>
-            );
-          },
-          toastId: "getRegister",
-        },
+        pending: t("download.loading.pending"),
+        success: t("download.loading.success"),
         error: {
           render({ data }) {
             if (data.code === "ECONNABORTED" || data.code === "ERR_NETWORK") {
               return (
                 <p>
-                  Network error{" "}
+                  {t("download.loading.errors.network")}{" "}
                   <span className="text-xs opacity-80">
                     #timeout exceeded/network error.
                   </span>
@@ -52,13 +45,13 @@ export function DownloadBackup() {
             if (data.code === "ERR_BAD_REQUEST") {
               return (
                 <p>
-                  Token error{" "}
-                  <span className="text-xs opacity-80">path:/products</span>
+                  {t("download.loading.errors.badRequest")}{" "}
+                  <span className="text-xs opacity-80">path:/backup</span>
                 </p>
               );
             }
 
-            return <p>Generic error</p>;
+            return <p>{t("download.loading.errors.generic")}</p>;
           },
         },
       });
@@ -108,13 +101,11 @@ export function DownloadBackup() {
 
   return (
     <div className="animate-fade-in flex w-full flex-col items-center gap-4">
-      <span className="font-medium">Generate backup file</span>
+      <span className="font-medium">{t("download.title")}</span>
 
       <DatabaseBackup className="size-16 text-sky-500" />
 
-      <p className="text-center text-neutral-700">
-        With this file, you can recover data from 4Inventory.
-      </p>
+      <p className="text-center text-neutral-700">{t("download.subtitle")}</p>
 
       {blob && (
         <div className="flex flex-col items-center space-y-1">
@@ -142,7 +133,7 @@ export function DownloadBackup() {
           </button>
 
           <span className="flex items-center gap-1 text-sm font-semibold text-red-500">
-            Keep this file in a safe location! <Lock className="size-4" />
+            {t("download.alert")} <Lock className="size-4" />
           </span>
         </div>
       )}
@@ -154,7 +145,8 @@ export function DownloadBackup() {
           onClick={async () => await fetchBackupData()}
           className="w-64 bg-sky-400"
         >
-          Get backup data <FileClock className="size-4" />
+          {t("download.buttons.getData")}
+          <FileClock className="size-4" />
         </Button>
       ) : (
         <Button

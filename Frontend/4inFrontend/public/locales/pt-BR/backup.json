@@ -1,0 +1,42 @@
+{
+  "title": "Backup e Restauração",
+  "subtitle": "Selecione o que deseja fazer",
+  "buttons": {
+    "recovery": "Restauração"
+  },
+  "download": {
+    "title": "Gerar arquivo de backup",
+    "subtitle": "Com este arquivo você poderá recuperar os dados do 4Inventory.",
+    "alert": "Guarde este arquivo em um local seguro!",
+    "buttons": {
+      "getData": "Obter dados de backup"
+    },
+    "loading": {
+      "pending": "Buscando os dados...",
+      "success": "Dados de backup encontrados!",
+      "errors": {
+        "network": "Erro ao buscar, tente novamente.",
+        "badRequest": "Token inválido, faça login novamente.",
+        "generic": "Erro ao buscar. Tente novamente."
+      }
+    }
+  },
+  "upload": {
+    "title": "Enviar o arquivo de backup",
+    "dropArea": {
+      "description": "Arraste o arquivo de backup aqui, ou clique para procurar.",
+      "error": "Arquivo de backup inválido. Apenas arquivos JSON são aceitos."
+    },
+    "buttons": {
+      "upload": "Enviar",
+      "remove": "Remover"
+    },
+    "loading": {
+      "pending": "Enviando os dados...",
+      "success": "Dados de backup enviados!",
+      "errors": {
+        "generic": "Erro ao enviar. Tente novamente."
+      }
+    }
+  }
+}
