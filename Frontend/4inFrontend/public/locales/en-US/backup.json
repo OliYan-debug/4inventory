@@ -1,0 +1,42 @@
+{
+  "title": "Backup and Recovery",
+  "subtitle": "Select what you want to do",
+  "buttons": {
+    "recovery": "Recovery"
+  },
+  "download": {
+    "title": "Generate backup file",
+    "subtitle": "With this file you can recover data from 4Inventory.",
+    "alert": "Keep this file in a safe location!",
+    "buttons": {
+      "getData": "Get backup data"
+    },
+    "loading": {
+      "pending": "Finding the data...",
+      "success": "Backup data found!",
+      "errors": {
+        "network": "Error when finding, try again.",
+        "badRequest": "Invalid Token, please log in again.",
+        "generic": "Error when finding. Try again."
+      }
+    }
+  },
+  "upload": {
+    "title": "Upload the backup file",
+    "dropArea": {
+      "description": "Drop the backup file here, or click to browse.",
+      "error": "Invalid backup file. Only accept json file."
+    },
+    "buttons": {
+      "upload": "Upload",
+      "remove": "Remove"
+    },
+    "loading": {
+      "pending": "Uploading the data...",
+      "success": "Backup data uploaded!",
+      "errors": {
+        "generic": "Error when uploading. Try again."
+      }
+    }
+  }
+}
