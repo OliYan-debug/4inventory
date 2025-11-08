@@ -49,12 +49,7 @@ export function History({ registersColumns, registers, loading, updateData }) {
                   return (
                     <Registry
                       key={registry.id}
-                      id={registry.id}
-                      item={registry.item}
-                      type={registry.label}
-                      justification={registry.justification}
-                      author={registry.author}
-                      created={registry.createdAt}
+                      registry={registry}
                       count={index}
                     />
                   );
