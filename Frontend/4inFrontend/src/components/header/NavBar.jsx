@@ -45,7 +45,7 @@ export function NavBar() {
           </Link>
 
           <span className="animate-fade-in mt-px text-xs font-thin text-neutral-200">
-            1.22
+            1.22.1
           </span>
         </div>
 
