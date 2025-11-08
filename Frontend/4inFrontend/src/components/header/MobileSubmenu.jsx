@@ -24,20 +24,21 @@ export function MobileSubmenu({
 
       <ul>
         {filteredLinks.map((link, index) => (
-          <li
-            key={index}
-            onClick={() => {
-              setOpen(false);
-            }}
-            className={`group/subitem flex w-full cursor-pointer justify-center rounded-lg py-1 font-medium transition hover:bg-neutral-400 hover:font-bold md:justify-start ${!link.active && "pointer-events-none opacity-75"}`}
-          >
-            <span className="ms-1 me-4 hidden h-6 w-1 rounded-md bg-neutral-50 opacity-0 group-hover/subitem:opacity-100 md:block" />
+          <Link to={link.path} key={index}>
+            <li
+              onClick={() => {
+                setOpen(false);
+              }}
+              className={`group/subitem flex w-full cursor-pointer justify-center rounded-lg py-1 font-medium transition hover:bg-neutral-400 hover:font-bold md:justify-start ${!link.active && "pointer-events-none opacity-75"}`}
+            >
+              <span className="ms-1 me-4 hidden h-6 w-1 rounded-md bg-neutral-50 opacity-0 group-hover/subitem:opacity-100 md:block" />
 
-            <Link to={link.path} className="flex items-center">
-              <link.Icon className="me-2 size-5 text-neutral-50" />
-              {link.label}
-            </Link>
-          </li>
+              <span className="flex items-center">
+                <link.Icon className="me-2 size-5 text-neutral-50" />
+                {link.label}
+              </span>
+            </li>
+          </Link>
         ))}
       </ul>
     </div>

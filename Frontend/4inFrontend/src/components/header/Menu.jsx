@@ -150,52 +150,50 @@ export function Menu({ hiddenNav }) {
   }, [user]);
 
   return (
-    <>
-      <ul
-        className={`flex h-14 w-full justify-evenly sm:mt-2 md:mt-4 md:h-auto md:flex-col md:justify-normal md:py-4 ${hiddenNav ? "md:gap-1" : "animate-fade-in md:gap-0"}`}
-      >
-        <MenuButton
-          label={t("dashboard")}
-          path={"/dashboard"}
-          Icon={ChartColumnBig}
-          hiddenNav={hiddenNav}
-          active={location.pathname === "/dashboard"}
-        />
+    <ul
+      className={`flex h-14 w-full justify-evenly sm:mt-2 md:mt-4 md:h-auto md:flex-col md:justify-normal md:py-4 ${hiddenNav ? "md:gap-1" : "animate-fade-in md:gap-0"}`}
+    >
+      <MenuButton
+        label={t("dashboard")}
+        path={"/dashboard"}
+        Icon={ChartColumnBig}
+        hiddenNav={hiddenNav}
+        active={location.pathname === "/dashboard"}
+      />
 
+      <MenuDropdownButton
+        label={t("products")}
+        Icon={PackageOpen}
+        links={productsLinks}
+        hiddenNav={hiddenNav}
+        pathname={location.pathname}
+      />
+
+      <MenuDropdownButton
+        label={t("categories")}
+        Icon={Folder}
+        links={categoriesLinks}
+        hiddenNav={hiddenNav}
+        pathname={location.pathname}
+      />
+
+      {isAdmin && (
         <MenuDropdownButton
-          label={t("products")}
-          Icon={PackageOpen}
-          links={productsLinks}
+          label={t("administration")}
+          Icon={Shield}
+          links={adminLinks}
           hiddenNav={hiddenNav}
           pathname={location.pathname}
         />
+      )}
 
-        <MenuDropdownButton
-          label={t("categories")}
-          Icon={Folder}
-          links={categoriesLinks}
-          hiddenNav={hiddenNav}
-          pathname={location.pathname}
-        />
-
-        {isAdmin && (
-          <MenuDropdownButton
-            label={t("administration")}
-            Icon={Shield}
-            links={adminLinks}
-            hiddenNav={hiddenNav}
-            pathname={location.pathname}
-          />
-        )}
-
-        <MenuDropdownButton
-          label={t("user")}
-          Icon={UserCircle}
-          links={userLinks}
-          hiddenNav={hiddenNav}
-          pathname={location.pathname}
-        />
-      </ul>
-    </>
+      <MenuDropdownButton
+        label={t("user")}
+        Icon={UserCircle}
+        links={userLinks}
+        hiddenNav={hiddenNav}
+        pathname={location.pathname}
+      />
+    </ul>
   );
 }
