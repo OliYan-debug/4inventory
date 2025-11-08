@@ -26,7 +26,7 @@ export function Registry({
       </div>
 
       <div className="col-auto flex items-center py-2">
-        <p className="text-neutral-500">{item}</p>
+        <p className="max-w-40 truncate text-neutral-500">{item}</p>
       </div>
 
       <div className="col-auto flex items-center gap-1 py-2">

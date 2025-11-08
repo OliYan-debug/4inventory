@@ -60,14 +60,10 @@ export function Item({
       </div>
 
       <div className="col-auto flex items-center py-2">
-        <Link to={`item/${id}`}>
-          <p className="group flex items-center gap-1 underline transition hover:font-semibold">
-            {item}
-            <SquareArrowOutUpRight
-              size={12}
-              className="-translate-x-4 opacity-0 transition group-hover:translate-x-0 group-hover:opacity-100"
-            />
-          </p>
+        <Link to={`item/${id}`} className="group flex items-center gap-1">
+          <p className="max-w-40 truncate hover:underline">{item}</p>
+
+          <SquareArrowOutUpRight className="size-3 -translate-x-4 opacity-0 transition group-hover:translate-x-0 group-hover:opacity-100" />
         </Link>
       </div>
 
