@@ -7,8 +7,10 @@ import {
   SquareArrowOutUpRight,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { ItemMenu } from "./ItemMenu";
+
+import { formatDate } from "@/utils/formatDate";
 import { getContrastingTextColor } from "@/utils/getContrast";
+import { ItemMenu } from "./ItemMenu";
 
 export function Item({
   id,
@@ -27,8 +29,6 @@ export function Item({
   function handleOpenItemMenu() {
     setItemMenuOpen(true);
   }
-
-  const formatDate = (value) => value.toString().padStart(2, "0");
 
   return (
     <div

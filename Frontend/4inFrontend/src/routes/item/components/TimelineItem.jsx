@@ -9,6 +9,8 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { formatDate } from "@/utils/formatDate";
+
 export function Timeline({ label, justification, author, createdAt, isLast }) {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
@@ -40,10 +42,8 @@ export function Timeline({ label, justification, author, createdAt, isLast }) {
 
   const bgColor = bgColorMap[label] ?? "bg-neutral-200";
 
-  const formatDate = (value) => value.toString().padStart(2, "0");
-
   return (
-    <div className="flex w-full animate-fade-in items-center space-x-2 md:w-96">
+    <div className="animate-fade-in flex w-full items-center space-x-2 md:w-96">
       <div className="relative flex justify-center">
         {!isLast && (
           <span className="absolute bottom-11 block h-6 border-s-2 border-dashed border-neutral-400" />
@@ -58,15 +58,15 @@ export function Timeline({ label, justification, author, createdAt, isLast }) {
 
       <div className="flex max-w-28 flex-col justify-center md:max-w-64">
         <div className="group/justification relative">
-          <p className="truncate text-base font-semibold leading-tight text-neutral-800">
+          <p className="truncate text-base leading-tight font-semibold text-neutral-800">
             {justification.length > 20
               ? `${justification.substring(0, 24)}...`
               : justification}
           </p>
 
           {justification.length > 20 && (
-            <div className="absolute top-8 z-10 hidden w-64 max-w-64 animate-fade-in justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/justification:flex">
-              <span className="absolute -top-1 block size-2 -translate-y-px rotate-45 border-l border-t border-neutral-500 bg-neutral-400"></span>
+            <div className="animate-fade-in absolute top-8 z-10 hidden w-64 max-w-64 justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/justification:flex">
+              <span className="absolute -top-1 block size-2 -translate-y-px rotate-45 border-t border-l border-neutral-500 bg-neutral-400"></span>
               <p className="text-justify text-xs text-neutral-50">
                 {justification}
               </p>
