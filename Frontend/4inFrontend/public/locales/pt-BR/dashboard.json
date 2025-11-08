@@ -10,13 +10,20 @@
     "inventory": "Movimentações"
   },
   "columns": {
-    "id": "ID",
-    "name": "Nome",
+    "name": "Produto",
     "type": "Tipo",
     "justification": "Justificativa",
     "author": "Autor",
     "createdAt": "Criado Em"
   },
+  "labels": {
+    "add": "Adição",
+    "remove": "Remoção",
+    "update": "Atualização",
+    "checkin": "Entrada",
+    "checkout": "Saída"
+  },
+
   "loading": {
     "pending": "Buscando registros...",
     "success": "Registros encontrados:",
