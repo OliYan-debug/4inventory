@@ -120,7 +120,7 @@ export default function Categories() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-full flex-col gap-4">
       <Header title={t("title")} subtitle={Subtitle()}>
         <div className="w-16">
           <Button className="h-6 border border-emerald-500 bg-transparent text-xs text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50">
@@ -131,7 +131,7 @@ export default function Categories() {
         </div>
       </Header>
 
-      <div className="min-h-screen w-full overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:overflow-x-hidden">
+      <div className="w-full flex-1 overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:overflow-x-hidden">
         {loading ? (
           <LoadingSkeleton />
         ) : (

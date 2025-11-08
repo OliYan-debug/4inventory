@@ -23,10 +23,10 @@ export default function Backup() {
     return <p className="text-sm text-neutral-500">{t("title")}</p>;
   };
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-full flex-col gap-4">
       <Header title={"Backup"} subtitle={Subtitle()}></Header>
 
-      <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
+      <div className="mb-10 flex w-full flex-1 flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div className="flex w-full flex-col items-center justify-center gap-4 px-8">
           <div className="flex flex-col items-center">
             <h3 className="flex items-center gap-1 text-2xl font-semibold text-neutral-800">

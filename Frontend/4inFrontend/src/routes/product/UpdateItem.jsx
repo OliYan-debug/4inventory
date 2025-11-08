@@ -160,11 +160,11 @@ export default function UpdateItem() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-full flex-col gap-4">
       <Header title={t("title")} subtitle={Subtitle()} />
 
       {getCategoriesError !== false ? (
-        <div className="flex min-h-screen max-w-full flex-col items-center rounded-2xl bg-neutral-50 px-8 py-4 text-center">
+        <div className="flex max-w-full flex-1 flex-col items-center rounded-2xl bg-neutral-50 px-8 py-4 text-center">
           <h1 className="text-3xl font-bold text-neutral-800">
             {t("categoriesError.title")}
           </h1>
@@ -177,7 +177,7 @@ export default function UpdateItem() {
           <ServerOff size={84} className="text-neutral-800" />
         </div>
       ) : (
-        <div className="flex min-h-screen max-w-full justify-center rounded-2xl bg-neutral-50 p-4">
+        <div className="flex max-w-full flex-1 justify-center rounded-2xl bg-neutral-50 p-4">
           {categories.length === 0 ? <ModalCategoriesError /> : ""}
 
           <form

@@ -101,10 +101,10 @@ export default function ItemView() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-full flex-col gap-4">
       <Header title={t("title")} subtitle={Subtitle()} />
 
-      <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
+      <div className="mb-10 flex w-full flex-1 flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div className="mt-8">
           {loading ? (
             <LoadingSkeleton />

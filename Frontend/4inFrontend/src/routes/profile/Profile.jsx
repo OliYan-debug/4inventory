@@ -45,10 +45,10 @@ export default function Profile() {
   };
 
   return (
-    <div className="flex w-full flex-col gap-4">
+    <div className="flex h-full w-full flex-col gap-4">
       <Header title={t("title")} subtitle={Subtitle()} />
 
-      <div className="mb-10 flex min-h-screen w-full flex-col items-center rounded-2xl bg-neutral-50 px-4 py-4 md:mb-0 md:px-0">
+      <div className="mb-10 flex w-full flex-1 flex-col items-center rounded-2xl bg-neutral-50 px-4 py-4 md:mb-0 md:px-0">
         <Suspense fallback={<UserDetailsSkeleton />}>
           {!user ? (
             <UserDetailsSkeleton />

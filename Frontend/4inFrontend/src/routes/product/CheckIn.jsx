@@ -129,10 +129,10 @@ export default function CheckIn() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-full flex-col gap-4">
       <Header title={t("title")} subtitle={Subtitle()} />
 
-      <div className="flex min-h-screen max-w-full justify-center rounded-2xl bg-neutral-50 p-4">
+      <div className="flex max-w-full flex-1 justify-center rounded-2xl bg-neutral-50 p-4">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex w-full flex-col items-center gap-2 px-10 pt-8 md:w-[40dvw] md:px-0"

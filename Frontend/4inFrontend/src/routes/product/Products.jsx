@@ -241,7 +241,7 @@ export default function Products() {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-full flex-col gap-4">
       <Header title={t("title")} subtitle={Subtitle()}>
         <div className="w-16">
           <Button className="h-6 border border-emerald-500 bg-transparent text-xs text-emerald-500 transition hover:bg-emerald-500 hover:text-neutral-50">
@@ -252,7 +252,7 @@ export default function Products() {
         </div>
       </Header>
 
-      <div className="mb-10 flex min-h-screen w-full flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
+      <div className="mb-10 flex w-full flex-1 flex-col justify-between overflow-x-scroll rounded-2xl bg-neutral-50 py-4 md:mb-0 md:overflow-x-hidden">
         <div>
           {loading ? (
             <LoadingSkeleton />
