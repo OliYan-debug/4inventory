@@ -118,7 +118,7 @@ export function InputSearchItems({
           {...register("item", {
             required: t("item_required"),
             maxLength: {
-              value: 20,
+              value: 50,
               message: t("item_max_length"),
             },
           })}

@@ -142,7 +142,7 @@ export function Category({
             {...register("name", {
               required: "Category name is required",
               maxLength: {
-                value: 20,
+                value: 40,
                 message: "Maximum character value exceeded",
               },
             })}

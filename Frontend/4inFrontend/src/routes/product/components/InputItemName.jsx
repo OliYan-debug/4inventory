@@ -20,7 +20,7 @@ export function InputItemName({ register, errors, isSubmitting }) {
           {...register("item", {
             required: t("item_required"),
             maxLength: {
-              value: 20,
+              value: 50,
               message: t("item_max_length"),
             },
           })}

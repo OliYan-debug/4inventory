@@ -26,7 +26,7 @@ export function InputCategoryName({
           {...register("name", {
             required: t("form.name_required"),
             maxLength: {
-              value: 20,
+              value: 40,
               message: t("form.maxLength"),
             },
           })}
