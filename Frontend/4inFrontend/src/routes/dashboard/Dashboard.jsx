@@ -70,14 +70,6 @@ export default function Dashboard() {
 
   const registersColumns = [
     {
-      label: t("columns.id"),
-      orderBy: "id",
-      sorting: false,
-      order: "neutral",
-      isOrderable: true,
-      extendedColumn: false,
-    },
-    {
       label: t("columns.name"),
       orderBy: "item",
       sorting: false,
