@@ -22,11 +22,9 @@ public class Registry {
     @Column(nullable = false)
     private String justification;
     private String author;
-    @Column(name = "previous_state")
-    @Lob
+    @Column(name = "previous_state", columnDefinition = "TEXT")
     private String previousState;
-    @Column(name = "actual_state")
-    @Lob
+    @Column(name = "actual_state", columnDefinition = "TEXT")
     private String actualState;
     private LocalDateTime createdAt;
 
