@@ -1,8 +1,8 @@
 {
-  "title": "Painel",
+  "title": "Dashboard",
   "breadcrumb": {
     "products": "Produtos",
-    "dashboard": "Painel"
+    "dashboard": "Dashboard"
   },
   "card": {
     "products": "Produtos",
