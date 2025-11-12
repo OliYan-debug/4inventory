@@ -10,12 +10,18 @@
     "inventory": "Inventory movements"
   },
   "columns": {
-    "id": "ID",
-    "name": "Name",
+    "name": "Product",
     "type": "Type",
     "justification": "Justification",
     "author": "Author",
     "createdAt": "Created At"
+  },
+  "labels": {
+    "add": "Add",
+    "remove": "Remove",
+    "update": "Update",
+    "checkin": "Check In",
+    "checkout": "Check Out"
   },
   "loading": {
     "pending": "Finding registers...",

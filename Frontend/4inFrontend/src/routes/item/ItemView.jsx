@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { api } from "@/services/api";
 import { Header } from "@/components/header/Header";
 import { LoadingSkeleton } from "@/components/LoadingSkeleton";
+import { formatDate } from "@/utils/formatDate";
 import { getContrastingTextColor } from "@/utils/getContrast";
 import { ItemViewButtons } from "./components/ItemViewButtons";
 import { ItemViewHistory } from "./components/ItemViewHistory";
@@ -85,8 +86,6 @@ export default function ItemView() {
       fetchData();
     }
   }, [itemId]);
-
-  const formatDate = (value) => value.toString().padStart(2, "0");
 
   const Subtitle = () => {
     return (

@@ -49,7 +49,7 @@ export function InputSearch({
       name_pt: "Saída",
       path: "/products/checkout",
     },
-    { id: 7, name_en: "Dashboard", name_pt: "Painel", path: "/dashboard" },
+    { id: 7, name_en: "Dashboard", name_pt: "Dashboard", path: "/dashboard" },
     {
       id: 8,
       name_en: "Categories",
@@ -104,7 +104,7 @@ export function InputSearch({
           setSearch(e.target.value);
           searchRoutes(e.target.value);
         }}
-        className="h-8 w-full bg-transparent pl-1 pr-11 text-neutral-500 outline-hidden"
+        className="h-8 w-full bg-transparent pr-11 pl-1 text-neutral-500 outline-hidden"
       />
 
       {search !== "" && (
