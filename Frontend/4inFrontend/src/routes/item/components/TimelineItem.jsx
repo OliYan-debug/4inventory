@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 
 import { formatDate } from "@/utils/formatDate";
 
-export function Timeline({ label, justification, author, createdAt, isLast }) {
+export function Timeline({ registry, isLast }) {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
 
@@ -40,7 +40,7 @@ export function Timeline({ label, justification, author, createdAt, isLast }) {
     CHECK_OUT: "bg-orange-200",
   };
 
-  const bgColor = bgColorMap[label] ?? "bg-neutral-200";
+  const bgColor = bgColorMap[registry.label] ?? "bg-neutral-200";
 
   return (
     <div className="animate-fade-in flex w-full items-center space-x-2 md:w-96">
@@ -50,25 +50,37 @@ export function Timeline({ label, justification, author, createdAt, isLast }) {
         )}
 
         <div
-          className={`flex size-10 items-center justify-center rounded-lg ${bgColor}`}
+          className={`relative flex size-12 items-center justify-center rounded-lg ${bgColor}`}
         >
-          {getIcon(label)}
+          {getIcon(registry.label)}
+
+          {registry.label === "CHECK_IN" && (
+            <span className="absolute -top-2.5 left-9.5 rounded-md bg-sky-300 px-1 py-px text-[10px] text-sky-800">
+              +{registry.actualState - registry.previousState}
+            </span>
+          )}
+
+          {registry.label === "CHECK_OUT" && (
+            <span className="absolute -top-2.5 left-9.5 rounded-md bg-orange-300 px-1 py-px text-[10px] text-orange-800">
+              -{registry.previousState - registry.actualState}
+            </span>
+          )}
         </div>
       </div>
 
       <div className="flex max-w-28 flex-col justify-center md:max-w-64">
         <div className="group/justification relative">
           <p className="truncate text-base leading-tight font-semibold text-neutral-800">
-            {justification.length > 20
-              ? `${justification.substring(0, 24)}...`
-              : justification}
+            {registry.justification.length > 20
+              ? `${registry.justification.substring(0, 24)}...`
+              : registry.justification}
           </p>
 
-          {justification.length > 20 && (
+          {registry.justification.length > 20 && (
             <div className="animate-fade-in absolute top-8 z-10 hidden w-64 max-w-64 justify-center overflow-x-clip rounded-lg border border-neutral-500 bg-neutral-400 p-2 shadow-md group-hover/justification:flex">
               <span className="absolute -top-1 block size-2 -translate-y-px rotate-45 border-t border-l border-neutral-500 bg-neutral-400"></span>
               <p className="text-justify text-xs text-neutral-50">
-                {justification}
+                {registry.justification}
               </p>
             </div>
           )}
@@ -76,7 +88,7 @@ export function Timeline({ label, justification, author, createdAt, isLast }) {
 
         <div className="flex items-center gap-0.5 text-xs text-neutral-600">
           <IdCard className="size-4" />
-          <span>{author}</span>
+          <span>{registry.author}</span>
         </div>
       </div>
 
@@ -85,18 +97,19 @@ export function Timeline({ label, justification, author, createdAt, isLast }) {
         <span className="text-xs text-neutral-600">
           {currentLanguage === "en-US" ? (
             <>
-              {createdAt[0]}/{formatDate(createdAt[1])}/
-              {formatDate(createdAt[2])}
+              {registry.createdAt[0]}/{formatDate(registry.createdAt[1])}/
+              {formatDate(registry.createdAt[2])}
             </>
           ) : (
             <>
-              {formatDate(createdAt[2])}/{formatDate(createdAt[1])}/
-              {createdAt[0]}
+              {formatDate(registry.createdAt[2])}/
+              {formatDate(registry.createdAt[1])}/{registry.createdAt[0]}
             </>
           )}{" "}
           <span className="font-medium">
-            {formatDate(createdAt[3])}:{formatDate(createdAt[4])}:
-            {formatDate(createdAt[5])}
+            {formatDate(registry.createdAt[3])}:
+            {formatDate(registry.createdAt[4])}:
+            {formatDate(registry.createdAt[5])}
           </span>
         </span>
       </div>
