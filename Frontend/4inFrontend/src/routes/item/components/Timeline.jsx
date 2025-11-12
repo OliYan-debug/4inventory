@@ -1,9 +1,9 @@
 import { ArrowUp, Plus } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Timeline } from "./TimelineItem";
 import { TimelineSkeleton } from "./TimelineSkeleton";
-import { useTranslation } from "react-i18next";
 
 export function ItemTimeline({ registers, loading }) {
   const { t } = useTranslation("timeline");
@@ -31,10 +31,7 @@ export function ItemTimeline({ registers, loading }) {
             return (
               <Timeline
                 key={registry.id}
-                label={registry.label}
-                justification={registry.justification}
-                author={registry.author}
-                createdAt={registry.createdAt}
+                registry={registry}
                 isLast={index === 0}
               />
             );
