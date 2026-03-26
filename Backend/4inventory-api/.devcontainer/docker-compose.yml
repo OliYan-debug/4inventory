@@ -1,0 +1,24 @@
+services:
+  4inventory:
+    image: mcr.microsoft.com/devcontainers/java:21
+    command: sleep infinity
+    volumes:
+      - ../../../:/workspace:cached
+      - ~/.ssh:/root/.ssh:ro
+    ports:
+      - "5000:5000"
+
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: spring_db
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

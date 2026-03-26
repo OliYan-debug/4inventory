@@ -1,0 +1,27 @@
+// .devcontainer/devcontainer.json
+{
+  "name": "Spring Boot (PostgreSQL)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "4inventory",
+  "workspaceFolder": "/workspace/Backend/4inventory-api",
+  "forwardPorts": [5000, 5436],
+  "containerEnv": {
+        "SPRING_PROFILES_ACTIVE": "dev"
+    },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "vmware.vscode-boot-dev-pack",
+        "vscjava.vscode-spring-boot-dashboard"
+      ],
+      "settings": {
+        "git.openRepositoryInParentFolders": "always",
+        "java.configuration.updateBuildConfiguration": "automatic",
+        "java.jdt.ls.vmargs": "-Xmx2G",
+        "files.autoSave": "onFocusChange",
+        "java.autobuild.enabled": true
+      }
+    }
+  }
+}
