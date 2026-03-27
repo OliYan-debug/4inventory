@@ -8,10 +8,10 @@
         <version>3.5.13</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>4inventory</groupId>
-    <artifactId>4inventory-api</artifactId>
+    <groupId>oliyan_debug</groupId>
+    <artifactId>inventory-api</artifactId>
     <version>1.6.1</version>
-    <name>4inventory-api</name>
+    <name>4inventory API</name>
     <description>Api for the 4inventory project</description>
     <url/>
     <licenses>
@@ -89,11 +89,6 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-        <dependency>
-		    <groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional>
-		</dependency>
     </dependencies>
 
     <build>
