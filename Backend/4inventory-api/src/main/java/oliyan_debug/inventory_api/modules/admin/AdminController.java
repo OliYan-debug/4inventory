@@ -1,4 +1,4 @@
-package oliyan_debug.inventory_api.controllers;
+package oliyan_debug.inventory_api.modules.admin;
 
 import oliyan_debug.inventory_api.domain.dto.ChangeRoleDTO;
 import oliyan_debug.inventory_api.domain.dto.UserDTO;
