@@ -2,6 +2,8 @@ services:
   4inventory:
     image: mcr.microsoft.com/devcontainers/java:21
     command: sleep infinity
+    environment:
+      TZ: America/Bahia
     volumes:
       - ../../../:/workspace:cached
     ports:
