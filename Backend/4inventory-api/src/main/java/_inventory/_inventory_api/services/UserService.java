@@ -1,6 +1,6 @@
 package _inventory._inventory_api.services;
 
-import _inventory._inventory_api.config.security.TokenService;
+import _inventory._inventory_api.core.security.TokenService;
 import _inventory._inventory_api.domain.dto.ProfileDTO;
 import _inventory._inventory_api.domain.dto.ResetPasswordDTO;
 import _inventory._inventory_api.domain.dto.UserUpdateDTO;

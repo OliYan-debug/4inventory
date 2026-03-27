@@ -1,4 +1,4 @@
-package _inventory._inventory_api.config.security;
+package _inventory._inventory_api.core.security;
 
 import _inventory._inventory_api.repositories.UserRepository;
 import jakarta.servlet.FilterChain;

@@ -1,7 +1,7 @@
 package _inventory._inventory_api.services;
 
-import _inventory._inventory_api.config.security.TokenService;
 import _inventory._inventory_api.domain.utils.UserValidator;
+import _inventory._inventory_api.core.security.TokenService;
 import _inventory._inventory_api.domain.dto.AuthenticationDTO;
 import _inventory._inventory_api.domain.dto.RegisterDTO;
 import _inventory._inventory_api.domain.entities.user.User;

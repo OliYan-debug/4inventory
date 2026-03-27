@@ -1,4 +1,4 @@
-package _inventory._inventory_api.config.security;
+package _inventory._inventory_api.core.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
