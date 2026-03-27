@@ -23,3 +23,7 @@ api:
   security:
     token:
       secret: ${JWT_SECRET:my-dirt-little-secret}
+
+logging:
+  pattern:
+    dateformat: dd-MM-yyy HH:mm:ss

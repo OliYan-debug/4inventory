@@ -1,6 +1,6 @@
 spring:
   application:
-    name: 4inventory-api
+    name: 4IN-API DEV
 
   datasource:
     url: jdbc:postgresql://postgres:5432/spring_db
@@ -23,3 +23,7 @@ api:
   security:
     token:
       secret: ${JWT_SECRET:my-dirt-little-secret}
+logging:
+  pattern:
+    dateformat: dd-MM-yyy HH:mm:ss
+  file.name: 4in.log
