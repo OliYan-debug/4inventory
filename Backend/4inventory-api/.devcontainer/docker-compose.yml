@@ -4,7 +4,6 @@ services:
     command: sleep infinity
     volumes:
       - ../../../:/workspace:cached
-      - ~/.ssh:/root/.ssh:ro
     ports:
       - "5000:5000"
 
