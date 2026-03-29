@@ -1,12 +1,11 @@
-package oliyan_debug.inventory_api.services;
+package oliyan_debug.inventory_api.modules.category;
 
-import oliyan_debug.inventory_api.domain.entities.Category;
-import oliyan_debug.inventory_api.domain.exceptions.categories.CategoryAlreadyExistsException;
-import oliyan_debug.inventory_api.domain.exceptions.categories.CategoryIdNotFoundException;
-import oliyan_debug.inventory_api.domain.exceptions.categories.InvalidCategoryException;
-import oliyan_debug.inventory_api.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import oliyan_debug.inventory_api.modules.category.exceptions.CategoryAlreadyExistsException;
+import oliyan_debug.inventory_api.modules.category.exceptions.CategoryIdNotFoundException;
+import oliyan_debug.inventory_api.modules.category.exceptions.InvalidCategoryException;
 
 import java.util.List;
 import java.util.Optional;

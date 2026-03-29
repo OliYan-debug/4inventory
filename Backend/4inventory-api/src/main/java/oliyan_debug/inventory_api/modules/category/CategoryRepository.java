@@ -1,6 +1,5 @@
-package oliyan_debug.inventory_api.repositories;
+package oliyan_debug.inventory_api.modules.category;
 
-import oliyan_debug.inventory_api.domain.entities.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

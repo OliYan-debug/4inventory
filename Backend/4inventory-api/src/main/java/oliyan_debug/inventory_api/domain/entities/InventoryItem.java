@@ -3,6 +3,7 @@ package oliyan_debug.inventory_api.domain.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import oliyan_debug.inventory_api.modules.category.Category;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

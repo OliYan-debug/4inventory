@@ -1,4 +1,4 @@
-package oliyan_debug.inventory_api.domain.entities;
+package oliyan_debug.inventory_api.modules.category;
 
 import jakarta.persistence.*;
 import lombok.Data;

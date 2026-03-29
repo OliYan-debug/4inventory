@@ -1,11 +1,11 @@
 package oliyan_debug.inventory_api.controllers;
 
-import oliyan_debug.inventory_api.domain.entities.Category;
-import oliyan_debug.inventory_api.domain.exceptions.categories.CategoryAlreadyExistsException;
-import oliyan_debug.inventory_api.domain.exceptions.categories.CategoryIdNotFoundException;
-import oliyan_debug.inventory_api.domain.exceptions.categories.InvalidCategoryException;
 import oliyan_debug.inventory_api.domain.records.MessageHandler;
-import oliyan_debug.inventory_api.services.CategoryService;
+import oliyan_debug.inventory_api.modules.category.Category;
+import oliyan_debug.inventory_api.modules.category.CategoryService;
+import oliyan_debug.inventory_api.modules.category.exceptions.CategoryAlreadyExistsException;
+import oliyan_debug.inventory_api.modules.category.exceptions.CategoryIdNotFoundException;
+import oliyan_debug.inventory_api.modules.category.exceptions.InvalidCategoryException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;

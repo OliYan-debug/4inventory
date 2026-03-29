@@ -1,4 +1,4 @@
-package oliyan_debug.inventory_api.domain.exceptions.categories;
+package oliyan_debug.inventory_api.modules.category.exceptions;
 
 public class InvalidCategoryException extends RuntimeException{
 

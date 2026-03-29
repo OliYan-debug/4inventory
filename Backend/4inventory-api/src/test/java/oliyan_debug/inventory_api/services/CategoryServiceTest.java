@@ -1,10 +1,12 @@
 package oliyan_debug.inventory_api.services;
 
-import oliyan_debug.inventory_api.domain.entities.Category;
-import oliyan_debug.inventory_api.domain.exceptions.categories.CategoryAlreadyExistsException;
-import oliyan_debug.inventory_api.domain.exceptions.categories.CategoryIdNotFoundException;
-import oliyan_debug.inventory_api.domain.exceptions.categories.InvalidCategoryException;
-import oliyan_debug.inventory_api.repositories.CategoryRepository;
+import oliyan_debug.inventory_api.modules.category.Category;
+import oliyan_debug.inventory_api.modules.category.CategoryRepository;
+import oliyan_debug.inventory_api.modules.category.CategoryService;
+import oliyan_debug.inventory_api.modules.category.exceptions.CategoryAlreadyExistsException;
+import oliyan_debug.inventory_api.modules.category.exceptions.CategoryIdNotFoundException;
+import oliyan_debug.inventory_api.modules.category.exceptions.InvalidCategoryException;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
