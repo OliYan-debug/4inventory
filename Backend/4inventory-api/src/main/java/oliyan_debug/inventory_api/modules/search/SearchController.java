@@ -1,7 +1,8 @@
 package oliyan_debug.inventory_api.modules.search;
 
-import oliyan_debug.inventory_api.domain.entities.InventoryItem;
 import io.swagger.v3.oas.annotations.Operation;
+import oliyan_debug.inventory_api.modules.inventory.InventoryItem;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

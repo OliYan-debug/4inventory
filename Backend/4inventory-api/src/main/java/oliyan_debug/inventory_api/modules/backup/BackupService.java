@@ -1,15 +1,15 @@
 package oliyan_debug.inventory_api.modules.backup;
 
-import oliyan_debug.inventory_api.domain.entities.InventoryItem;
 import oliyan_debug.inventory_api.modules.category.Category;
 import oliyan_debug.inventory_api.modules.category.CategoryRepository;
 import oliyan_debug.inventory_api.modules.category.CategoryService;
+import oliyan_debug.inventory_api.modules.inventory.InventoryItem;
 import oliyan_debug.inventory_api.modules.registry.Registry;
 import oliyan_debug.inventory_api.modules.registry.RegistryRepository;
 import oliyan_debug.inventory_api.modules.user.User;
 import oliyan_debug.inventory_api.modules.user.UserRepository;
-import oliyan_debug.inventory_api.repositories.InventoryRepository;
-import oliyan_debug.inventory_api.services.InventoryService;
+import oliyan_debug.inventory_api.modules.inventory.InventoryRepository;
+import oliyan_debug.inventory_api.modules.inventory.InventoryService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

@@ -1,6 +1,6 @@
 package oliyan_debug.inventory_api.modules.auth;
 
-import oliyan_debug.inventory_api.domain.utils.ResponseErrorHandler;
+import oliyan_debug.inventory_api.core.utils.ResponseErrorHandler;
 import oliyan_debug.inventory_api.modules.auth.dto.AuthenticationDTO;
 import oliyan_debug.inventory_api.modules.auth.dto.LoginResponseDTO;
 import oliyan_debug.inventory_api.modules.auth.dto.RegisterDTO;

@@ -1,4 +1,4 @@
-package oliyan_debug.inventory_api.domain.exceptions.items;
+package oliyan_debug.inventory_api.modules.inventory.exceptions;
 
 public class ItemIdNotFoundException extends RuntimeException {
     public ItemIdNotFoundException(Long id) {

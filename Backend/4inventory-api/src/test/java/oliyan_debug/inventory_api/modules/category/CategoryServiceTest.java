@@ -1,4 +1,4 @@
-package oliyan_debug.inventory_api.services;
+package oliyan_debug.inventory_api.modules.category;
 
 import oliyan_debug.inventory_api.modules.category.Category;
 import oliyan_debug.inventory_api.modules.category.CategoryRepository;

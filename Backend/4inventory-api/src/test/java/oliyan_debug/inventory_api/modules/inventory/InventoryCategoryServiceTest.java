@@ -1,14 +1,14 @@
-package oliyan_debug.inventory_api.services;
+package oliyan_debug.inventory_api.modules.inventory;
 
-import oliyan_debug.inventory_api.domain.entities.InventoryItem;
-import oliyan_debug.inventory_api.domain.exceptions.items.ItemIdNotFoundException;
-import oliyan_debug.inventory_api.domain.records.ItemAndCategory;
 import oliyan_debug.inventory_api.modules.category.Category;
 import oliyan_debug.inventory_api.modules.category.CategoryRepository;
 import oliyan_debug.inventory_api.modules.category.exceptions.CategoryIdNotFoundException;
-import oliyan_debug.inventory_api.repositories.InventoryRepository;
-import jakarta.transaction.Transactional;
-import org.hibernate.Hibernate;
+import oliyan_debug.inventory_api.modules.inventory.InventoryCategoryService;
+import oliyan_debug.inventory_api.modules.inventory.InventoryItem;
+import oliyan_debug.inventory_api.modules.inventory.ItemAndCategory;
+import oliyan_debug.inventory_api.modules.inventory.exceptions.ItemIdNotFoundException;
+import oliyan_debug.inventory_api.modules.inventory.InventoryRepository;
+import oliyan_debug.inventory_api.modules.inventory.InventoryService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,8 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;

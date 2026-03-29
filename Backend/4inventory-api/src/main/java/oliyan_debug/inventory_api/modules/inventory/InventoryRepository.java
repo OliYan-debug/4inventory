@@ -1,8 +1,8 @@
-package oliyan_debug.inventory_api.repositories;
+package oliyan_debug.inventory_api.modules.inventory;
 
-import oliyan_debug.inventory_api.domain.entities.InventoryItem;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 import java.util.Optional;

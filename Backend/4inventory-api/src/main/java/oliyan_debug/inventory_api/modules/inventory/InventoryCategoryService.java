@@ -1,12 +1,9 @@
-package oliyan_debug.inventory_api.services;
+package oliyan_debug.inventory_api.modules.inventory;
 
-import oliyan_debug.inventory_api.domain.entities.InventoryItem;
-import oliyan_debug.inventory_api.domain.exceptions.items.ItemIdNotFoundException;
-import oliyan_debug.inventory_api.domain.records.ItemAndCategory;
 import oliyan_debug.inventory_api.modules.category.Category;
 import oliyan_debug.inventory_api.modules.category.CategoryRepository;
 import oliyan_debug.inventory_api.modules.category.exceptions.CategoryIdNotFoundException;
-import oliyan_debug.inventory_api.repositories.InventoryRepository;
+import oliyan_debug.inventory_api.modules.inventory.exceptions.ItemIdNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

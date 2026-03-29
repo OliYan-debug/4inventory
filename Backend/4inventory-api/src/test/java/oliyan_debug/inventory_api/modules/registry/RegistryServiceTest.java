@@ -1,12 +1,13 @@
-package oliyan_debug.inventory_api.services;
+package oliyan_debug.inventory_api.modules.registry;
 
-import oliyan_debug.inventory_api.domain.entities.InventoryItem;
+import oliyan_debug.inventory_api.modules.inventory.InventoryItem;
 import oliyan_debug.inventory_api.modules.registry.ItemAndRegistryDTO;
 import oliyan_debug.inventory_api.modules.registry.ItemDelete;
 import oliyan_debug.inventory_api.modules.registry.RegistryLabel;
 import oliyan_debug.inventory_api.modules.registry.RegistryRepository;
 import oliyan_debug.inventory_api.modules.registry.RegistryService;
-import oliyan_debug.inventory_api.repositories.InventoryRepository;
+import oliyan_debug.inventory_api.modules.inventory.InventoryRepository;
+import oliyan_debug.inventory_api.modules.inventory.InventoryService;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

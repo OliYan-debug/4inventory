@@ -1,6 +1,5 @@
-package oliyan_debug.inventory_api.domain.utils;
+package oliyan_debug.inventory_api.core.utils;
 
-import oliyan_debug.inventory_api.domain.records.MessageHandler;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

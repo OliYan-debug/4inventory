@@ -1,13 +1,13 @@
 package oliyan_debug.inventory_api.modules.registry;
 
-import oliyan_debug.inventory_api.domain.exceptions.items.InvalidItemNameException;
-import oliyan_debug.inventory_api.domain.exceptions.items.ItemIdNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import oliyan_debug.inventory_api.modules.inventory.exceptions.InvalidItemNameException;
+import oliyan_debug.inventory_api.modules.inventory.exceptions.ItemIdNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;

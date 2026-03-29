@@ -1,4 +1,4 @@
-package oliyan_debug.inventory_api.domain.records;
+package oliyan_debug.inventory_api.core.utils;
 
 public record MessageHandler(int code, String message) {
 }

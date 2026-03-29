@@ -1,6 +1,6 @@
-package oliyan_debug.inventory_api.domain.exceptions;
+package oliyan_debug.inventory_api.core.exceptions;
 
-import oliyan_debug.inventory_api.domain.utils.ResponseErrorHandler;
+import oliyan_debug.inventory_api.core.utils.ResponseErrorHandler;
 import oliyan_debug.inventory_api.modules.auth.exceptions.InvalidAuthException;
 import oliyan_debug.inventory_api.modules.auth.exceptions.RegisterException;
 import oliyan_debug.inventory_api.modules.user.exceptions.UserException;
