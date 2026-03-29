@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +57,8 @@ public class InventoryService {
         registryRepository.save(new Registry(savedItem.getId(), savedItem.getItem(), RegistryLabel.ADD, "Add a item", null, savedItem.getItem(), recoverUsername()));
         return savedItem;
     }
-
+    
+    @Transactional
     public String removeItem(ItemDelete item) {
         var itemId = item.id();
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemId);
@@ -71,6 +73,7 @@ public class InventoryService {
         throw new ItemIdNotFoundException(itemId);
     }
 
+    @Transactional
     public InventoryItem updateItem(InventoryItem itemUpdate) {
         Optional<InventoryItem> optionalItem = inventoryRepo.findById(itemUpdate.getId());
         if (optionalItem.isPresent()) {
