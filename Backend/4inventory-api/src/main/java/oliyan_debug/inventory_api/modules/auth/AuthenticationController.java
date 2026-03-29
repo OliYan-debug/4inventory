@@ -1,0 +1,48 @@
+package oliyan_debug.inventory_api.modules.auth;
+
+import oliyan_debug.inventory_api.core.utils.ResponseErrorHandler;
+import oliyan_debug.inventory_api.modules.auth.dto.AuthenticationDTO;
+import oliyan_debug.inventory_api.modules.auth.dto.LoginResponseDTO;
+import oliyan_debug.inventory_api.modules.auth.dto.RegisterDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthenticationController {
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
+    private ResponseErrorHandler responseErrorHandler;
+
+    @Operation(summary = "User login")
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody @Valid AuthenticationDTO data) {
+        try {
+            return ResponseEntity.ok(new LoginResponseDTO(authenticationService.login(data)));
+        } catch (AuthenticationException e) {
+            return responseErrorHandler.generate(HttpStatus.BAD_REQUEST, "User or password invalid");
+        }
+    }
+
+    @Operation(summary = "User register")
+    @PostMapping("/register")
+    public ResponseEntity<Object> register(@RequestBody @Valid RegisterDTO data) {
+        authenticationService.register(data);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Logout user ('Set a token as invalid')")
+    @PostMapping("/logout")
+    public ResponseEntity<Object> logout(@RequestHeader(value = "authorization") String authHeader) {
+        authenticationService.logout(authHeader);
+        return ResponseEntity.ok().build();
+    }
+
+}

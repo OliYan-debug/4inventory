@@ -4,7 +4,7 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "4inventory",
   "workspaceFolder": "/workspace/Backend/4inventory-api",
-  "forwardPorts": [5000, 5436],
+  "forwardPorts": [5000, 5432],
   "containerEnv": {
         "SPRING_PROFILES_ACTIVE": "dev"
     },

@@ -1,0 +1,122 @@
+package oliyan_debug.inventory_api.modules.registry;
+
+import oliyan_debug.inventory_api.modules.inventory.InventoryItem;
+import oliyan_debug.inventory_api.modules.inventory.InventoryRepository;
+import oliyan_debug.inventory_api.modules.inventory.InventoryService;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+import static org.assertj.core.api.Assertions.*;
+
+@SpringBootTest
+@ActiveProfiles("test")
+@WithMockUser(username = "admin", roles = {"ADMIN"})
+@Testcontainers
+class RegistryServiceTest {
+    @Autowired
+    private InventoryService inventoryService;
+
+    @Autowired
+    private InventoryRepository inventoryRe;
+
+    @Autowired
+    private RegistryRepository registryRepository;
+
+    @Autowired
+    private RegistryService registryService;
+
+    private InventoryItem item;
+
+    @Container
+    @ServiceConnection
+    static PostgreSQLContainer<?> postgres =
+        new PostgreSQLContainer<>("postgres:17");
+
+    @BeforeEach
+    void setUp() {
+        item = new InventoryItem();
+        item.setItem("testItem");
+        item.setDescription("testDescription");
+        item.setQuantity(10);
+        item = inventoryService.saveItem(item);
+    }
+
+    @AfterEach
+    void cleanDB() {
+        inventoryRe.deleteAll();
+        registryRepository.deleteAll();
+    }
+
+    @Test
+    @DisplayName("Should add an item in the registry with label ADD")
+    void registryCase1() {
+        var registries = registryService.findAll(0, 10, "id,desc");
+        var registry = registries.getContent();
+        assertThat(registry).isNotNull();
+        assertThat(registry.size()).isEqualTo(1);
+        assertThat(registry.get(0).getLabel()).isEqualTo(RegistryLabel.ADD);
+        assertThat(registry.get(0).getJustification()).isEqualTo("Add a item");
+    }
+
+    @Test
+    @DisplayName("Should add an item in the registry with label REMOVE")
+    void registryCase2() {
+        inventoryService.removeItem(new ItemDelete(this.item.getId(), "I wanted it"));
+        var registries = registryService.findAll(0, 10, "id,desc");
+        var registry = registries.getContent();
+        assertThat(registry).isNotNull();
+        assertThat(registry.size()).isEqualTo(2);
+        assertThat(registry.get(0).getLabel()).isEqualTo(RegistryLabel.REMOVE);
+        assertThat(registry.get(0).getJustification()).isEqualTo("I wanted it");
+    }
+
+    @Test
+    @DisplayName("Should add an item in the registry with label CHECK-IN")
+    void registryCase3() {
+        inventoryService.updateItemQuantity(new ItemAndRegistryDTO(this.item.getId(),100, "New Items arrived" ));
+        var registries = registryService.findAll(0, 10, "id,desc");
+        var registry = registries.getContent();
+        assertThat(registry).isNotNull();
+        assertThat(registry.size()).isEqualTo(2);
+        assertThat(registry.get(0).getLabel()).isEqualTo(RegistryLabel.CHECK_IN);
+        assertThat(registry.get(0).getJustification()).isEqualTo("New Items arrived");
+    }
+
+    @Test
+    @DisplayName("Should add an item in the registry with label CHECK-OUT")
+    void registryCase4() {
+        inventoryService.updateItemQuantity(new ItemAndRegistryDTO(this.item.getId(), 10, "New Items left"));
+        var registries = registryService.findAll(0, 10, "id,desc");
+        var registry = registries.getContent();
+        assertThat(registry).isNotNull();
+        assertThat(registry.size()).isEqualTo(2);
+        assertThat(registry.get(0).getLabel()).isEqualTo(RegistryLabel.CHECK_OUT);
+        assertThat(registry.get(0).getJustification()).isEqualTo("New Items left");
+    }
+
+    @Test
+    @DisplayName("Should add an item in the registry with label UPDATE")
+    void registryCase5() {
+        item.setDescription("Updated Description");
+        item.setId(this.item.getId());
+        inventoryService.updateItem(item);
+        var registries = registryService.findAll(0, 10, "id,desc");
+        var registry = registries.getContent();
+        assertThat(registry).isNotNull();
+        assertThat(registry.size()).isEqualTo(2);
+        assertThat(registry.get(0).getLabel()).isEqualTo(RegistryLabel.UPDATE);
+        assertThat(registry.get(0).getJustification()).isEqualTo("Update a item");
+    }
+
+}

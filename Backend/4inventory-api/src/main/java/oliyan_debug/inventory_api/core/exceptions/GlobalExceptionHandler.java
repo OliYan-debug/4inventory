@@ -1,0 +1,64 @@
+package oliyan_debug.inventory_api.core.exceptions;
+
+import oliyan_debug.inventory_api.core.utils.ResponseErrorHandler;
+import oliyan_debug.inventory_api.modules.auth.exceptions.InvalidAuthException;
+import oliyan_debug.inventory_api.modules.auth.exceptions.RegisterException;
+import oliyan_debug.inventory_api.modules.user.exceptions.UserException;
+
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.hibernate.PropertyValueException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @Autowired
+    private ResponseErrorHandler responseErrorHandler;
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Object> handleNullPointerException(NullPointerException e) {
+        return responseErrorHandler.generate(HttpStatus.BAD_REQUEST, "Null values are not valid, please review your request");
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Object> handleMessageNotReadable(HttpMessageNotReadableException e) {
+        return responseErrorHandler.generate(HttpStatus.BAD_REQUEST, "JSON parse error: Cannot deserialize some values, please review the json you sent");
+    }
+
+    @ExceptionHandler(JWTVerificationException.class)
+    public ResponseEntity<Object> handleJWTVerificationException(JWTVerificationException e) {
+        return responseErrorHandler.generate(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    @ExceptionHandler(RegisterException.class)
+    public ResponseEntity<Object> handleRegisterException(RegisterException e) {
+        return responseErrorHandler.generate(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<Object> handleUserException(UserException e) {
+        return responseErrorHandler.generate(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidAuthException.class)
+    public ResponseEntity<Object> handleInvalidAuthException(InvalidAuthException e) {
+        return responseErrorHandler.generate(HttpStatus.FORBIDDEN, e.getMessage());
+    }
+
+    @ExceptionHandler(JsonProcessingException.class)
+    public ResponseEntity<Object> handleJsonProcessingException(JsonProcessingException e){
+        return responseErrorHandler.generate(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+
+    @ExceptionHandler(PropertyValueException.class)
+    public ResponseEntity<Object> handlePropertyValueException(PropertyValueException e) {
+        return responseErrorHandler.generate(HttpStatus.FORBIDDEN, "Null values are not valid, please review your request");
+    }
+}
