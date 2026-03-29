@@ -1,9 +1,9 @@
 package oliyan_debug.inventory_api.modules.user;
 
 import oliyan_debug.inventory_api.modules.auth.TokenService;
-import oliyan_debug.inventory_api.modules.auth.UserToken;
-import oliyan_debug.inventory_api.modules.auth.UserValidator;
 import oliyan_debug.inventory_api.modules.auth.exceptions.InvalidAuthException;
+import oliyan_debug.inventory_api.modules.auth.utils.UserToken;
+import oliyan_debug.inventory_api.modules.auth.utils.UserValidator;
 import oliyan_debug.inventory_api.modules.user.dto.ProfileDTO;
 import oliyan_debug.inventory_api.modules.user.dto.ResetPasswordDTO;
 import oliyan_debug.inventory_api.modules.user.dto.UserUpdateDTO;

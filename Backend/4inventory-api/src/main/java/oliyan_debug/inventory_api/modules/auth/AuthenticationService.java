@@ -1,6 +1,7 @@
 package oliyan_debug.inventory_api.modules.auth;
 
 import oliyan_debug.inventory_api.modules.auth.dto.AuthenticationDTO;
+import oliyan_debug.inventory_api.modules.auth.utils.UserValidator;
 import oliyan_debug.inventory_api.modules.user.User;
 import oliyan_debug.inventory_api.modules.user.UserRepository;
 import oliyan_debug.inventory_api.modules.user.dto.RegisterDTO;

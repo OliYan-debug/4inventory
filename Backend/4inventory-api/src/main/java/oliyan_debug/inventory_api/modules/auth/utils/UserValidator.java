@@ -1,4 +1,4 @@
-package oliyan_debug.inventory_api.modules.auth;
+package oliyan_debug.inventory_api.modules.auth.utils;
 
 import oliyan_debug.inventory_api.modules.auth.exceptions.RegisterException;
 import oliyan_debug.inventory_api.modules.user.UserRepository;
