@@ -1,4 +1,4 @@
-package oliyan_debug.inventory_api.core;
+package oliyan_debug.inventory_api.core.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
