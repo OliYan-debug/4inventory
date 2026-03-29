@@ -1,7 +1,6 @@
 package oliyan_debug.inventory_api.modules.search;
 
 import oliyan_debug.inventory_api.modules.inventory.InventoryItem;
-import oliyan_debug.inventory_api.modules.search.SearchService;
 import oliyan_debug.inventory_api.modules.inventory.InventoryRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,12 +8,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Testcontainers
 class SearchServiceTest {
 
     @Autowired
@@ -25,9 +29,13 @@ class SearchServiceTest {
 
     private InventoryItem item;
 
+    @Container
+    @ServiceConnection
+    static PostgreSQLContainer<?> postgres =
+        new PostgreSQLContainer<>("postgres:17");
+  
     @BeforeEach
     public void setUp() {
-        // Initialize an item and save it to the in-memory H2 database
         item = new InventoryItem();
         item.setItem("testItem");
         item.setDescription("testDescription");
@@ -42,10 +50,8 @@ class SearchServiceTest {
     @DisplayName("Should return a list of inventory items with the given item name")
     void shouldReturnListOfInventoryItemsWithGivenItemName() {
 
-        // Act
         var itemList = searchService.search("testItem");
 
-        // Assert
         assertThat(itemList).isNotNull();
         assertThat(itemList.size()).isEqualTo(1);
         assertThat(itemList.get(0).getItem()).isEqualTo("testItem");
@@ -54,10 +60,8 @@ class SearchServiceTest {
     @DisplayName("Should return a list of inventory items with the given partial item name")
     void shouldReturnListOfInventoryItemsWithGivenPartialItemName() {
 
-        // Act
         var itemList = searchService.search("test");
 
-        // Assert
         assertThat(itemList).isNotNull();
         assertThat(itemList.size()).isEqualTo(1);
         assertThat(itemList.get(0).getItem()).isEqualTo("testItem");
@@ -65,10 +69,8 @@ class SearchServiceTest {
     @Test
     @DisplayName("Should return a list of inventory items with the wrong given item name")
     void shouldNotReturnListOfInventoryItemsWithWrongGivenItemName() {
-        // Act
         var itemList = searchService.search("testing");
 
-        // Assert
         assertThat(itemList).isNotNull();
         assertThat(itemList.size()).isEqualTo(0);
     }

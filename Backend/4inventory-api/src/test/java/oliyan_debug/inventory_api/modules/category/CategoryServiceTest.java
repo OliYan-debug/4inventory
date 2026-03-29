@@ -1,8 +1,5 @@
 package oliyan_debug.inventory_api.modules.category;
 
-import oliyan_debug.inventory_api.modules.category.Category;
-import oliyan_debug.inventory_api.modules.category.CategoryRepository;
-import oliyan_debug.inventory_api.modules.category.CategoryService;
 import oliyan_debug.inventory_api.modules.category.exceptions.CategoryAlreadyExistsException;
 import oliyan_debug.inventory_api.modules.category.exceptions.CategoryIdNotFoundException;
 import oliyan_debug.inventory_api.modules.category.exceptions.InvalidCategoryException;
@@ -13,16 +10,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Testcontainers
 class CategoryServiceTest {
 
     @Autowired
@@ -33,6 +32,11 @@ class CategoryServiceTest {
 
     private Category category;
 
+    @Container
+    @ServiceConnection
+    static PostgreSQLContainer<?> postgres =
+        new PostgreSQLContainer<>("postgres:17");
+  
     @BeforeEach
     void setUp() {
         category = new Category();

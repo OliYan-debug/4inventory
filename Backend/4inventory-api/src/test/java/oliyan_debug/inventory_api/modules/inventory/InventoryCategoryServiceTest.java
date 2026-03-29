@@ -3,24 +3,24 @@ package oliyan_debug.inventory_api.modules.inventory;
 import oliyan_debug.inventory_api.modules.category.Category;
 import oliyan_debug.inventory_api.modules.category.CategoryRepository;
 import oliyan_debug.inventory_api.modules.category.exceptions.CategoryIdNotFoundException;
-import oliyan_debug.inventory_api.modules.inventory.InventoryCategoryService;
-import oliyan_debug.inventory_api.modules.inventory.InventoryItem;
-import oliyan_debug.inventory_api.modules.inventory.ItemAndCategory;
 import oliyan_debug.inventory_api.modules.inventory.exceptions.ItemIdNotFoundException;
-import oliyan_debug.inventory_api.modules.inventory.InventoryRepository;
-import oliyan_debug.inventory_api.modules.inventory.InventoryService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ActiveProfiles("test")
+@Testcontainers
 class InventoryCategoryServiceTest {
 
     @Autowired
@@ -34,7 +34,12 @@ class InventoryCategoryServiceTest {
     private InventoryItem item;
     private Category category;
 
-    @BeforeEach
+    @Container
+    @ServiceConnection
+    static PostgreSQLContainer<?> postgres =
+        new PostgreSQLContainer<>("postgres:17");
+    
+        @BeforeEach
     void setUp() {
         item = new InventoryItem();
         item.setItem("testItem");

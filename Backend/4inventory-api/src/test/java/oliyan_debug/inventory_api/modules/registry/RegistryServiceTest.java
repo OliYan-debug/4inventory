@@ -1,11 +1,6 @@
 package oliyan_debug.inventory_api.modules.registry;
 
 import oliyan_debug.inventory_api.modules.inventory.InventoryItem;
-import oliyan_debug.inventory_api.modules.registry.ItemAndRegistryDTO;
-import oliyan_debug.inventory_api.modules.registry.ItemDelete;
-import oliyan_debug.inventory_api.modules.registry.RegistryLabel;
-import oliyan_debug.inventory_api.modules.registry.RegistryRepository;
-import oliyan_debug.inventory_api.modules.registry.RegistryService;
 import oliyan_debug.inventory_api.modules.inventory.InventoryRepository;
 import oliyan_debug.inventory_api.modules.inventory.InventoryService;
 
@@ -15,12 +10,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@WithMockUser(username = "admin", roles = {"ADMIN"})
+@Testcontainers
 class RegistryServiceTest {
     @Autowired
     private InventoryService inventoryService;
@@ -35,6 +37,11 @@ class RegistryServiceTest {
     private RegistryService registryService;
 
     private InventoryItem item;
+
+    @Container
+    @ServiceConnection
+    static PostgreSQLContainer<?> postgres =
+        new PostgreSQLContainer<>("postgres:17");
 
     @BeforeEach
     void setUp() {

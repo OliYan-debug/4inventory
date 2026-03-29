@@ -1,7 +1,5 @@
 package oliyan_debug.inventory_api.modules.inventory;
 
-import oliyan_debug.inventory_api.modules.inventory.InventoryCategoryService;
-import oliyan_debug.inventory_api.modules.inventory.InventoryItem;
 import oliyan_debug.inventory_api.modules.inventory.exceptions.InvalidItemNameException;
 import oliyan_debug.inventory_api.modules.inventory.exceptions.InvalidQuantityException;
 import oliyan_debug.inventory_api.modules.inventory.exceptions.ItemIdNotFoundException;
@@ -9,15 +7,19 @@ import oliyan_debug.inventory_api.modules.registry.ItemAndRegistryDTO;
 import oliyan_debug.inventory_api.modules.registry.ItemDelete;
 import oliyan_debug.inventory_api.modules.registry.RegistryRepository;
 import oliyan_debug.inventory_api.modules.registry.exceptions.JustificationNotFoundException;
-import oliyan_debug.inventory_api.modules.inventory.InventoryRepository;
-import oliyan_debug.inventory_api.modules.inventory.InventoryService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -25,6 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@WithMockUser(username = "admin", roles = {"ADMIN"})
+@Testcontainers
 class InventoryServiceTest {
 
     @Autowired
@@ -38,6 +42,11 @@ class InventoryServiceTest {
 
     private InventoryItem item;
 
+    @Container
+    @ServiceConnection
+    static PostgreSQLContainer<?> postgres =
+        new PostgreSQLContainer<>("postgres:17");
+  
     @BeforeEach
     void setUp() {
         item = new InventoryItem();
