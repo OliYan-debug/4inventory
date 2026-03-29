@@ -1,8 +1,9 @@
 package oliyan_debug.inventory_api.modules.admin;
 
-import oliyan_debug.inventory_api.domain.dto.ChangeRoleDTO;
-import oliyan_debug.inventory_api.domain.dto.UserDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import oliyan_debug.inventory_api.modules.user.dto.ChangeRoleDTO;
+import oliyan_debug.inventory_api.modules.user.dto.UserDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

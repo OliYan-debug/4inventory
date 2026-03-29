@@ -1,6 +1,7 @@
 package oliyan_debug.inventory_api.services;
 
 import oliyan_debug.inventory_api.domain.entities.InventoryItem;
+import oliyan_debug.inventory_api.modules.search.SearchService;
 import oliyan_debug.inventory_api.repositories.InventoryRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

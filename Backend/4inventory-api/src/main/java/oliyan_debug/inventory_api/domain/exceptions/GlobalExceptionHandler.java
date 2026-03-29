@@ -1,9 +1,10 @@
 package oliyan_debug.inventory_api.domain.exceptions;
 
-import oliyan_debug.inventory_api.domain.exceptions.security.InvalidAuthException;
-import oliyan_debug.inventory_api.domain.exceptions.security.RegisterException;
-import oliyan_debug.inventory_api.domain.exceptions.users.UserException;
 import oliyan_debug.inventory_api.domain.utils.ResponseErrorHandler;
+import oliyan_debug.inventory_api.modules.auth.exceptions.InvalidAuthException;
+import oliyan_debug.inventory_api.modules.auth.exceptions.RegisterException;
+import oliyan_debug.inventory_api.modules.user.exceptions.UserException;
+
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.hibernate.PropertyValueException;

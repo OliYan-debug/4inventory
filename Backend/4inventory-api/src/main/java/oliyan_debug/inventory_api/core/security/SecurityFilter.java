@@ -1,10 +1,12 @@
 package oliyan_debug.inventory_api.core.security;
 
-import oliyan_debug.inventory_api.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import oliyan_debug.inventory_api.modules.auth.TokenService;
+import oliyan_debug.inventory_api.modules.user.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

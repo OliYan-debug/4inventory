@@ -1,13 +1,14 @@
 package oliyan_debug.inventory_api.modules.admin;
 
-import oliyan_debug.inventory_api.domain.dto.ChangeRoleDTO;
-import oliyan_debug.inventory_api.domain.dto.ProfileDTO;
-import oliyan_debug.inventory_api.domain.dto.UserDTO;
-import oliyan_debug.inventory_api.domain.entities.user.User;
-import oliyan_debug.inventory_api.domain.exceptions.security.InvalidAuthException;
-import oliyan_debug.inventory_api.domain.exceptions.users.UserException;
-import oliyan_debug.inventory_api.domain.utils.UserToken;
-import oliyan_debug.inventory_api.repositories.UserRepository;
+import oliyan_debug.inventory_api.modules.auth.exceptions.InvalidAuthException;
+import oliyan_debug.inventory_api.modules.auth.utils.UserToken;
+import oliyan_debug.inventory_api.modules.user.User;
+import oliyan_debug.inventory_api.modules.user.UserRepository;
+import oliyan_debug.inventory_api.modules.user.dto.ChangeRoleDTO;
+import oliyan_debug.inventory_api.modules.user.dto.ProfileDTO;
+import oliyan_debug.inventory_api.modules.user.dto.UserDTO;
+import oliyan_debug.inventory_api.modules.user.exceptions.UserException;
+
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
