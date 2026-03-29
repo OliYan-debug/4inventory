@@ -1,6 +1,5 @@
-package oliyan_debug.inventory_api.domain.entities;
+package oliyan_debug.inventory_api.modules.registry;
 
-import oliyan_debug.inventory_api.domain.enums.RegistryLabel;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;

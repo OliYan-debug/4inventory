@@ -1,10 +1,9 @@
 package oliyan_debug.inventory_api.modules.auth;
 
-import oliyan_debug.inventory_api.domain.dto.*;
 import oliyan_debug.inventory_api.domain.utils.ResponseErrorHandler;
 import oliyan_debug.inventory_api.modules.auth.dto.AuthenticationDTO;
 import oliyan_debug.inventory_api.modules.auth.dto.LoginResponseDTO;
-import oliyan_debug.inventory_api.modules.user.dto.RegisterDTO;
+import oliyan_debug.inventory_api.modules.auth.dto.RegisterDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

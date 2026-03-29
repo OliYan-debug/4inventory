@@ -1,8 +1,6 @@
-package oliyan_debug.inventory_api.controllers;
+package oliyan_debug.inventory_api.modules.category;
 
 import oliyan_debug.inventory_api.domain.records.MessageHandler;
-import oliyan_debug.inventory_api.modules.category.Category;
-import oliyan_debug.inventory_api.modules.category.CategoryService;
 import oliyan_debug.inventory_api.modules.category.exceptions.CategoryAlreadyExistsException;
 import oliyan_debug.inventory_api.modules.category.exceptions.CategoryIdNotFoundException;
 import oliyan_debug.inventory_api.modules.category.exceptions.InvalidCategoryException;

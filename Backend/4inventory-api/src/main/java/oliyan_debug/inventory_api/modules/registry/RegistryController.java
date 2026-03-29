@@ -1,7 +1,5 @@
-package oliyan_debug.inventory_api.controllers;
+package oliyan_debug.inventory_api.modules.registry;
 
-import oliyan_debug.inventory_api.domain.entities.Registry;
-import oliyan_debug.inventory_api.services.RegistryService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

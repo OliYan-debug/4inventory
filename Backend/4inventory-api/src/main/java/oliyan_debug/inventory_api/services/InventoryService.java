@@ -1,16 +1,17 @@
 package oliyan_debug.inventory_api.services;
 
 import oliyan_debug.inventory_api.domain.entities.InventoryItem;
-import oliyan_debug.inventory_api.domain.entities.Registry;
-import oliyan_debug.inventory_api.domain.enums.RegistryLabel;
-import oliyan_debug.inventory_api.domain.exceptions.JustificationNotFoundException;
 import oliyan_debug.inventory_api.domain.exceptions.items.ItemIdNotFoundException;
 import oliyan_debug.inventory_api.domain.exceptions.items.InvalidItemNameException;
 import oliyan_debug.inventory_api.domain.exceptions.items.InvalidQuantityException;
-import oliyan_debug.inventory_api.domain.dto.ItemAndRegistryDTO;
-import oliyan_debug.inventory_api.domain.records.ItemDelete;
+import oliyan_debug.inventory_api.modules.registry.ItemAndRegistryDTO;
+import oliyan_debug.inventory_api.modules.registry.ItemDelete;
+import oliyan_debug.inventory_api.modules.registry.Registry;
+import oliyan_debug.inventory_api.modules.registry.RegistryLabel;
+import oliyan_debug.inventory_api.modules.registry.RegistryRepository;
+import oliyan_debug.inventory_api.modules.registry.exceptions.JustificationNotFoundException;
 import oliyan_debug.inventory_api.repositories.InventoryRepository;
-import oliyan_debug.inventory_api.repositories.RegistryRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

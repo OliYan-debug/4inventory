@@ -1,4 +1,4 @@
-package oliyan_debug.inventory_api.modules.user.dto;
+package oliyan_debug.inventory_api.modules.auth.dto;
 
 import oliyan_debug.inventory_api.modules.user.UserRoles;
 

@@ -1,6 +1,5 @@
-package oliyan_debug.inventory_api.repositories;
+package oliyan_debug.inventory_api.modules.registry;
 
-import oliyan_debug.inventory_api.domain.entities.Registry;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;

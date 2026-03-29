@@ -1,8 +1,8 @@
 package oliyan_debug.inventory_api.modules.auth.utils;
 
+import oliyan_debug.inventory_api.modules.auth.dto.RegisterDTO;
 import oliyan_debug.inventory_api.modules.auth.exceptions.RegisterException;
 import oliyan_debug.inventory_api.modules.user.UserRepository;
-import oliyan_debug.inventory_api.modules.user.dto.RegisterDTO;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

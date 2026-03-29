@@ -1,4 +1,4 @@
-package oliyan_debug.inventory_api.domain.enums;
+package oliyan_debug.inventory_api.modules.registry;
 
 
 public enum RegistryLabel {
