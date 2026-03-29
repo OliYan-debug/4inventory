@@ -7,7 +7,6 @@ import oliyan_debug.inventory_api.modules.inventory.exceptions.ItemIdNotFoundExc
 import oliyan_debug.inventory_api.modules.registry.ItemAndRegistryDTO;
 import oliyan_debug.inventory_api.modules.registry.ItemDelete;
 import oliyan_debug.inventory_api.modules.registry.exceptions.JustificationNotFoundException;
-import oliyan_debug.inventory_api.modules.inventory.InventoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
